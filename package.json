@@ -12,7 +12,7 @@
     "vue": "^2.6.11",
     "axios": "^0.18.0",
     "element-ui": "^2.13.1",
-    "jquery": "^1.12.4",
+    "jquery": "^3.5.0",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
     "vue-router": "^3.0.1",
