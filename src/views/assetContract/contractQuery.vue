@@ -20,10 +20,11 @@
               :showPagination="true">
               <!-- 操作 -->
               <el-table-column 
-                        label="操作"
+                        label="操作" width="200"
                         >
                   <template slot-scope="scope">
                     <el-button
+                        icon="el-icon-view"
                         class="collectBtn"
                         size="medium"
                         type="text"
@@ -31,12 +32,43 @@
                         @click="details(scope.row)">
                         详情
                     </el-button>
+                     <el-button
+                        icon="el-icon-edit"
+                        class="collectBtn"
+                        size="medium"
+                        type="text"
+                        style="margin-left:0px; "
+                        @click="edit(scope.row)">
+                        编辑
+                    </el-button>
+                    <el-dropdown trigger="click">
+                        <span class="el-dropdown-link">
+                          更多<i class="el-icon-arrow-down el-icon--right"></i>
+                        </span>
+                        <el-dropdown-menu slot="dropdown">
+                          <el-dropdown-item>
+                            <el-button
+                                icon="el-icon-share"
+                                class="collectBtn"
+                                size="medium"
+                                type="text"
+                                style="margin-left:0px; "
+                                @click="handlePushClick(scope.row)"
+                               >
+                                推送
+                            </el-button>
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </el-dropdown>
                   </template>
               </el-table-column>
         </Table>
         </div>
         <div v-show="secondShow" style="background:white;">
             <contractInfoComponentNew ref="contractInfoComponentNew"></contractInfoComponentNew>
+        </div>
+         <div v-show="settlementShow" style="background:white;">
+            <settlement ref="settlement"></settlement>
         </div>
         <dialogCommonComponent ref="dialogCommonComponent" title="合同详情" width="80%">
             <contractInfoDetailComponent  ref="contractInfoDetailComponent"></contractInfoDetailComponent>
@@ -49,6 +81,7 @@ import Table from '@/components/Table.vue';
 import dialogCommonComponent from '@/components/dialogCommonComponent';
 import contractInfoDetailComponent from '@/components/contractInfoDetailComponent';
 import contractInfoComponentNew from './contractInfoComponentNew';
+import settlement from './settlement';
 
 export default {
   name: '',
@@ -56,6 +89,7 @@ export default {
     return {
       firstShow:true,
       secondShow:false,
+      settlementShow:false,
       // 表格数据
       mainTable: {
         tableHeader: {
@@ -85,7 +119,8 @@ export default {
     Table,
     dialogCommonComponent,
     contractInfoDetailComponent,
-    contractInfoComponentNew
+    contractInfoComponentNew,
+    settlement
   },
   created() {
     this.search();
@@ -95,12 +130,15 @@ export default {
     this.$bus.$on('back',function() {
       vm.firstShow = true;
       vm.secondShow = false;
+      vm.settlementShow = false;
     });
   },
   methods: {
+    // 添加合同
     handleAddAsset() {
       this.firstShow = false;
       this.secondShow = true;
+      this.$refs.contractInfoComponentNew.init('add');
     },
     // 详情
     details(row) {
@@ -108,6 +146,18 @@ export default {
       this.$nextTick(() => {
          this.$refs.contractInfoDetailComponent.handleGetOrgInfo(row);
       }); 
+    },
+    // 编辑合同
+    edit(row){
+      this.firstShow = false;
+      this.secondShow = true;
+      this.$refs.contractInfoComponentNew.init('edit',row);
+    },
+    // 推送
+    handlePushClick(row) {
+      this.firstShow = false;
+      this.settlementShow = true;
+      this.$refs.settlement.init(row);
     },
     // 搜索
     search(searchData) {
@@ -166,4 +216,11 @@ export default {
     margin: 5px;
   }
 }
+.el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
 </style>

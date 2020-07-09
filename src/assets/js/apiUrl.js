@@ -8,4 +8,5 @@ export let apiUrl = {
     fileQuery:apiGateway + '/files/file/query/',//文件预览
     businessAuthorize:currentApiUrl,//企业授权
     tradeAuthQuery:currentApiUrl+ '/auth/query',//已授权企业查询
+    querySettlementByContract:currentApiUrl + '/asset/querySettlementByContract',//根据合同查询结算单
 }

@@ -14,7 +14,7 @@
             <br>
             <div style="margin-left:13%;">
             <!-- 合同类型： -->
-            <el-col :span="24" class="elCol">
+            <el-col :span="24" class="elCol" v-if="formItem.indexOf('type')>=0">
                 <el-col class="elLable" :span="4">
                     &nbsp;
                 </el-col>
@@ -250,7 +250,7 @@
                             class="elInput otherInfo"
                             v-model="otherEnterpriseInfo.orgFullName"
                             prop="fullName"
-                            @keyup.enter.native="handleEnterpriseChange($event, entryInfoEdit)">
+                            @keyup.enter.native="handleOtherInfo()">
                         </el-input>
                     </el-col>
                 </el-col>
@@ -266,8 +266,7 @@
                             v-model="otherEnterpriseInfo.orgFullName"
                             prop="fullName"
                             placeholder="请输入企业全称，Enter查询"
-                            @change="handleEnterprise($event, entryInfoEdit)"
-                            @keyup.enter.native="handleEnterpriseChange($event, entryInfoEdit)">
+                            @keyup.enter.native="handleOtherInfo()">
                         </el-input>
                     </el-col>
                 </el-col>
@@ -313,37 +312,37 @@
 import mixin from '@/assets/js/mixin';
     export default {
         mixins:[mixin],
-        props: ['diaConEditData'],
         data () {
             return {
                 submissionTime: "",
                 serialList: [],
+                // 为表单里面要展示的字段
+                formItem:["type",
+                "buzType"
+                ],
                 form: {
-                    type: "", // 合同类型
-                    buzType: "", // 业务类型
-                    otherRole: "",
-                    myRoles: "",
-                    entityNo: "",
-                    clientName: "",//客户名称
-                    name: "", // 合同名称
-                    amount: "0.00",
-                    contractContent: "", // 合同内容
-                    currency: "CNY",
-                    signingDate: "", //合同签署时间
-                    startDate: "", // 合同生效时间
-                    endDate: "", // 合同到期时间
-                    attachments: [
-                        {"description": "合同文本电子版"},
-                    ],
-                    buyer: "", // 买方
-                    buyerId: "", // 卖方orgId
-                    seller: "", // 卖方
-                    sellerId: "", // 买方orgId
+                    // type: "", // 合同类型
+                    // buzType: "", // 业务类型
+                    // otherRole: "",
+                    // myRoles: "",
+                    // entityNo: "",
+                    // clientName: "",//客户名称
+                    // name: "", // 合同名称
+                    // amount: "0.00",
+                    // contractContent: "", // 合同内容
+                    // currency: "CNY",
+                    // signingDate: "", //合同签署时间
+                    // startDate: "", // 合同生效时间
+                    // endDate: "", // 合同到期时间
+                    // attachments: [
+                    //     {"description": "合同文本电子版"},
+                    // ],
+                    // buyer: "", // 买方
+                    // buyerId: "", // 卖方orgId
+                    // seller: "", // 卖方
+                    // sellerId: "", // 买方orgId
                     remarks: "", //备注
                     contractOrgId: sessionStorage.getItem("orgId"),
-                },
-                time: {
-                    fullName: false
                 },
                 rules: {
                     "type": [
@@ -460,6 +459,7 @@ import mixin from '@/assets/js/mixin';
                 orgName: sessionStorage.getItem("orgName"),
                 orgId: sessionStorage.getItem("orgId"),
                 user: JSON.parse(sessionStorage.getItem('user')),
+                flag:'add',//代表添加还是编辑
             }
         },
         computed: {
@@ -470,12 +470,20 @@ import mixin from '@/assets/js/mixin';
                 this.$bus.$emit('back');
                 this.$refs.form.resetFields();
             },
-            async init() {
+            async init(flag,row) {
+                this.flag = flag;
+                if (flag == 'edit') {
+                    this.form = Object.assign({},row);
+                    if(this.form.sellerId === this.user.orgId) {
+                        this.form.myRoles = 'SELLER';
+                    }
+                }
+                // 获取我方企业信息
                 this.myEnterpriseInfo = await this.getOrgInfo({orgId:this.user.orgId});
             },
+            // 合同类型变化时会关系到是否需要对方企业信息
             handleContractType () {
                 let type = this.form.type;
-                this.time.fullName = false;
                 if (type === "SALE" || type === "SALE_SINGLE_PARTY") {
                     this.form.otherRole = "BUYER";
                     if (type === "SALE") {
@@ -484,14 +492,12 @@ import mixin from '@/assets/js/mixin';
                     } else {
                         this.sellInfo = true;
                         this.entryInfoEdit = false;
-                        this.time.fullName = true;
                     }
                 } else if (type === "PURCHASE" || type === "PURCHASE_SINGLE_PARTY") {
                     this.form.otherRole = "SELLER";
                     if (type === "PURCHASE_SINGLE_PARTY" || type === "PURCHASE_SINGLE_PARTY") {
                         this.sellInfo = true;
                         this.entryInfoEdit = false;
-                        this.time.fullName = true;
                     } else {
                         this.sellInfo = false;
                         this.entryInfoEdit = true;
@@ -499,44 +505,24 @@ import mixin from '@/assets/js/mixin';
                 }
                 this.handleEmptyOtherInfo()
             },
+            // 清空对方企业信息
             handleEmptyOtherInfo () {
                 Object.keys(this.otherEnterpriseInfo).forEach(key => {
                     this.otherEnterpriseInfo[key] = ""
                 })
-                this.time.orgFullName = false
             },
-            handleEnterpriseChange (event, entryInfoEdit) {
-                if (event && entryInfoEdit) { // 明保
-                    this.handleOtherInfo(event)
-                } else if (event && !entryInfoEdit) {
-                    this.time.fullName = true;
-                } else {
-                    this.handleOtherInfo("")
-                }
-                this.enterpriseChange = true;
-            },
-            handleEnterprise (event, entryInfoEdit) {
-                console.log(entryInfoEdit)
-                if (entryInfoEdit) { // 明保
-                    this.handleOtherInfo(event)
-                } else {
-                    this.time.fullName = true;
-                }
-            },
-            async handleOtherInfo (event) {
+            async handleOtherInfo () {
                 let fullName = this.otherEnterpriseInfo.orgFullName;
                 let myFullName = this.myEnterpriseInfo.orgFullName;
                 if (fullName !== myFullName) {
                     this.otherEnterpriseInfo = await this.getOrgInfo({orgName:fullName});
                 } else {
                     this.$message.error("与我方信息相同，请重新填写！");
-                    this.time.fullName = false;
                 }
             },
-            handleNext (form) {
+            async handleNext (form) {
                 // 保存买卖双方名称 id
-                this.handleSellBuyOrgName()
-                this.$refs.form.validate((valid) => {
+                this.$refs.form.validate(async (valid) => {
                     if (!valid) {
                         this.$message.error("您有必填项未填或填写有误！")
                     }else{
@@ -544,6 +530,7 @@ import mixin from '@/assets/js/mixin';
                             this.$message.error('对方企业信息合同参与方不能为空');
                             return;
                         }
+                        await this.handleSellBuyOrgName();
                         this.$bus.$emit("contractStep", this.form);
                     }
                 })
@@ -555,7 +542,6 @@ import mixin from '@/assets/js/mixin';
                 } else {
                     this.form.sellerId = this.myEnterpriseInfo.orgId;
                 }
-
                 if (this.form.myRoles === "BUYER") {
                     this.form.buyer = this.myEnterpriseInfo.orgFullName;
                     this.form.buyerId = this.myEnterpriseInfo.orgId;
@@ -583,7 +569,7 @@ import mixin from '@/assets/js/mixin';
             },
         },
         mounted () {
-            this.init()
+           
         },
         destroy () {
            

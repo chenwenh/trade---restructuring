@@ -11,10 +11,9 @@
               style="width: 100%"
               ref="multipleTable"
               v-loading="loading"
-              :height="height" size="mini">
-      <el-table-column type="index"  width="50" align="center"> </el-table-column>       
+              :height="height" size="medium">
+      <!-- <el-table-column type="index"  width="50" align="center"> </el-table-column>        -->
       <el-table-column
-        fixed="left"
         type="selection"
         v-if="selected"
         width="55">
@@ -121,14 +120,16 @@ export default {
         },
       pageSizes:[10, 20, 30],
       currentPage: 1,
-      pageShow: true
+      pageShow: true,
+      assetsUidList:[],
+
     };
   },
   computed: {
     height() {
       if (this.height2) return height2 +'px';
       var height2 = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-      return height2 - 160 + 'px';
+      return height2 - 220 + 'px';
     },
   },
   methods: {
@@ -149,17 +150,9 @@ export default {
         return h('div', {class: 'table-head', style: {width: '80%'}}, [column.label])
       }
     },
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
-      }
-    },
-    toggle1(rows) {
-      const assetsUidList = rows; // 之前全部选择的数据
+    toggle() {
+      const vm = this;
+      const assetsUidList = this.assetsUidList; // 之前全部选择的数据
       const tableData = this.mainTable.tableData; // 表格中的全部数据
       const rowIndexs = [];
       for (let i = 0; i < tableData.length; i += 1) {
@@ -170,10 +163,11 @@ export default {
         }
       }
       rowIndexs.forEach(row => {
-        this.$refs.multipleTable.toggleRowSelection(this.mainTable.tableData[row]);
+        vm.$refs.multipleTable.toggleRowSelection(vm.mainTable.tableData[row]);
       });
     },
     clearSelection() {
+      this.assetsUidList = [];
       this.$refs.multipleTable.clearSelection();
     },
     handlewidth(key) {
@@ -183,9 +177,19 @@ export default {
       }
       return num;
     },
-    selectionWarehouse(selection) {
-      console.log('选中', selection);
-      this.$emit('sendSelection', selection);
+    selectionWarehouse(items) {
+      const vm = this;
+      const currentArr = items.map(item => item.id);
+      const arr1 = [...vm.assetsUidList, ...currentArr];
+      vm.assetsUidList = Array.from(new Set(arr1));
+      const tableData = vm.mainTable.tableData.map(item => item.id);
+      const difference = tableData.filter(v => !currentArr.includes(v));
+      difference.forEach(item => {
+        if (vm.assetsUidList.indexOf(item) !== -1) {
+          vm.assetsUidList.splice(vm.assetsUidList.indexOf(item), 1);
+        }
+      });
+      vm.$bus.$emit('getAssetsUidList',vm.assetsUidList);
     },
     setCurrentPage(page) {
       this.currentPage = page;
@@ -210,7 +214,8 @@ export default {
 
 <style lang="scss">
 .page-nav{
-  float:right;
+  width:100%;
+  text-align:right;
   margin-right:20px;
   margin-top:20px;
 }
