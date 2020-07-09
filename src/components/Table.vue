@@ -122,12 +122,14 @@ export default {
       currentPage: 1,
       pageShow: true,
       assetsUidList:[],
-
+      selectedAssetsList:[]
     };
   },
   computed: {
     height() {
-      if (this.height2) return height2 +'px';
+      if (this.height2)  {
+        return this.height2 +'px';
+      };
       var height2 = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
       return height2 - 220 + 'px';
     },
@@ -150,6 +152,7 @@ export default {
         return h('div', {class: 'table-head', style: {width: '80%'}}, [column.label])
       }
     },
+    // 给当前分页之前选中的勾选复现。
     toggle() {
       const vm = this;
       const assetsUidList = this.assetsUidList; // 之前全部选择的数据
@@ -177,8 +180,11 @@ export default {
       }
       return num;
     },
+    // 存储之前勾选的全部数据。
     selectionWarehouse(items) {
       const vm = this;
+      // 选择的行的完整数据。
+      vm.selectedAssetsList = Array.from(new Set([...vm.selectedAssetsList,...items]));
       const currentArr = items.map(item => item.id);
       const arr1 = [...vm.assetsUidList, ...currentArr];
       vm.assetsUidList = Array.from(new Set(arr1));
@@ -189,7 +195,17 @@ export default {
           vm.assetsUidList.splice(vm.assetsUidList.indexOf(item), 1);
         }
       });
-      vm.$bus.$emit('getAssetsUidList',vm.assetsUidList);
+      // 把选中的行数据进行去重。
+      var list = vm.selectedAssetsList.filter(item=>vm.assetsUidList.indexOf(item.id)!=-1);
+      for(var i =0;i<list.length;i++){
+        for(var j=i+1;j<list.length;j++){
+          if(list[i].id==list[j].id){
+            list.splice(j,1);
+            j--;
+          }
+        }
+      }
+      vm.$bus.$emit('getAssetsUidList',vm.assetsUidList,list);
     },
     setCurrentPage(page) {
       this.currentPage = page;

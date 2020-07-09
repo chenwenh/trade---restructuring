@@ -11,6 +11,7 @@ import '@/assets/css/_main.scss'
 import bus from '@/views/eventBus/eventBus'
 import './assets/js/dialogDrag';
 import './assets/js/validate';
+import './assets/js/vueFilter';
 import store from './store';
 Vue.use(ElementUI)
 
