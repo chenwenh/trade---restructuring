@@ -2,7 +2,7 @@
 import axios from 'axios'
 import router from '../../router'
 import store from '../../store'
-// import { global } from '../../assets/js/global'
+// import { global } from '@/assets/js/global'
 import Vue from 'vue'
 
 axios.defaults.timeout = 500000

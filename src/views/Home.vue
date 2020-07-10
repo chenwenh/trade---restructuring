@@ -1,27 +1,27 @@
 <template>
+<el-container>
     <el-container>
-        <el-container>
-            <el-aside style='width: 220px !important;float:left;background:rgb(0, 78, 145);'>
-                <div class="logo">
-                    <img src="static/images/logos.png"/>
-                </div>
-                <sidebar></sidebar>
-            </el-aside>
-            <el-main style="width:calc(100% - 220px);float:right;overflow:auto;margin-top:56px;">
-                <div class="header">
-                    <el-dropdown trigger="click" @command="handleCommand">
-                        <span class="el-dropdown-link">
-                            <img class="userIcon" src="static/images/touxiang.png" />
-                            <i class="el-icon-arrow-down el-icon--right"></i>
-                        </span>
-                        <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item :command="'logout'">退出</el-dropdown-item>
-                        </el-dropdown-menu>
-                    </el-dropdown>
-                </div>
-                <router-view></router-view>
-            </el-main>
-        </el-container>
+        <el-aside style='width: 220px !important;float:left;background:rgb(0, 78, 145);'>
+            <div class="logo">
+                <img src="static/images/logos.png"/>
+            </div>
+            <sidebar></sidebar>
+        </el-aside>
+        <el-main style="width:calc(100% - 220px);float:right;overflow:auto;margin-top:56px;">
+            <div class="header">
+                <el-dropdown trigger="click" @command="handleCommand">
+                    <span class="el-dropdown-link">
+                        <img class="userIcon" src="static/images/touxiang.png" />
+                        <i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item :command="'logout'">退出</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </div>
+            <router-view></router-view>
+        </el-main>
+    </el-container>
     </el-container>
 </template>
 

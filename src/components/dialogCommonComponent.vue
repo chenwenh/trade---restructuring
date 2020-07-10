@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag top="3vh" :title="title" :close-on-click-modal="false" :append-to-body="true"
+  <el-dialog v-dialogDrag  :title="title" :close-on-click-modal="false" :append-to-body="true"
               :visible.sync="dialogVisible"
               :before-close="close" :width="width">
       <slot></slot>

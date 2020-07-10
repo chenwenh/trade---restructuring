@@ -29,6 +29,17 @@ export default{
                     return
                 }
             }
-        }
+        },
+        // 处理执行进度
+        async  commonHandleProgress(allIds,everyNumber) {
+            var allNumber = Math.ceil(allIds.length/everyNumber);
+            for (let i =0;i<allNumber;i++){
+                var everyIds = allIds.slice(i * everyNumber,(i+1) * everyNumber); 
+                console.log(everyIds,'everyIds');
+                if(i === allNumber-1){
+                console.log('執行完嘍');
+                }
+            }
+        },
     }
 }

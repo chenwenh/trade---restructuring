@@ -16,6 +16,7 @@
       <el-table-column
         type="selection"
         v-if="selected"
+        :selectable="selectable"
         width="55">
       </el-table-column>
       <el-table-column  v-if="key != 'goodsHead'" v-for="(item, key) in mainTable.tableHeader "
@@ -111,7 +112,7 @@ export default {
   components: {
     
   },
-  props: ['mainTable', 'showPagination', 'selected', 'totalCount', 'pageSize', 'loading', 'bannedElection', 'isSearch','height2'],
+  props: ['mainTable', 'showPagination', 'selected', 'totalCount', 'pageSize', 'loading', 'bannedElection', 'isSearch','height2','selectable'],
   data() {
     return {
       goodStyle:
@@ -239,7 +240,6 @@ export default {
     max-width: 400px !important;
   }
   .table-content {
-    border-right: 1px solid #EBEEF5;
 
     .table-header-cell {
       color: #333333;

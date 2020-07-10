@@ -9,4 +9,5 @@ export let apiUrl = {
     businessAuthorize:currentApiUrl,//企业授权
     tradeAuthQuery:currentApiUrl+ '/auth/query',//已授权企业查询
     querySettlementByContract:currentApiUrl + '/asset/querySettlementByContract',//根据合同查询结算单
+    pushFullAssetPackage:currentApiUrl + '/asset/pushFullAssetPackage',//合同下的结算单推送
 }

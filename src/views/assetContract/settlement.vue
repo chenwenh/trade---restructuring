@@ -5,6 +5,7 @@
               ref="tableRef"
               :mainTable="mainTable"
               :selected="true"
+              :selectable="selectable"
               :loading="loading"
               :pageSize="pageSize"
               :totalCount="totalCount"
@@ -20,18 +21,46 @@
         </div>
          <div style="text-align:center;margin-top:40px;">
             <el-button type="warning" @click="back">上一步</el-button>
-            <el-button :disabled="isDisabled" type="primary" icon="el-icon-share">
+            <el-button :disabled="isDisabled" type="primary" icon="el-icon-share" @click="handlePush">
                 推送
             </el-button>
         </div>
+        <dialogCommonComponent ref="dialogCommonComponent" title="请选择推送平台" width="500px">
+            <span>我同意数据授权至：</span>
+            <el-select v-model="sendUrl" placeholder="请选择">
+                <el-option
+                        v-for="item in platFormOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+            </el-select>
+            <div style="text-align:center;margin-top:30px;">
+                <el-button
+                        size="small"
+                        @click="close()">
+                    取 消
+                </el-button>
+                <el-button
+                        :disabled="!sendUrl"
+                        size="small"
+                        type="primary"
+                        @click="handleDailogConfirm()">
+                    确 定
+                </el-button>
+            </div>
+        </dialogCommonComponent>
     </div>
 </template>
 
 <script>
 import Table from '@/components/Table.vue';
+import dialogCommonComponent from '@/components/dialogCommonComponent';
+import mixin from '@/assets/js/mixin.js';
 
 export default {
   name: '',
+  mixins:[mixin],
   data() {
     return {
       counts:0,
@@ -58,11 +87,20 @@ export default {
       selectedAssetsList:[],
       assetsUidList:[],
       isDisabled:true,
-      amount:0
+      amount:0,
+      platFormOptions: [
+        {
+          value: 'financing',
+          label: '易见区块（易见融资平台）'
+        },
+      ],
+      sendUrl:'',
+      entityUuids:[]
     };
   },
   components: {
-    Table
+    Table,
+    dialogCommonComponent
   },
   created() {
   },
@@ -88,6 +126,54 @@ export default {
     height2() {
       var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
       return height - 260;
+    },
+    selectable (row, index) {
+      if (row.lockState) {
+        return false
+      } else {
+        return true
+      }
+    },
+    close() {
+      this.$bus.$emit('closeDialog');
+    },
+    handlePush() {
+      this.$refs.dialogCommonComponent.show();
+      this.sendUrl = "";
+    },
+    handleDailogConfirm() {
+      const vm = this;
+      vm.entityUuids = this.selectedAssetsList.map(item => item.entityUuid);
+      vm.close();
+      vm.$bus.$emit('showProgress',0);
+
+      var everyNumber = 10; //每次发送的个数。 
+      this.common(0,vm.entityUuids,everyNumber);
+    },
+    async common(i,allIds,everyNumber) {
+      var vm = this;
+      var allNumber = Math.ceil(allIds.length/everyNumber); 
+      var everyIds = allIds.slice(i * everyNumber,(i+1) * everyNumber); 
+      try{
+        let response = await this.$http.post(`${this.$apiUrl.pushFullAssetPackage}`,{entityUuids:everyIds});
+        if(response.data.status == 200) {
+          i = i+1;
+          vm.$bus.$emit('showProgress',(i/allNumber)*100);
+          if (i==allNumber){
+            setTimeout(()=> {
+              vm.$bus.$emit('hideProgress');
+              vm.$message.success('推送成功!');
+              vm.search();
+              vm.$refs.tableRef.clearSelection();
+            },1000);
+            return;
+          }
+          vm.common(i,allIds,everyNumber);
+        }
+      }catch(err){
+        vm.$message.error(err.data.message);
+        vm.$bus.$emit('hideProgress');
+      }
     },
     back() {
         this.$bus.$emit('back');
