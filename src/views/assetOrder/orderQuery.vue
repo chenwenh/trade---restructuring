@@ -13,7 +13,8 @@
               :showPagination="true">
               <!-- 操作 -->
               <el-table-column 
-                        label="操作" width="200"
+                        label="操作" width="150"
+                        fixed="right"
                         >
                   <template slot-scope="scope">
                     <el-button
@@ -41,6 +42,17 @@
                                >
                                 查看资产图
                             </el-button>
+                            <br/>
+                            <el-button
+                                icon="el-icon-share"
+                                class="collectBtn"
+                                size="medium"
+                                type="text"
+                                style="margin-left:0px; "
+                                @click="getAttachments(scope.row)"
+                               >
+                                附件
+                            </el-button>
                           </el-dropdown-item>
                         </el-dropdown-menu>
                       </el-dropdown>
@@ -54,6 +66,14 @@
         <dialogCommonComponent ref="dialogCommonComponent2" title="资产视图" width="90%">
             <assetView ref="assetView"></assetView>
         </dialogCommonComponent>
+        <!-- 附件 -->
+        <dialogCommonComponent ref="dialogCommonComponent3" title="附件" width="60%">
+            <uploadFileComponent ref="uploadFileComponent"></uploadFileComponent>
+            <div style="text-align:center;margin-top:20px;">
+              <el-button plain size="small" @click="close()">取消</el-button>
+              <el-button type="primary" size="small" @click="sure">确定</el-button>
+            </div>  
+        </dialogCommonComponent>
     </div>
 </template>
 
@@ -62,6 +82,7 @@ import Table from '@/components/Table.vue';
 import dialogCommonComponent from '@/components/dialogCommonComponent';
 import goodsDetailComponent from './goodsDetailComponent';
 import assetView from '@/components/assetView';
+import uploadFileComponent from '@/components/uploadFileComponent';
 
 export default {
   name: '',
@@ -107,18 +128,40 @@ export default {
       pageSize: 10,
       loading: false,
       assetsList: [],
+      entityUuid:''
     };
   },
   components: {
     Table,
     dialogCommonComponent,
     goodsDetailComponent,
-    assetView
+    assetView,
+    uploadFileComponent
   },
   created() {
     this.search();
   },
   methods: {
+    close() {
+      this.$bus.$emit('closeDialog');
+    },
+    async sure() {
+      var vm = this;
+      var attachements = this.$refs.uploadFileComponent.getFile();
+      var response = await vm.$http.post(`${vm.$apiUrl.addAttach}TRADEORDER/assetuuid/${this.entityUuid}/addAttach`,attachements)
+      if (response.data.status == this.$appConst.status) {
+        this.$bus.$emit('closeDialog');
+        this.$message.success('附件修改成功');
+        this.search();
+      }
+    },
+    getAttachments(row){
+      this.entityUuid = row.entityUuid;
+      this.$refs.dialogCommonComponent3.show();
+      this.$nextTick(() => {
+        this.$refs.uploadFileComponent.init(row);
+      });
+    },
     // 详情
     details(row) {
       this.$refs.dialogCommonComponent.show();

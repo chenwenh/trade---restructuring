@@ -189,6 +189,64 @@ export default {
         // return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
         return y + '-' + MM + '-' + d;
     }
-  }
+  },
+  isAcrobatPDFPluginInstalled() {
+        //下面代码都是处理IE浏览器的情况 
+        let oAcro = null;
+        let oAcro4 = null;
+        let oAcro7 = null;
+        if((window.ActiveXObject)||(navigator.userAgent.indexOf("Trident") > -1)) {
+            for(let x = 2; x < 10; x++) {
+                try {
+                    oAcro = eval("new ActiveXObject('PDF.PdfCtrl." + x + "');");
+                    if(oAcro) {
+                        return true;
+                    }
+                } catch(e) {}
+            }
+            try {
+                oAcro4 = new ActiveXObject('PDF.PdfCtrl.1');
+                if(oAcro4)
+                    return true;
+            } catch(e) {}
+            try {
+                oAcro7 = new ActiveXObject('AcroPDF.PDF.1');
+                if(oAcro7)
+                    return true;
+            } catch(e) {}
+        }else{
+        //chrome和FF、safrai等其他浏览器
+            return true;
+        }
+    },
+     //生成随机UUID
+     uuid(len, radix) {
+        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+        var uuid = [], i;
+        radix = radix || chars.length;
+     
+        if (len) {
+          // Compact form
+          for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
+        } else {
+          // rfc4122, version 4 form
+          var r;
+     
+          // rfc4122 requires these characters
+          uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+          uuid[14] = '4';
+     
+          // Fill in random data.  At i==19 set the high bits of clock sequence as
+          // per rfc4122, sec. 4.1.5
+          for (i = 0; i < 36; i++) {
+            if (!uuid[i]) {
+              r = 0 | Math.random()*16;
+              uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+            }
+          }
+        }
+     
+        return uuid.join('');
+    },
 };
 /* eslint-enable */

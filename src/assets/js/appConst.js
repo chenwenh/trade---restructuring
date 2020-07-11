@@ -1,6 +1,7 @@
 /* eslint-disable */
 export default{
     uploadFile:uploadFile,
+    fileQuery:fileQuery,
     pages: 10,
     pageSize: [10, 20, 30], // [20, 30, 50]
     status: 200,

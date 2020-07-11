@@ -6,6 +6,7 @@ export let apiUrl = {
     orguserList:apiGateway + '/orguser/org/v1.0/list',//获取企业列表
     orguserDetail:apiGateway + '/orguser/org/v1.0/detail/',//根据id去查询详情
     fileQuery:apiGateway + '/files/file/query/',//文件预览
+    uploadFileApi:uploadFile + fileQuery,//文件上传
     businessAuthorize:currentApiUrl,//企业授权
     tradeAuthQuery:currentApiUrl+ '/auth/query',//已授权企业查询
     querySettlementByContract:currentApiUrl + '/asset/querySettlementByContract',//根据合同查询结算单
@@ -16,4 +17,5 @@ export let apiUrl = {
     queryUpNoRelatedAssets:currentApiUrl +'/asset/true/patternGraph/',//获取上游资产
     queryDownNoRelatedAssets:currentApiUrl + '/asset/true/patternGraph/',//获取下游资产
     queryAssetsById:currentApiUrl + '/graph/',//根据UUID去查询详情
+    addAttach:currentApiUrl +　'/asset/asset-type/'
 }
