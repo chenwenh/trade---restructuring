@@ -100,7 +100,7 @@ import dialogCommonComponent from '@/components/dialogCommonComponent';
 import contractInfoDetailComponent from '@/components/contractInfoDetailComponent';
 import contractInfoComponentNew from './contractInfoComponentNew';
 import settlement from './settlement';
-import assetView from './assetView';
+import assetView from '@/components/assetView';
 
 export default {
   name: '',
@@ -244,11 +244,4 @@ export default {
     margin: 5px;
   }
 }
-.el-dropdown-link {
-    cursor: pointer;
-    color: #409EFF;
-  }
-  .el-icon-arrow-down {
-    font-size: 12px;
-  }
 </style>

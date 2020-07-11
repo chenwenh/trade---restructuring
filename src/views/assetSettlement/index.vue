@@ -12,11 +12,12 @@
               @handleCurrentChange="handleCurrentChange"
               :showPagination="true">
               <!-- 操作 -->
-              <el-table-column fixed="right"
-                        label="操作"
+              <el-table-column 
+                        label="操作" width="200"
                         >
                   <template slot-scope="scope">
                     <el-button
+                        icon="el-icon-view"
                         class="collectBtn"
                         size="medium"
                         type="text"
@@ -24,11 +25,34 @@
                         @click="details(scope.row)">
                         详情
                     </el-button>
+                    <el-dropdown trigger="click">
+                        <span class="el-dropdown-link">
+                          更多<i class="el-icon-arrow-down el-icon--right"></i>
+                        </span>
+                        <el-dropdown-menu slot="dropdown">
+                          <el-dropdown-item>
+                             <el-button
+                                icon="el-icon-share"
+                                class="collectBtn"
+                                size="medium"
+                                type="text"
+                                style="margin-left:0px; "
+                                @click="previewAssets(scope.row)"
+                               >
+                                查看资产图
+                            </el-button>
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </el-dropdown>
                   </template>
               </el-table-column>
         </Table>
         <dialogCommonComponent ref="dialogCommonComponent" title="结算单详情" width="80%">
             <goodsDetailComponent  ref="goodsDetailComponent"></goodsDetailComponent>
+        </dialogCommonComponent>
+        <!-- 查看资产图 -->
+        <dialogCommonComponent ref="dialogCommonComponent2" title="资产视图" width="90%">
+            <assetView ref="assetView"></assetView>
         </dialogCommonComponent>
     </div>
 </template>
@@ -37,6 +61,7 @@
 import Table from '@/components/Table.vue';
 import dialogCommonComponent from '@/components/dialogCommonComponent';
 import goodsDetailComponent from './goodsDetailComponent';
+import assetView from '@/components/assetView';
 
 export default {
   name: '',
@@ -70,12 +95,20 @@ export default {
   components: {
     Table,
     dialogCommonComponent,
-    goodsDetailComponent
+    goodsDetailComponent,
+    assetView
   },
   created() {
     this.search();
   },
   methods: {
+    // 查看资产图
+    previewAssets(row) {
+      this.$refs.dialogCommonComponent2.show();
+      this.$nextTick(() => {
+        this.$refs.assetView.init(row);
+      });
+    },
     // 详情
     details(row) {
       this.$refs.dialogCommonComponent.show();
