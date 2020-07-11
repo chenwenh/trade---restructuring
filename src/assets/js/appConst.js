@@ -149,5 +149,19 @@ export default{
         THIRD_PARTY_ENTERPRISE: "第三方企业",
         CORE_MANAGER: "核心企业"
     },
+    "dataType": {
+        TRADECONTRACT: "合同",
+        TRADEORDER: "订单",
+        TRADESETTLEMENT: "结算单",
+        TRADEPRESETTLEMENT: "单次结算单",
+        TRADERECVGGOODS: "贸易收货单",
+        TRADEDLVRGOODS: "贸易发货单",
+        TRADEINVOICE: "发票",
+        TRADELOGISTICS: "物流单",
+        TRADEPONDERATION:  "过磅单",
+        TRADECHECKAPPLY: "报检单",
+        TRADEQUALITY: "质检单",
+        TRADEWAREHOUSE: "库存单"
+    },
   }
   

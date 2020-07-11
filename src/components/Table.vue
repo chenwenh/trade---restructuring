@@ -119,12 +119,15 @@ export default {
         {
           borderBottom: "1px solid #eee",
         },
-      pageSizes:[10, 20, 30],
+      pageSizes:[],
       currentPage: 1,
       pageShow: true,
       assetsUidList:[],
       selectedAssetsList:[]
     };
+  },
+  mounted() {
+    this.pageSizes = this.$appConst.pageSize;
   },
   computed: {
     height() {

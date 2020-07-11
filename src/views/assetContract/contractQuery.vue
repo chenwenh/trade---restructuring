@@ -57,6 +57,17 @@
                                >
                                 推送
                             </el-button>
+                            <br/>
+                             <el-button
+                                icon="el-icon-share"
+                                class="collectBtn"
+                                size="medium"
+                                type="text"
+                                style="margin-left:0px; "
+                                @click="previewAssets(scope.row)"
+                               >
+                                查看资产图
+                            </el-button>
                           </el-dropdown-item>
                         </el-dropdown-menu>
                       </el-dropdown>
@@ -64,14 +75,21 @@
               </el-table-column>
         </Table>
         </div>
+        <!-- 添加编辑合同 -->
         <div v-show="secondShow" style="background:white;">
             <contractInfoComponentNew ref="contractInfoComponentNew"></contractInfoComponentNew>
         </div>
+        <!-- 推送时展示结算单 -->
          <div v-show="settlementShow" style="background:white;">
             <settlement ref="settlement"></settlement>
         </div>
+        <!-- 查看合同详情 -->
         <dialogCommonComponent ref="dialogCommonComponent" title="合同详情" width="80%">
-            <contractInfoDetailComponent  ref="contractInfoDetailComponent"></contractInfoDetailComponent>
+            <contractInfoDetailComponent  ref="contractInfoDetailComponent" :showCancel="showCancel"></contractInfoDetailComponent>
+        </dialogCommonComponent>
+        <!-- 查看资产图 -->
+        <dialogCommonComponent ref="dialogCommonComponent2" title="资产视图" width="90%">
+            <assetView ref="assetView"></assetView>
         </dialogCommonComponent>
     </div>
 </template>
@@ -82,11 +100,13 @@ import dialogCommonComponent from '@/components/dialogCommonComponent';
 import contractInfoDetailComponent from '@/components/contractInfoDetailComponent';
 import contractInfoComponentNew from './contractInfoComponentNew';
 import settlement from './settlement';
+import assetView from './assetView';
 
 export default {
   name: '',
   data() {
     return {
+      showCancel:true,
       firstShow:true,
       secondShow:false,
       settlementShow:false,
@@ -120,7 +140,8 @@ export default {
     dialogCommonComponent,
     contractInfoDetailComponent,
     contractInfoComponentNew,
-    settlement
+    settlement,
+    assetView
   },
   created() {
     this.search();
@@ -158,6 +179,13 @@ export default {
       this.firstShow = false;
       this.settlementShow = true;
       this.$refs.settlement.init(row);
+    },
+    // 查看资产图
+    previewAssets(row) {
+      this.$refs.dialogCommonComponent2.show();
+      this.$nextTick(() => {
+        this.$refs.assetView.init(row);
+      });
     },
     // 搜索
     search(searchData) {

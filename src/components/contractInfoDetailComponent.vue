@@ -95,7 +95,7 @@
 			<div style="clear:both;"></div>
 		</div>
 		</div>
-		<div class="dialog-footer">
+		<div class="dialog-footer" v-show="showCancel">
 			<el-button plain  @click="close()" size="medium">取消</el-button>
 		</div>
 		<show-file-detail ref="showFileDetail"></show-file-detail>
@@ -110,7 +110,7 @@
 
 	export default {
 		mixins:[mixin],
-		props: [],
+		props: ['showCancel'],
 		data() {
 			return {
 				diaComData: {},
