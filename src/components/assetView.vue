@@ -245,6 +245,9 @@ import contractInfoDetailComponent from '@/components/contractInfoDetailComponen
             return val;
         },
         async handleGoNext(item,assetType,flag) {
+            if (flag){
+                this.currentPage = 1;
+            }
             this.item = item;
             const params = {
                 page:this.currentPage,
@@ -266,6 +269,9 @@ import contractInfoDetailComponent from '@/components/contractInfoDetailComponen
             }
         },
         async handleGoPrev(item,assetType,flag) {
+            if (flag){
+                this.currentPage = 1;
+            }
             this.item = item;
             const params = {
                 page:this.currentPage,
