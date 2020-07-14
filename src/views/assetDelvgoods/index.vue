@@ -11,7 +11,8 @@
         <Table
               ref="tableRef"
               :mainTable="mainTable"
-              :selected="false"
+              :selected="selected"
+              :selectable="selectable"
               :loading="loading"
               :pageSize="pageSize"
               :totalCount="totalCount"
@@ -62,18 +63,39 @@
                                   附件
                               </el-button>
                           </el-dropdown-item>
+                          <el-dropdown-item>
+                              <el-button
+                                  icon="el-icon-share"
+                                  class="collectBtn"
+                                  size="medium"
+                                  type="text"
+                                  style="margin-left:0px;display:block; "
+                                  @click="receiveGoods(scope.row)"
+                                  v-if="scope.row.recvgStatusFlag === '未收货'"
+                                >
+                                  收货
+                              </el-button>
+                          </el-dropdown-item>
                         </el-dropdown-menu>
                       </el-dropdown>
                   </template>
               </el-table-column>
         </Table>
+        <el-button 
+                :loading="confirmLoading"
+                size="small"
+                type="primary"
+                style="margin-left:0px;margin-top:-20px;"
+                @click="handleConfrim()">
+            批量确认
+        </el-button>
         </div>
         <!-- 添加发货单 -->
         <div v-show="secondShow" style="background:white;">
           <addDelv ref="addDelv" @search="search"></addDelv>
         </div>
-        <dialogCommonComponent ref="dialogCommonComponent" title="发货详情" width="80%">
-            <goodsDetailComponent  ref="goodsDetailComponent"></goodsDetailComponent>
+        <dialogCommonComponent ref="dialogCommonComponent" :title="title" width="80%">
+            <goodsDetailComponent  ref="goodsDetailComponent" @search="search"></goodsDetailComponent>
         </dialogCommonComponent>
         <!-- 查看资产图 -->
         <dialogCommonComponent ref="dialogCommonComponent2" title="资产视图" width="90%">
@@ -102,6 +124,9 @@ export default {
   name: '',
   data() {
     return {
+      confirmLoading:false,
+      selected:true,
+      title:'',
       firstShow:true,
       secondShow:false,
       // 表格数据
@@ -122,7 +147,9 @@ export default {
       totalCount: 0, // 数据总数
       page: 1,
       pageSize: 10,
-      loading: false
+      loading: false,
+      assetsUidList:[],
+      selectedAssetsList:[]
     };
   },
   components: {
@@ -142,8 +169,49 @@ export default {
       vm.firstShow = true;
       vm.secondShow = false;
     });
+    this.$bus.$on('getAssetsUidList',function(value1,value2) {
+      // assetsUidList 为选中的id数组
+      // selectedAssetsList为选中的行的所有数据。
+      vm.assetsUidList = value1;
+      vm.selectedAssetsList = value2;
+      vm.entityUuids = [];
+      vm.selectedAssetsList.forEach(item => {
+        vm.entityUuids.push(item.entityUuid);
+      });
+    })
   },
   methods: {
+    selectable (row, index) {
+      if (row.recvgStatusFlag === '未收货') {
+        return true
+      } else {
+        return false
+      }
+    },
+    // 批量确认
+    async handleConfrim() {
+      const vm = this;
+      if(this.assetsUidList.length==0){
+        this.$message.error('请至少选择一条数据');
+        return;
+      }
+      try{
+        vm.confirmLoading = true;
+        var params = {
+          entityUuids:vm.entityUuids
+        };
+        var response  = await this.$http.post(`${this.$apiUrl.confirmRecvgGoodsByBatch}`,params);
+        if(response.data.status == this.$appConst.status){
+          vm.$message.success('批量确认成功！');
+          vm.search();
+          vm.$refs.tableRef.clearSelection();
+          vm.confirmLoading = false;
+        }
+      }catch(error){
+        vm.confirmLoading = false;
+        vm.$message.error(error.data.message);
+      }
+    },
     getAttachments(row){
       this.entityUuid = row.entityUuid;
       this.$refs.dialogCommonComponent3.show();
@@ -180,7 +248,18 @@ export default {
       this.$refs.dialogCommonComponent.show();
       this.$nextTick(() => {
         this.$refs.goodsDetailComponent.init(row);
+        this.$refs.goodsDetailComponent.setSelected(false);
       }); 
+      this.title='发货详情';
+    },
+    // 收货
+    receiveGoods(row){
+      this.$refs.dialogCommonComponent.show();
+      this.$nextTick(() => {
+        this.$refs.goodsDetailComponent.init(row);
+        this.$refs.goodsDetailComponent.setSelected(true);
+      }); 
+      this.title = '收货详情';
     },
     // 搜索
     search(searchData) {

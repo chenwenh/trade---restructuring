@@ -211,8 +211,8 @@ export default {
           this.loading = false;
           setTimeout(() =>{
             // 复现之前选中的数据。
-            this.$refs.tableRef.toggle();
-          },);
+            // this.$refs.tableRef.toggle();
+          },0);
         }).catch(err => {
           this.loading = false;
           this.$message.warning(err.message || '服务器错误，请稍后再试!');

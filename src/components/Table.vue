@@ -165,6 +165,7 @@ export default {
     // 给当前分页之前选中的勾选复现。
     toggle() {
       const vm = this;
+      console.log(this.assetsUidList,'之前全部选择的数据');
       const assetsUidList = this.assetsUidList; // 之前全部选择的数据
       const tableData = this.mainTable.tableData; // 表格中的全部数据
       const rowIndexs = [];
@@ -215,6 +216,7 @@ export default {
           }
         }
       }
+      console.log(vm.assetsUidList,'vm.assetsUidList');
       vm.$bus.$emit('getAssetsUidList',vm.assetsUidList,list);
     },
     setCurrentPage(page) {
