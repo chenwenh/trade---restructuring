@@ -59,7 +59,27 @@ export default [
                 "index": "/settlementQuery",
                 "title": "结算单管理",
                 "subs": []
-            }
+            },
+            {
+                "index": "/aviationServiceQuery",
+                "title": "航空服务费管理",
+                "subs": []
+            },
+            {
+                "index": "/aviationOilQuery",
+                "title": "航油数据管理",
+                "subs": []
+            },
+            {
+                "index": "/mountainEagleCoin",
+                "title": "山鹰币数据管理",
+                "subs": []
+            },
+            {
+                "index": "/ticketSales",
+                "title": "机票销售管理",
+                "subs": []
+            },
         ]
     },
 ]

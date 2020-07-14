@@ -28,7 +28,8 @@
                        :label="item"
                        :width='handlewidth(key)'>
         <template slot-scope="scope">
-          <span v-if="key === 'signingDate' || key==='startDate' || key==='endDate' || key === 'createTime' || key==='drDate' || key==='settleDate'">
+          <span v-if="key === 'signingDate' || key==='startDate' || key==='endDate' || key === 'createTime' || key==='drDate'
+                    || key==='settleDate' || key.includes('Date') || key.includes('Time')">
             {{$appConst.handleSetTime(scope.row[key])}}
           </span>
           <span v-else>{{(scope.row[key] && scope.row[key] !== '') || (scope.row[key] === 0) ?  scope.row[key] : '/'}}</span>

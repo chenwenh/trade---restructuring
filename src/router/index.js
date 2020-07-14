@@ -84,7 +84,39 @@ const routes = [
         },
         component: resolve => require(['../views/assetInvoice/invoiceQuery.vue'], resolve)
     },
-      {
+    {
+        path: '/aviationServiceQuery',
+        name: 'aviationServiceQuery',
+        meta: {
+            title: '航空服务费管理',
+        },
+        component: resolve => require(['../views/aviationServicefee/index.vue'], resolve)
+    },
+    {
+        path: '/aviationOilQuery',
+        name: 'aviationOilQuery',
+        meta: {
+            title: '航空服务费管理',
+        },
+        component: resolve => require(['../views/aviationOilData/index.vue'], resolve)
+    },
+    {
+        path: '/mountainEagleCoin',
+        name: 'mountainEagleCoin',
+        meta: {
+            title: '航空服务费管理',
+        },
+        component: resolve => require(['../views/mountainEagleCoin/index.vue'], resolve)
+    },
+    {
+        path: '/ticketSales',
+        name: 'ticketSales',
+        meta: {
+            title: '航空服务费管理',
+        },
+        component: resolve => require(['../views/ticketSales/index.vue'], resolve)
+    },
+    {
         path: '/delvgoodsQuery',
         name: 'delvgoodsQuery',
         meta: {
