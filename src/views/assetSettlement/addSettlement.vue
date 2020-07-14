@@ -7,7 +7,7 @@
                 <div class="caption">
                     <i class="el-icon-edit"></i>
                     <span id="wizard-top" class="caption-subject font-purple bold uppercase">
-			        	添加发货单
+			        	添加结算单
 			        <span class="step-title"></span></span>
                 </div>
             </div>
@@ -18,7 +18,7 @@
                         &nbsp;
                     </el-col>
                     <el-col :span="14">
-                        <el-form-item :label="value" :prop="key" v-if="key=='drDate'">
+                        <el-form-item :label="value" :prop="key" v-if="key=='startDate'||key==='endDate'||key==='settleDate'">
                             <el-date-picker style="width:100%;" value-format="yyyy-MM-dd" class="elPiker expTime"
                                             v-model="form[key]" type="date" @change="change($event)"
                                         ></el-date-picker>
@@ -34,10 +34,10 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item :label="value" :prop="key" v-else-if="key==='amount'">
-                            <el-input type="text" class="elInput" v-model="form[key]"  @blur="handleAmount($event)" @change="change($event)"></el-input>
+                        <el-form-item :label="value" :prop="key" v-else-if="key==='settlePrice'||key==='totalAmount'||key==='paidAmount'||key==='balanceAmount'">
+                            <el-input type="text" class="elInput" v-model="form[key]"  @blur="handleAmount($event,key)" @change="change($event)"></el-input>
                         </el-form-item>
-                        <el-form-item label="明细录入：" v-else-if="key==='detailEntry'">
+                        <el-form-item label="明细录入" v-else-if="key==='detailEntry'">
 							<el-tag v-show="form.goods.length>0">已录</el-tag>
 							<el-button type="warning" size="mini"  @click="handleDetailEntry()">
 								明细录入
@@ -78,50 +78,65 @@ import detailEntry from '@/components/detailEntry';
                 serialList: [],
                 // 为表单里面要展示的字段
                 formItem:{
-                    name: "发货单名称",
-                    entityNo: "发货单单号",
-                    operator: "出货单操作人",
-                    amount: "发货单总金额",
+                    entityNo: "结算单单号",
+                    name: "结算单名称",
+                    settlePrice: "结算单价",
+                    totalAmount: "结算单总金额",
+                    paidAmount: "结算单支付金额",
+                    balanceAmount: "余额",
+                    startDate: "结算开始日期",
+                    endDate: "结算结束日期",
+                    settleDate: "结算日期",
                     myRoleType: "我方角色",
                     buyer: "买方名称",
                     seller: "卖方名称",
-                    drDate: "发货日期",
-                    unloadAddress: "下货地址",
-                    sellerAddress: "买家地址",
-                    buyerAddress: "卖家地址",
-                    buyerTel: "买家电话",
-                    sellerTel: "卖家电话",
-                    detailEntry:''
+                    settleCompany: "结算单位",
+                    detailEntry: "明细录入",
                 },
                 form: {
                     goods:[]
                 },
                 rules: {
-                    "entityNo": [
-                        {required: true, message: '请输入发货单单号！', trigger: 'blur'}
-                    ],
                     "name": [
-                        {required: true, message: '请输入发货单名称！', trigger: 'blur'}
+                        {required: true, message: '请输入结算单名称！', trigger: 'blur'}
+                    ],
+                    "settlePrice": [
+                        {required: true, message: '请输入结算单价！', trigger: 'blur'},
+                        {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
+                    ],
+                    "totalAmount": [
+                        {required: true, message: '请输入结算单总金额！', trigger: 'blur'},
+                        {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
+                    ],
+                    "paidAmount": [
+                        {required: true, message: '请输入结算单支付金额！', trigger: 'blur'},
+                        {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
+                    ],
+                    "balanceAmount": [
+                        {required: true, message: '请输入余额！', trigger: 'blur'},
+                        {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
                     ],
                     "buyer": [
                         {required: true, message: '请输入买方名称！', trigger: 'blur'}
                     ],
-                    "orderAddress": [
-                        {required: true, message: '请输入发货单地址！', trigger: 'blur'}
-                    ],
                     "seller": [
                         {required: true, message: '请输入卖方名称！', trigger: 'blur'}
                     ],
-                    "amount": [
-                        {required: true, message: '请输入发货单金额！', trigger: 'blur'},
-                        {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
+                    "settleCompany": [
+                        {required: true, message: '请输入结算单位！', trigger: 'blur'}
                     ],
-                    "drDate": [
-                        {required: true, message: '请输入发货日期！', trigger: 'blur'},
+                    "startDate": [
+                        {required: true, message: '请输入结算开始日期！', trigger: 'blur'},
+                    ],
+                    "endDate": [
+                        {required: true, message: '请输入结算结束日期！', trigger: 'blur'},
+                    ],
+                    "settleDate": [
+                        {required: true, message: '请输入结算日期！', trigger: 'blur'},
                     ],
                     "myRoles": [
                         {required: true, message: '请输入我方角色！', trigger: 'change', type: "string"}
-                    ]
+                    ],
                 },
                 rolesOptions: [
                     {
@@ -183,9 +198,9 @@ import detailEntry from '@/components/detailEntry';
                         this.$message.error("您有必填项未填或填写有误！")
                     }else{
                         var params = Object.assign({},vm.form);
-                        params["@class"] = "com.evisible.trade.core.domain.entity.TradeDlvrGoods";
+                        params["@class"] = "com.evisible.trade.core.domain.entity.TradeSettlement";
                         params.attachments = vm.$refs.uploadFileComponent.getFile();
-                        var response = await vm.$http.post(`${vm.$apiUrl.saveAsset.dlvr}`,params);
+                        var response = await vm.$http.post(`${vm.$apiUrl.saveAsset.settlement}`,params);
                         if(response.data.status === vm.$appConst.status) {
                             vm.$message.success('添加成功');
                             vm.back();
@@ -195,13 +210,13 @@ import detailEntry from '@/components/detailEntry';
                 })
             },
             // 金额格式
-            handleAmount (event) {
+            handleAmount (event,key) {
                 let val = event.target.value;
                 if (val) {
                     if (val.indexOf(".") === -1) {
                         val = val + ".00"
                     }
-                    this.form.amount = this.$appConst.fmoney(val, 2)
+                    this.form[key] = this.$appConst.fmoney(val, 2)
                 }
             },
         },
