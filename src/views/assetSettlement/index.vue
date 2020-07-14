@@ -1,6 +1,13 @@
 <template>
     <div>
+        <div  v-show="firstShow">
         <!-- 表格 -->
+         <el-button style="margin-bottom:20px;"
+                type="primary"
+                icon="el-icon-plus"
+                @click="handleAddAsset()">
+            添加
+        </el-button>
         <Table
               ref="tableRef"
               :mainTable="mainTable"
@@ -59,6 +66,11 @@
                   </template>
               </el-table-column>
         </Table>
+        </div>
+        <!-- 添加结算单 -->
+        <div v-show="secondShow" style="background:white;">
+          <addSettlement ref="addSettlement" @search="search"></addSettlement>
+        </div>
         <dialogCommonComponent ref="dialogCommonComponent" title="结算单详情" width="80%">
             <goodsDetailComponent  ref="goodsDetailComponent"></goodsDetailComponent>
         </dialogCommonComponent>
@@ -83,11 +95,14 @@ import dialogCommonComponent from '@/components/dialogCommonComponent';
 import goodsDetailComponent from './goodsDetailComponent';
 import assetView from '@/components/assetView';
 import uploadFileComponent from '@/components/uploadFileComponent';
+import addSettlement from './addSettlement';
 
 export default {
   name: '',
   data() {
     return {
+      firstShow:true,
+      secondShow:false,
       // 表格数据
       mainTable: {
         tableHeader: {
@@ -118,10 +133,18 @@ export default {
     dialogCommonComponent,
     goodsDetailComponent,
     assetView,
-    uploadFileComponent
+    uploadFileComponent,
+    addSettlement
   },
   created() {
     this.search();
+  },
+  mounted() {
+    var vm = this;
+    this.$bus.$on('back',function() {
+      vm.firstShow = true;
+      vm.secondShow = false;
+    });
   },
   methods: {
     close() {
@@ -143,6 +166,10 @@ export default {
       this.$nextTick(() => {
         this.$refs.uploadFileComponent.init(row);
       });
+    },
+    handleAddAsset() {
+      this.firstShow = false;
+      this.secondShow = true;
     },
     // 查看资产图
     previewAssets(row) {

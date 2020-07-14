@@ -37,7 +37,7 @@
                         <el-form-item :label="value" :prop="key" v-else-if="key==='amount'">
                             <el-input type="text" class="elInput" v-model="form[key]"  @blur="handleAmount($event)" @change="change($event)"></el-input>
                         </el-form-item>
-                        <el-form-item label="明细录入：" v-else-if="key==='detailEntry'">
+                        <el-form-item label="明细录入" v-else-if="key==='detailEntry'">
 							<el-tag v-show="form.goods.length>0">已录</el-tag>
 							<el-button type="warning" size="mini"  @click="handleDetailEntry()">
 								明细录入
@@ -119,8 +119,16 @@ import detailEntry from '@/components/detailEntry';
                     "drDate": [
                         {required: true, message: '请输入收货日期！', trigger: 'blur'},
                     ],
-                    "myRoleType": [
+                    "myRoles": [
                         {required: true, message: '请输入我方角色！', trigger: 'change', type: "string"}
+                    ],
+                    "buyerTel": [
+                        {required: true, message: '请输入买家电话！', trigger: 'blur'},
+                        { pattern: /^1[34578]\d{9}$/, message: '手机号格式不正确' }
+                    ],
+                    "sellerTel": [
+                        {required: true, message: '请输入买家电话！', trigger: 'blur'},
+                        { pattern: /^1[34578]\d{9}$/, message: '手机号格式不正确' }
                     ]
                 },
                 rolesOptions: [

@@ -26,5 +26,6 @@ export let apiUrl = {
         order:currentApiUrl + "/asset/saveAsset/TRADEORDER", //添加订单
         dlvr:currentApiUrl + "/asset/saveAsset/TRADEDLVRGOODS",//添加发货单
         receive: currentApiUrl + "/asset/saveAsset/TRADERECVGGOODS",//添加收货单
+        settlement: currentApiUrl + "/asset/saveAsset/TRADESETTLEMENT",//添加结算单
     } 
 }
