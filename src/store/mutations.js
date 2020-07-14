@@ -3,6 +3,9 @@ const mutations = {
     SET_LOADING(state, loading) { // 给列表赋值
         state.loading = loading
     },
+    SET_MENULIST(state,value){
+        state.menuList = value;
+    }
     // SET_MY_ORGINFO(state, data) {
 	// 	state.myOrgInfo = data;
     // },

@@ -44,11 +44,12 @@
 
 <script>
 import menuList from './menu.js'
+import {mapMutations} from 'vuex'
   export default {
     name: 'sideBar',
     data () {
         return {
-            menuList:menuList,
+            menuList:[],
             openeds: [],
         }
     },
@@ -60,10 +61,11 @@ import menuList from './menu.js'
     watch: {
     },
     methods: {
-        
+        ...mapMutations(['SET_MENULIST'])
     },
     mounted () {
-        
+        this.menuList = menuList;
+        this.SET_MENULIST(this.menuList);
     }
   }
 </script>

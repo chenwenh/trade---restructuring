@@ -1,7 +1,8 @@
 
 let state = {
   // myOrgInfo: {},
-  loading: false
+  loading: false,
+  menuList:[]
 }
 
 export default state

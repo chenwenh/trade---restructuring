@@ -31,5 +31,6 @@ export let apiUrl = {
     queryBusiness:currentApiUrl + '/org-info/query',//企业查询
     deleteBusiness:currentApiUrl + '/org-info/delete',//删除企业
     saveBusiness:currentApiUrl + '/org-info/save',//添加企业
+    getStatistic:currentApiUrl + '/asset/statistic'//首页获取统计数据
     
 }
