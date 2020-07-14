@@ -1,6 +1,13 @@
 <template>
     <div>
+        <div  v-show="firstShow">
         <!-- 表格 -->
+         <el-button style="margin-bottom:20px;"
+                type="primary"
+                icon="el-icon-plus"
+                @click="handleAddAsset()">
+            添加
+        </el-button>
         <Table
               ref="tableRef"
               :mainTable="mainTable"
@@ -37,18 +44,18 @@
                                 class="collectBtn"
                                 size="medium"
                                 type="text"
-                                style="margin-left:0px; "
+                                style="margin-left:0px;display:block; "
                                 @click="previewAssets(scope.row)"
+                                v-if="scope.row.graphUuid"
                                >
                                 查看资产图
                             </el-button>
-                            <br/>
                             <el-button
                                 icon="el-icon-share"
                                 class="collectBtn"
                                 size="medium"
                                 type="text"
-                                style="margin-left:0px; "
+                                style="margin-left:0px;display:block; "
                                 @click="getAttachments(scope.row)"
                                >
                                 附件
@@ -59,6 +66,11 @@
                   </template>
               </el-table-column>
         </Table>
+        </div>
+        <!-- 添加订单 -->
+        <div v-show="secondShow" style="background:white;">
+          <addOrder ref="addOrder" @search="search"></addOrder>
+        </div>
         <dialogCommonComponent ref="dialogCommonComponent" title="订单详情" width="80%">
             <goodsDetailComponent  ref="goodsDetailComponent"></goodsDetailComponent>
         </dialogCommonComponent>
@@ -68,7 +80,7 @@
         </dialogCommonComponent>
         <!-- 附件 -->
         <dialogCommonComponent ref="dialogCommonComponent3" title="附件" width="60%">
-            <uploadFileComponent ref="uploadFileComponent"></uploadFileComponent>
+            <uploadFileComponent ref="uploadFileComponent" title="附件"></uploadFileComponent>
             <div style="text-align:center;margin-top:20px;">
               <el-button plain size="small" @click="close()">取消</el-button>
               <el-button type="primary" size="small" @click="sure">确定</el-button>
@@ -83,11 +95,14 @@ import dialogCommonComponent from '@/components/dialogCommonComponent';
 import goodsDetailComponent from './goodsDetailComponent';
 import assetView from '@/components/assetView';
 import uploadFileComponent from '@/components/uploadFileComponent';
+import addOrder from './addOrder';
 
 export default {
   name: '',
   data() {
     return {
+      firstShow:true,
+      secondShow:false,
       workDate: '',
       // 表格数据
       mainTable: {
@@ -136,12 +151,24 @@ export default {
     dialogCommonComponent,
     goodsDetailComponent,
     assetView,
-    uploadFileComponent
+    uploadFileComponent,
+    addOrder
   },
   created() {
     this.search();
   },
+  mounted() {
+    var vm = this;
+    this.$bus.$on('back',function() {
+      vm.firstShow = true;
+      vm.secondShow = false;
+    });
+  },
   methods: {
+    handleAddAsset() {
+      this.firstShow = false;
+      this.secondShow = true;
+    },
     close() {
       this.$bus.$emit('closeDialog');
     },

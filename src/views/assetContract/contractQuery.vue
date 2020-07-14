@@ -52,18 +52,17 @@
                                 class="collectBtn"
                                 size="medium"
                                 type="text"
-                                style="margin-left:0px; "
+                                style="margin-left:0px;display:block; "
                                 @click="handlePushClick(scope.row)"
                                >
                                 推送
                             </el-button>
-                            <br/>
                              <el-button
                                 icon="el-icon-share"
                                 class="collectBtn"
                                 size="medium"
                                 type="text"
-                                style="margin-left:0px; "
+                                style="margin-left:0px;display:block; "
                                 @click="previewAssets(scope.row)"
                                >
                                 查看资产图

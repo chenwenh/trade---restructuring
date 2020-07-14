@@ -66,6 +66,7 @@ export default {
         this.$bus.$emit('closeDialog');
     },
     init(row) {
+      if(!row.goods) return;
       this.allData = row.goods;
       this.mainTable.tableData = this.allData.slice(0,this.pageSize);
       this.totalCount = row.goods.length;

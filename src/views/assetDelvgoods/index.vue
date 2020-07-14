@@ -1,6 +1,13 @@
 <template>
     <div>
+        <div  v-show="firstShow">
         <!-- 表格 -->
+         <el-button style="margin-bottom:20px;"
+                type="primary"
+                icon="el-icon-plus"
+                @click="handleAddAsset()">
+            添加
+        </el-button>
         <Table
               ref="tableRef"
               :mainTable="mainTable"
@@ -47,6 +54,11 @@
                   </template>
               </el-table-column>
         </Table>
+        </div>
+        <!-- 添加发货单 -->
+        <div v-show="secondShow" style="background:white;">
+          <addDelv ref="addDelv" @search="search"></addDelv>
+        </div>
         <dialogCommonComponent ref="dialogCommonComponent" title="发货详情" width="80%">
             <goodsDetailComponent  ref="goodsDetailComponent"></goodsDetailComponent>
         </dialogCommonComponent>
@@ -62,11 +74,14 @@ import Table from '@/components/Table.vue';
 import dialogCommonComponent from '@/components/dialogCommonComponent';
 import goodsDetailComponent from './goodsDetailComponent';
 import assetView from '@/components/assetView';
+import addDelv from './addDelv';
 
 export default {
   name: '',
   data() {
     return {
+      firstShow:true,
+      secondShow:false,
       // 表格数据
       mainTable: {
         tableHeader: {
@@ -92,12 +107,24 @@ export default {
     Table,
     dialogCommonComponent,
     goodsDetailComponent,
-    assetView
+    assetView,
+    addDelv
   },
   created() {
     this.search();
   },
+  mounted() {
+    var vm = this;
+    this.$bus.$on('back',function() {
+      vm.firstShow = true;
+      vm.secondShow = false;
+    });
+  },
   methods: {
+    handleAddAsset() {
+      this.firstShow = false;
+      this.secondShow = true;
+    },
     // 查看资产图
     previewAssets(row) {
       this.$refs.dialogCommonComponent2.show();

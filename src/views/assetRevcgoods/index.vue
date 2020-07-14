@@ -21,7 +21,7 @@
                         class="collectBtn"
                         size="medium"
                         type="text"
-                        style="margin-left:0px; "
+                        style="margin-left:0px;"
                         @click="details(scope.row)">
                         详情
                     </el-button>

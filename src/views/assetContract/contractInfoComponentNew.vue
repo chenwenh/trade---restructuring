@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="addFormClass">
         <br>
         <!-- 合同基本信息 -->
         <el-form :rules="rules" :model="form" ref="form" class="contractInfo" label-width="230px" style="float:left;">
@@ -433,16 +433,6 @@ import mixin from '@/assets/js/mixin';
                         label: '先款后或质押销售'
                     }
                 ],
-                contractValidParty: [
-                    {
-                        value: 'SELLER',
-                        label: '卖方'
-                    },
-                    {
-                        value: 'BUYER',
-                        label: '买方'
-                    }
-                ],
                 rolesOptions: [
                     {
                         value: 'BUYER',
@@ -554,9 +544,6 @@ import mixin from '@/assets/js/mixin';
                     this.form.sellerId = this.myEnterpriseInfo.orgId;
                 }
             },
-            handleResetAmount (data) {
-                this.form.amount = appConst.setAmountNum(data)
-            },
             // 金额格式
             handleAmount (event) {
                 let val = event.target.value;
@@ -577,51 +564,4 @@ import mixin from '@/assets/js/mixin';
     }
 </script>
 <style scoped>
-    .contractInfo {
-        padding: 0 10px;
-        border: 1px solid #e7ecf1;
-        margin-bottom: 20px;
-    }
-
-    .entryInfo {
-        border: 1px solid #e7ecf1;
-    }
-
-    .elLable {
-        font-size: 14px;
-        text-align: right;
-        line-height: 36px;
-        margin-right: 10px;
-    }
-
-    .entryInfo .elCol {
-        margin-bottom: 15px;
-    }
-
-    .portlet-title {
-        border-bottom: 1px solid #eef1f5;
-        padding: 0;
-        height: 58px;
-    }
-
-    .portlet-title > .caption {
-        color: #8E44AD;
-        line-height: 58px;
-    }
-
-    .portlet-title > .caption > .caption-subject {
-        font-size: 16px;
-    }
-
-    .nextBtn {
-        position: relative;
-        min-height: 36px;
-    }
-
-    .nextBtn > button {
-        position: absolute;
-        left: 50%;
-        top: 0;
-        margin-left: -37px;
-    }
 </style>

@@ -418,3 +418,51 @@ a, a:hover, a:focus {
   .el-icon-arrow-down {
     font-size: 12px;
   }
+
+  
+.addFormClass .contractInfo {
+  padding: 0 10px;
+  border: 1px solid #e7ecf1;
+  margin-bottom: 20px;
+}
+.addFormClass .entryInfo {
+  border: 1px solid #e7ecf1;
+}
+
+.addFormClass .elLable {
+  font-size: 14px;
+  text-align: right;
+  line-height: 36px;
+  margin-right: 10px;
+}
+
+.addFormClass .entryInfo .elCol {
+  margin-bottom: 15px;
+}
+
+.addFormClass .portlet-title {
+  border-bottom: 1px solid #eef1f5;
+  padding: 0;
+  height: 58px;
+}
+
+.addFormClass .portlet-title > .caption {
+  color: #8E44AD;
+  line-height: 58px;
+}
+
+.addFormClass .portlet-title > .caption > .caption-subject {
+  font-size: 16px;
+}
+
+.addFormClass .nextBtn {
+  position: relative;
+  min-height: 36px;
+}
+
+.addFormClass .nextBtn > button {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  margin-left: -37px;
+}

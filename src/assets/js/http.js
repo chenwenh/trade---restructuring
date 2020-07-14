@@ -32,14 +32,14 @@ axios.interceptors.request.use(
 // http response 拦截器
 axios.interceptors.response.use(
     response => {
-        if (response.data.errCode === 2) {
-            router.push({
-                path: '/login',
-                    querry: {
-                    redirect: router.currentRoute.fullPath
-                }// 从哪个页面跳转
-            })
-        }
+        // if (response.data.errCode === 2) {
+        //     router.push({
+        //         path: '/login',
+        //             querry: {
+        //             redirect: router.currentRoute.fullPath
+        //         }// 从哪个页面跳转
+        //     })
+        // }
         store.commit('SET_LOADING', false)
         // loader.close()
         return response

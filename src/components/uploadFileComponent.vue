@@ -2,7 +2,7 @@
 	<div>
         <div style="margin-bottom:20px;">
             <protle-title-component>
-                <span class="el-dialog__title">附件</span>
+                <span class="el-dialog__title">{{title}}</span>
             </protle-title-component>
         </div>
 		<el-upload
@@ -36,7 +36,7 @@
     import protleTitleComponent from "@/components/protleTitleComponent";
 	import showFileDetail from './showFileDetail.vue'
 	export default {
-		props: [],
+		props: ["title"],
 		data() {
 			return {
 		        fileList: [],
@@ -110,6 +110,9 @@
                     this.fileList.push(json);
 				})
 		    },
+			resetFileList() {
+				this.fileList = [];
+			},
             getFile() {
                 return this.fileList;
             },

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="contractInfo">
+		<div>
 			<div class="portlet-title">
 			    <div class="caption">
 			        <i class="el-icon-edit"></i>
