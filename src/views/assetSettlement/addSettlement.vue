@@ -7,8 +7,8 @@
                 <div class="caption">
                     <i class="el-icon-edit"></i>
                     <span id="wizard-top" class="caption-subject font-purple bold uppercase">
-			        	添加结算单
-			        <span class="step-title"></span></span>
+                        添加结算单
+                    <span class="step-title"></span></span>
                 </div>
             </div>
             <br>
@@ -191,7 +191,7 @@ import detailEntry from '@/components/detailEntry';
                     this.form.buyerId = this.user.orgId;
                 }
             },
-            async handleNext (form) {
+            async handleNext () {
                 const vm = this;
                 this.$refs.form.validate(async (valid) => {
                     if (!valid) {
