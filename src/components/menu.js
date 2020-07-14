@@ -19,6 +19,10 @@ export default [
                 "icon": "el-icon-s-order",
                 "index": "/authorization",
                 "title": "企业授权",
+            },
+            {
+                "index": "/orgRolesManage",
+                "title": "添加企业",
             }
         ]
     },

@@ -44,6 +44,15 @@ const routes = [
       },
       // 企业数据授权
       {
+        path: '/orgRolesManage',
+        name: 'orgRolesManage',
+        meta: {
+          title: "添加企业",
+        },
+        component: resolve => require(['../views/orgRolesManage/index.vue'], resolve)
+      },
+      // 企业数据授权
+      {
         path: '/authorization',
         name: 'authorization',
         meta: {
