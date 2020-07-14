@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
+import axios from 'axios';
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
 import router from './router'
@@ -15,6 +16,7 @@ import './assets/js/vueFilter';
 import store from './store';
 Vue.use(ElementUI)
 
+Vue.prototype.$axiosTools = axios;
 Vue.prototype.$http = http;
 Vue.prototype.$appConst = appConst
 Vue.prototype.$apiUrl = apiUrl

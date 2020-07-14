@@ -18,6 +18,10 @@ export let apiUrl = {
     queryDownNoRelatedAssets:currentApiUrl + '/asset/true/patternGraph/',//获取下游资产
     queryAssetsById:currentApiUrl + '/graph/',//根据UUID去查询详情
     addAttach:currentApiUrl +　'/asset/asset-type/',//附件修改
+    queryAssetNoGraph: currentApiUrl+ '/asset/patternGraph/queryAssetNoGraph',
+    assetStart: currentApiUrl + '/asset', // 以asset开头的接口
+    assetGraphStart: currentApiUrl + '/graph/asset-graph', // 以asset开头的接口
+    assetConnectStart: currentApiUrl + '/graph/asset-connect', // 以asset开头的接口
     saveAsset:{
         order:currentApiUrl + "/asset/saveAsset/TRADEORDER", //添加订单
         dlvr:currentApiUrl + "/asset/saveAsset/TRADEDLVRGOODS",//添加发货单

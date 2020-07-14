@@ -39,6 +39,28 @@
                         </span>
                         <el-dropdown-menu slot="dropdown">
                           <el-dropdown-item>
+                            <el-button
+                                v-if="scope.row.graphUuid&&scope.row.graphUuid!='00000000-0000-0000-0000-000000000000'"
+                                icon="el-icon-share"
+                                class="collectBtn"
+                                size="medium"
+                                type="text"
+                                style="margin-left:0px;"
+                                @click="handleCreateRelation(scope.row)">
+                                创建关联
+                            </el-button>
+                            <br v-if="scope.row.graphUuid&&scope.row.graphUuid!='00000000-0000-0000-0000-000000000000'"/>
+                            <el-button
+                                v-if="scope.row.graphUuid&&scope.row.graphUuid!='00000000-0000-0000-0000-000000000000'"
+                                icon="el-icon-share"
+                                class="collectBtn"
+                                size="medium"
+                                type="text"
+                                style="margin-left:0px;"
+                                @click="handleCancelRelation(scope.row)">
+                                取消关联
+                            </el-button>
+                            <br v-if="scope.row.graphUuid&&scope.row.graphUuid!='00000000-0000-0000-0000-000000000000'"/>
                              <el-button
                                 icon="el-icon-share"
                                 class="collectBtn"
@@ -88,6 +110,8 @@
               <el-button type="primary" size="small" @click="sure">确定</el-button>
             </div>  
         </dialogCommonComponent>
+        <!-- 创建关联 -->
+        <relation-dialog  ref="relationDialog" @openTabs="openTabs"></relation-dialog>
     </div>
 </template>
 
@@ -98,6 +122,7 @@ import goodsDetailComponent from './goodsDetailComponent';
 import assetView from '@/components/assetView';
 import uploadFileComponent from '@/components/uploadFileComponent';
 import addOrder from './addOrder';
+import relationDialog from '../createOrCancelRelation/relationDialog.vue';
 
 export default {
   name: '',
@@ -154,6 +179,7 @@ export default {
     goodsDetailComponent,
     assetView,
     uploadFileComponent,
+    relationDialog,
     addOrder
   },
   created() {
@@ -191,6 +217,23 @@ export default {
         this.$refs.uploadFileComponent.init(row);
       });
     },
+    openTabs(isTrue) {
+      if (isTrue) {
+        this.firstShow = true;
+        this.secondShow = false;
+      } else {
+        this.firstShow = false;
+        this.secondShow = false;
+      }
+    },
+    // 创建关联
+    handleCreateRelation(row) {
+      this.$refs.relationDialog.show(row, 'createRelation');
+    },
+    // 取消关联
+    handleCancelRelation(row) {
+      this.$refs.relationDialog.show(row, 'cancelRelation');
+    },
     // 详情
     details(row) {
       this.$refs.dialogCommonComponent.show();
@@ -206,7 +249,7 @@ export default {
       });
     },
     // 搜索
-    search(searchData) {
+    search() {
       this.mainTable.tableData = [];
       const params = {
         page: this.page,

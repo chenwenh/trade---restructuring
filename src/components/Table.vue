@@ -6,6 +6,7 @@
               stripe
               border
               @selection-change="selectionWarehouse"
+              :row-key="getRowKey"
               header-cell-class-name="table-header-cell"
               cell-class-name="table-cell"
               style="width: 100%"
@@ -16,6 +17,7 @@
       <el-table-column
         type="selection"
         v-if="selected"
+        :reserve-selection="true"
         :selectable="selectable"
         width="55">
       </el-table-column>
@@ -139,6 +141,9 @@ export default {
     },
   },
   methods: {
+    getRowKey(row) {
+      return row.id
+    },
     labelHead (h, {column, index}) {
       let l = column.label.length
       let f = 16
