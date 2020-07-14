@@ -117,6 +117,22 @@ const routes = [
         component: resolve => require(['../views/ticketSales/index.vue'], resolve)
     },
     {
+        path: '/qualityQuery',
+        name: 'qualityQuery',
+        meta: {
+            title: '质检单管理',
+        },
+        component: resolve => require(['../views/assetQuality/index.vue'], resolve)
+    },
+    {
+        path: '/ponderationQuery',
+        name: 'ponderationQuery',
+        meta: {
+            title: '过磅单管理',
+        },
+        component: resolve => require(['../views/assetPonderation/index.vue'], resolve)
+    },
+    {
         path: '/delvgoodsQuery',
         name: 'delvgoodsQuery',
         meta: {

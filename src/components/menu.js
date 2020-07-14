@@ -80,6 +80,16 @@ export default [
                 "title": "机票销售管理",
                 "subs": []
             },
+            {
+                "index": "/qualityQuery",
+                "title": "质检单管理",
+                "subs": []
+            },
+            {
+                "index": "/ponderationQuery",
+                "title": "过磅单管理",
+                "subs": []
+            },
         ]
     },
 ]
