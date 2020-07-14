@@ -50,16 +50,18 @@
                                >
                                 查看资产图
                             </el-button>
-                            <el-button
-                                icon="el-icon-share"
-                                class="collectBtn"
-                                size="medium"
-                                type="text"
-                                style="margin-left:0px;display:block; "
-                                @click="getAttachments(scope.row)"
-                               >
-                                附件
-                            </el-button>
+                          </el-dropdown-item>
+                          <el-dropdown-item>
+                              <el-button
+                                  icon="el-icon-share"
+                                  class="collectBtn"
+                                  size="medium"
+                                  type="text"
+                                  style="margin-left:0px;display:block; "
+                                  @click="getAttachments(scope.row)"
+                                >
+                                  附件
+                              </el-button>
                           </el-dropdown-item>
                         </el-dropdown-menu>
                       </el-dropdown>

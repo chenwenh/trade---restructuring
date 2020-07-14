@@ -19,7 +19,8 @@ export let apiUrl = {
     queryAssetsById:currentApiUrl + '/graph/',//根据UUID去查询详情
     addAttach:currentApiUrl +　'/asset/asset-type/',//附件修改
     saveAsset:{
-        order:currentApiUrl + "/asset/saveAsset/TRADEORDER",
-        dlvr:currentApiUrl + "/asset/saveAsset/TRADEDLVRGOODS",
+        order:currentApiUrl + "/asset/saveAsset/TRADEORDER", //添加订单
+        dlvr:currentApiUrl + "/asset/saveAsset/TRADEDLVRGOODS",//添加发货单
+        receive: currentApiUrl + "/asset/saveAsset/TRADERECVGGOODS",//添加收货单
     } 
 }

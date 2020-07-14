@@ -57,6 +57,8 @@
                                >
                                 推送
                             </el-button>
+                            </el-dropdown-item>
+                            <el-dropdown-item>
                              <el-button
                                 icon="el-icon-share"
                                 class="collectBtn"

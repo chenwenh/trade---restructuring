@@ -44,10 +44,23 @@
                                 size="medium"
                                 type="text"
                                 style="margin-left:0px; "
+                                v-if="scope.row.graphUuid"
                                 @click="previewAssets(scope.row)"
                                >
                                 查看资产图
                             </el-button>
+                          </el-dropdown-item>
+                          <el-dropdown-item>
+                              <el-button
+                                  icon="el-icon-share"
+                                  class="collectBtn"
+                                  size="medium"
+                                  type="text"
+                                  style="margin-left:0px;display:block; "
+                                  @click="getAttachments(scope.row)"
+                                >
+                                  附件
+                              </el-button>
                           </el-dropdown-item>
                         </el-dropdown-menu>
                       </el-dropdown>
@@ -66,6 +79,14 @@
         <dialogCommonComponent ref="dialogCommonComponent2" title="资产视图" width="90%">
             <assetView ref="assetView"></assetView>
         </dialogCommonComponent>
+        <!-- 附件 -->
+        <dialogCommonComponent ref="dialogCommonComponent3" title="附件" width="60%">
+            <uploadFileComponent ref="uploadFileComponent" title="附件"></uploadFileComponent>
+            <div style="text-align:center;margin-top:20px;">
+              <el-button plain size="small" @click="close()">取消</el-button>
+              <el-button type="primary" size="small" @click="sure">确定</el-button>
+            </div>  
+        </dialogCommonComponent>
     </div>
 </template>
 
@@ -74,6 +95,7 @@ import Table from '@/components/Table.vue';
 import dialogCommonComponent from '@/components/dialogCommonComponent';
 import goodsDetailComponent from './goodsDetailComponent';
 import assetView from '@/components/assetView';
+import uploadFileComponent from '@/components/uploadFileComponent';
 import addDelv from './addDelv';
 
 export default {
@@ -108,7 +130,8 @@ export default {
     dialogCommonComponent,
     goodsDetailComponent,
     assetView,
-    addDelv
+    addDelv,
+    uploadFileComponent
   },
   created() {
     this.search();
@@ -121,6 +144,26 @@ export default {
     });
   },
   methods: {
+    getAttachments(row){
+      this.entityUuid = row.entityUuid;
+      this.$refs.dialogCommonComponent3.show();
+      this.$nextTick(() => {
+        this.$refs.uploadFileComponent.init(row);
+      });
+    },
+    close() {
+      this.$bus.$emit('closeDialog');
+    },
+    async sure() {
+      var vm = this;
+      var attachements = this.$refs.uploadFileComponent.getFile();
+      var response = await vm.$http.post(`${vm.$apiUrl.addAttach}TRADEDLVRGOODS/assetuuid/${this.entityUuid}/addAttach`,attachements)
+      if (response.data.status == this.$appConst.status) {
+        this.$bus.$emit('closeDialog');
+        this.$message.success('附件修改成功');
+        this.search();
+      }
+    },
     handleAddAsset() {
       this.firstShow = false;
       this.secondShow = true;
