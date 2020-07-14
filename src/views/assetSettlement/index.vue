@@ -187,6 +187,7 @@ export default {
     },
     // 搜索
     search(searchData) {
+      console.log(searchData);
       this.mainTable.tableData = [];
       const params = {
         page: this.page,
