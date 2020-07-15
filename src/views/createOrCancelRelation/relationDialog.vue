@@ -57,6 +57,7 @@
                       ref="tableRef"
                       :mainTable="mainTable"
                       :selected="true"
+                      :selectable="selectable"
                       :loading="loading"
                       :currentPage="page"
                       :pageSize="pageSize"
@@ -71,6 +72,7 @@
                         ref="tableRef2"
                         :mainTable="mainTable"
                         :selected="true"
+                        :selectable="selectable"
                         :loading="loading"
                         :pageSize="pageSize2"
                         :currentPage="page2"
@@ -92,6 +94,7 @@
 <script>
 /* eslint-disable */
 import Table from '@/components/Table.vue';
+import { tabHeader } from './tabHeader.js';
 
 export default {
   name: '',
@@ -109,7 +112,7 @@ export default {
       title: '',
       nowSelectPatternNode:{
         // patternGraphUuid:"46a255fc-a682-4726-bdf1-1b66058a3a0e",
-        typename: 'TRADEORDER'
+        typename: ''
       },
       selectAssetType: '',
       assetTypeOptions: [
@@ -124,15 +127,7 @@ export default {
       ],
       // 表格数据
       mainTable: {
-        tableHeader: {
-		      name: "发货单名称",
-		      entityNo: "发货单单号",
-		      amount: "发货单总金额",
-		      seller: "卖方名称",
-		      buyer: "买方名称",
-		      recvgStatusFlag: "收货状态",
-		      drDate: "发货日期"
-        },
+        tableHeader: {},
         tableData: [],
         // tableWidth: {
         //   name: "150",
@@ -161,6 +156,23 @@ export default {
   },
   components: {
     Table
+  },
+    watch: {
+    'selectAssetType': function a() {
+      const vm = this;
+      console.log(vm.selectAssetType.includes('TRADERECVGGOODS'), '下课', vm.selectAssetType)
+      if (vm.selectAssetType.includes('TRADEDLVRGOODS')) { // 贸易发货单下
+        vm.mainTable.tableHeader = tabHeader.delvTabHead;
+      } else if (vm.selectAssetType.includes('TRADERECVGGOODS')) { // 贸易收货单下
+        vm.mainTable.tableHeader = tabHeader.recvTabHead;
+      } else if (vm.selectAssetType.includes('TRADECONTRACT')) { // 合同上
+        vm.mainTable.tableHeader = tabHeader.contractTabHead;
+      } else if (vm.selectAssetType.includes('TRADEORDER')) { // 订单上
+        vm.mainTable.tableHeader = tabHeader.orderTabHead;
+      } else if (vm.selectAssetType.includes('TRADESETTLEMENT')) { // 结算单下
+        vm.mainTable.tableHeader = tabHeader.settlementTabHead;
+      }
+    }
   },
   created() {
     
@@ -196,10 +208,12 @@ export default {
     close() {
       this.dialogVisible = false;
     },
-    show(row, isCreateRelation) {
+    show(row, isCreateRelation, typeParam) {
+      this.selectAssetType = '';
       this.nowRelationRow = row;
       this.dialogVisible = true;
       this.isCreateOrCancelRelation = isCreateRelation;
+      this.nowSelectPatternNode.typename = typeParam;
       this.init(row);
     },
     async init(row) {
@@ -252,7 +266,7 @@ export default {
         console.log(response, 'downUrl返回值');
         if (response && response.length) {
           response.map((val, index) => {
-            this.assetTypeOptions[index]["options"] = []
+            this.assetTypeOptions[index]["options"] = [];
             if (val.data.status === 200) {
               if (val.data.data && val.data.data.length) {
                 let data = val.data.data
@@ -268,7 +282,12 @@ export default {
                     label: this.$appConst.dataType[v]
                   })
                 })
-                console.log(this.assetTypeOptions, 'assetTypeOptions下拉列表')
+                console.log(this.assetTypeOptions, 'assetTypeOptions下拉列表');
+                if (this.nowSelectPatternNode.typename === 'TRADESETTLEMENT' && this.isCreateOrCancelRelation === "cancelRelation") {
+                  this.assetTypeOptions = this.assetTypeOptions.slice(0, 1);//截取第一个
+                } else if (this.nowSelectPatternNode.typename === 'TRADECONTRACT' && this.isCreateOrCancelRelation === "cancelRelation") {
+                  this.assetTypeOptions = this.assetTypeOptions.slice(1, 2);
+                }
               }
             }
           })
@@ -320,6 +339,12 @@ export default {
           if (res.data.status === 200) {
             this.mainTable.tableData = res.data.data.content;
             this.totalCount = res.data.data.totalElements;
+            this.mainTable.tableData.map(item => {
+              if (this.selectAssetType.includes('TRADECONTRACT')) {
+                item.businessType = this.$appConst.businessTypes[item.buzType];
+                item.cType = this.$appConst.cTypes[item.type];
+              }
+            });
           }
         })
         return;

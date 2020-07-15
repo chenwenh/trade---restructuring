@@ -20,7 +20,7 @@
         </el-input>
         </p>
         <!-- 合计 -->
-		    <div style="float:right;margin-top:20px;overflow:hidden;width:100%;" v-show="selected">
+        <div style="float:right;margin-top:20px;overflow:hidden;width:100%;" v-show="selected">
             <el-col :span="18">&nbsp;</el-col>
             <el-col :span="6" style="line-height: 36px;float:right;">
                 <el-col :span="3">
@@ -41,8 +41,8 @@
 
 <script>
 import Table from '@/components/Table.vue';
-import dialogCommonComponent from '@/components/dialogCommonComponent';
-import contractInfoDetailComponent from '@/components/contractInfoDetailComponent';
+// import dialogCommonComponent from '@/components/dialogCommonComponent';
+// import contractInfoDetailComponent from '@/components/contractInfoDetailComponent';
 
 export default {
   name: '',

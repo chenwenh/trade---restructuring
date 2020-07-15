@@ -40,6 +40,28 @@
                           更多<i class="el-icon-arrow-down el-icon--right"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
+                          <el-dropdown-item v-if="scope.row.graphUuid&&scope.row.graphUuid!='00000000-0000-0000-0000-000000000000'">
+                            <el-button
+                                icon="el-icon-edit"
+                                class="collectBtn"
+                                size="medium"
+                                type="text"
+                                style="margin-left:0px;"
+                                @click="handleCreateRelation(scope.row)">
+                                创建关联
+                            </el-button>
+                          </el-dropdown-item>
+                          <el-dropdown-item v-if="scope.row.graphUuid&&scope.row.graphUuid!='00000000-0000-0000-0000-000000000000'">
+                            <el-button
+                                icon="el-icon-edit"
+                                class="collectBtn"
+                                size="medium"
+                                type="text"
+                                style="margin-left:0px;"
+                                @click="handleCancelRelation(scope.row)">
+                                取消关联
+                            </el-button>
+                          </el-dropdown-item>
                           <el-dropdown-item>
                              <el-button
                                 icon="el-icon-edit"
@@ -108,6 +130,8 @@
               <el-button plain size="small" @click="close()">取消</el-button>
             </div>  
         </dialogCommonComponent>
+        <!-- 创建关联 -->
+        <relation-dialog  ref="relationDialog" @openTabs="openTabs"></relation-dialog>
     </div>
 </template>
 
@@ -118,6 +142,7 @@ import goodsDetailComponent from './goodsDetailComponent';
 import assetView from '@/components/assetView';
 import uploadFileComponent from '@/components/uploadFileComponent';
 import addSettlement from './addSettlement';
+import relationDialog from '../createOrCancelRelation/relationDialog.vue';
 import eagleCoinListBySettlement from './eagleCoinListBySettlement';
 
 export default {
@@ -160,6 +185,7 @@ export default {
     assetView,
     uploadFileComponent,
     addSettlement,
+    relationDialog,
     eagleCoinListBySettlement
   },
   created() {
@@ -217,6 +243,23 @@ export default {
     handleAddAsset() {
       this.firstShow = false;
       this.secondShow = true;
+    },
+    openTabs(isTrue) {
+      if (isTrue) {
+        this.firstShow = true;
+        this.secondShow = false;
+      } else {
+        this.firstShow = false;
+        this.secondShow = false;
+      }
+    },
+    // 创建关联
+    handleCreateRelation(row) {
+      this.$refs.relationDialog.show(row, 'createRelation', 'TRADESETTLEMENT');
+    },
+    // 取消关联
+    handleCancelRelation(row) {
+      this.$refs.relationDialog.show(row, 'cancelRelation', 'TRADESETTLEMENT');
     },
     // 查看资产图
     previewAssets(row) {

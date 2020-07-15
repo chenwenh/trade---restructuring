@@ -7,8 +7,8 @@
                 <div class="caption">
                     <i class="el-icon-edit"></i>
                     <span id="wizard-top" class="caption-subject font-purple bold uppercase">
-			        	合同基本信息
-			            <span class="step-title"></span></span>
+                        合同基本信息
+                        <span class="step-title"></span></span>
                 </div>
             </div>
             <br>
@@ -186,9 +186,9 @@
                     <div class="caption">
                         <i class="el-icon-edit"></i>
                         <span id="wizard-top" class="caption-subject font-purple bold uppercase">
-				        	我方企业信息
-				            <span class="step-title"></span></span>
-                    </div>
+                        我方企业信息
+                        <span class="step-title"></span></span>
+                </div>
                 </div>
             </el-col>
             <el-col :span="24" class="elCol">
@@ -234,8 +234,8 @@
                     <div class="caption">
                         <i class="el-icon-edit"></i>
                         <span id="wizard-top" class="caption-subject font-purple bold uppercase">
-				        	对方企业信息
-				            <span class="step-title"></span></span>
+                        对方企业信息
+                        <span class="step-title"></span></span>
                     </div>
                 </div>
             </el-col>
@@ -511,7 +511,7 @@ import mixin from '@/assets/js/mixin';
                     this.$message.error("与我方信息相同，请重新填写！");
                 }
             },
-            async handleNext (form) {
+            async handleNext () {
                 // 保存买卖双方名称 id
                 this.$refs.form.validate(async (valid) => {
                     if (!valid) {

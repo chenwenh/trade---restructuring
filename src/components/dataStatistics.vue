@@ -1,56 +1,56 @@
 <template>
-	<div>
-		<el-col :span="24" >
-			<el-col  
-				:span="6" 
-				v-for="(item, index) in content" 
-				:key="item.id" 
-				style="padding: 10px; box-sizing: border-box;">
-				<el-card shadow="always" >
-					<div style="display:flex;" >
-						<div style="width: 100px; text-align:center; line-height: 53px;">
-	                        <div 
-	                        	:class="index%3===1?'counter-content-one':index%3===2?'counter-content-two':'counter-content-tree'" class="counter-content">
-		                        <i class="el-icon-s-grid" style="font-size:30px;color:#974621;"></i>
-	                        </div>
-	                    </div>
-				      	<div 
-						  	:class="{cursor:isCursor}"
-				      		style="flex: 1; position:relative;"
-				      		@click="handleClick(item.assetType)">
-				      		<p style="font-size:16px;font-weight:bold;">{{$appConst.dataType[item.assetType]}}：</p>
-					      	<div class="showData">
-					      		合计：{{item.totalNum}} 条
-					      	</div>
-					      	<div class="showData">
-					      		合计：{{item.totalAmount | MoneyFormat}} 元
-					      	</div>
-				      	</div>
-					</div>
-			    </el-card>
-			</el-col>
-		</el-col>
-	</div>
+    <div>
+        <el-col :span="24" >
+            <el-col  
+                :span="6" 
+                v-for="(item, index) in content" 
+                :key="item.id" 
+                style="padding: 10px; box-sizing: border-box;">
+                <el-card shadow="always" >
+                    <div style="display:flex;" >
+                        <div style="width: 100px; text-align:center; line-height: 53px;">
+                            <div 
+                                :class="index%3===1?'counter-content-one':index%3===2?'counter-content-two':'counter-content-tree'" class="counter-content">
+                                <i class="el-icon-s-grid" style="font-size:30px;color:#974621;"></i>
+                            </div>
+                        </div>
+                        <div 
+                            :class="{cursor:isCursor}"
+                            style="flex: 1; position:relative;"
+                            @click="handleClick(item.assetType)">
+                            <p style="font-size:16px;font-weight:bold;">{{$appConst.dataType[item.assetType]}}：</p>
+                            <div class="showData">
+                                合计：{{item.totalNum}} 条
+                            </div>
+                            <div class="showData">
+                                合计：{{item.totalAmount | MoneyFormat}} 元
+                            </div>
+                        </div>
+                    </div>
+                </el-card>
+            </el-col>
+        </el-col>
+    </div>
 </template>
 <script>
     export default {
-    	props: ['content','isCursor'],
-    	data() {
-    		return {}
-    	},
+        props: ['content','isCursor'],
+        data() {
+            return {}
+        },
         watch: {
         },
-       	methods: {
+        methods: {
             handleClick(type) {
-				if(!this.isShow)return;
-            	let assetType = type.replace("TRADE", "").toLowerCase()
-            	let router = "/search" + assetType.substring(0, 1).toUpperCase() + assetType.substring(1)
-            	console.log(router, type)
-            	this.$router.push(router)
+            if(!this.isShow)return;
+                let assetType = type.replace("TRADE", "").toLowerCase()
+                let router = "/search" + assetType.substring(0, 1).toUpperCase() + assetType.substring(1)
+                console.log(router, type)
+                this.$router.push(router)
             }
         },
         mounted(){
-			
+            
         },
     }
 </script>

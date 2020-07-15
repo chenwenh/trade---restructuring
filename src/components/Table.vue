@@ -32,6 +32,9 @@
                     || key==='settleDate' || key.includes('Date') || key.includes('Time')">
             {{$appConst.handleSetTime(scope.row[key])}}
           </span>
+          <span v-if="key === 'amount'">
+            {{$appConst.fmoney(scope.row[key], 2)}}
+          </span>
           <span v-else>{{(scope.row[key] && scope.row[key] !== '') || (scope.row[key] === 0) ?  scope.row[key] : '/'}}</span>
         </template>
       </el-table-column>

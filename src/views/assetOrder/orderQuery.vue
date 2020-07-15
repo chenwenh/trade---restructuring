@@ -227,11 +227,11 @@ export default {
     },
     // 创建关联
     handleCreateRelation(row) {
-      this.$refs.relationDialog.show(row, 'createRelation');
+      this.$refs.relationDialog.show(row, 'createRelation', 'TRADEORDER');
     },
     // 取消关联
     handleCancelRelation(row) {
-      this.$refs.relationDialog.show(row, 'cancelRelation');
+      this.$refs.relationDialog.show(row, 'cancelRelation', 'TRADEORDER');
     },
     // 详情
     details(row) {
