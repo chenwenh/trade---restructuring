@@ -463,10 +463,11 @@ import mixin from '@/assets/js/mixin';
             async init(flag,row) {
                 this.flag = flag;
                 if (flag == 'edit') {
-                    this.form = Object.assign({},row);
+                    this.form = row;
                     if(this.form.sellerId === this.user.orgId) {
                         this.form.myRoles = 'SELLER';
                     }
+                    this.otherEnterpriseInfo = await this.getOrgInfo({orgId:this.form.buyerId});
                 }
                 // 获取我方企业信息
                 this.myEnterpriseInfo = await this.getOrgInfo({orgId:this.user.orgId});
@@ -521,7 +522,7 @@ import mixin from '@/assets/js/mixin';
                             return;
                         }
                         await this.handleSellBuyOrgName();
-                        this.$bus.$emit("contractStep", this.form);
+                        this.$emit("contractStep", this.form);
                     }
                 })
             },

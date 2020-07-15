@@ -78,7 +78,15 @@
         </div>
         <!-- 添加编辑合同 -->
         <div v-show="secondShow" style="background:white;">
-            <contractInfoComponentNew ref="contractInfoComponentNew"></contractInfoComponentNew>
+            <contractInfoComponentNew ref="contractInfoComponentNew" @contractStep="contractStep"></contractInfoComponentNew>
+        </div>
+        <!-- 附件 -->
+        <div v-show="thirdShow" style="background:white;">
+            <uploadFileComponent ref="uploadFileComponent" title="附件"></uploadFileComponent>
+            <div style="text-align:center;margin-top:20px;">
+              <el-button plain size="small" @click="prev()">上一步</el-button>
+              <el-button type="primary" size="small" @click="sure">确定</el-button>
+            </div>  
         </div>
         <!-- 推送时展示结算单 -->
          <div v-show="settlementShow" style="background:white;">
@@ -92,6 +100,32 @@
         <dialogCommonComponent ref="dialogCommonComponent2" title="资产视图" width="90%">
             <assetView ref="assetView"></assetView>
         </dialogCommonComponent>
+        <!-- 添加时选择业务模式 -->
+        <dialogCommonComponent ref="dialogCommonComponent3" title="业务模式" width="500px">
+            <span>请选择一个业务模式：</span>
+            <el-select v-model="businessTypeVal" placeholder="请选择">
+                <el-option
+                        v-for="item in platFormOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+            </el-select>
+            <div style="text-align:center;margin-top:30px;">
+                <el-button
+                        size="small"
+                        @click="close()">
+                    取 消
+                </el-button>
+                <el-button
+                        :disabled="!businessTypeVal"
+                        size="small"
+                        type="primary"
+                        @click="handleDailogConfirm()">
+                    确 定
+                </el-button>
+            </div>
+        </dialogCommonComponent>
     </div>
 </template>
 
@@ -102,11 +136,14 @@ import contractInfoDetailComponent from '@/components/contractInfoDetailComponen
 import contractInfoComponentNew from './contractInfoComponentNew';
 import settlement from './settlement';
 import assetView from '@/components/assetView';
+import uploadFileComponent from '@/components/uploadFileComponent';
 
 export default {
   name: '',
   data() {
     return {
+      platFormOptions:[],
+      businessTypeVal:'',
       showCancel:true,
       firstShow:true,
       secondShow:false,
@@ -133,7 +170,12 @@ export default {
       totalCount: 0, // 数据总数
       page: 1,
       pageSize: 10,
-      loading: false
+      loading: false,
+      form:{},
+      thirdShow:false,
+      user:JSON.parse(sessionStorage.getItem('user')),
+      operation:'',//代表是添加还是编辑。
+      newForm: {}
     };
   },
   components: {
@@ -142,7 +184,8 @@ export default {
     contractInfoDetailComponent,
     contractInfoComponentNew,
     settlement,
-    assetView
+    assetView,
+    uploadFileComponent
   },
   created() {
     this.search();
@@ -156,11 +199,102 @@ export default {
     });
   },
   methods: {
-    // 添加合同
-    handleAddAsset() {
+    close() {
+      this.$bus.$emit('closeDialog');
+    },
+    handleDailogConfirm() {
+      if (!this.businessTypeVal){
+        this.$message.error('请选择业务模式');
+        return;
+      }
       this.firstShow = false;
       this.secondShow = true;
+      this.close();
       this.$refs.contractInfoComponentNew.init('add');
+    },
+    contractStep(form) {
+      this.form = form;
+      this.thirdShow = true;
+      this.secondShow = false;
+    },
+    prev() {
+      this.thirdShow = false;
+      this.secondShow = true;
+    },
+    async createAssetGraph() {
+      var vm = this;
+      var assetGraphName = this.form.entityNo + '-' + new Date().getTime();
+      var response = await vm.$http.post(`${this.$apiUrl.createAssetGraph}?assetGraphName=${assetGraphName}&patternGraphUuid=${this.businessTypeVal}&companyOrgId=${this.user.orgId}&systemType=TRADE`)
+      if(response.data.status == this.$appConst.status){
+        var graphUuid = response.data.data.graphUuid;
+        return Promise.resolve(graphUuid);
+      }
+    },
+    async save(graphUuid) {
+      var vm = this;
+      var params = Object.assign({},this.form);
+      params["@class"]="com.evisible.trade.core.domain.entity.TradeContract";
+      var response = await this.$http.post(`${this.$apiUrl.queryAssetsById}TRADECONTRACT/graph/${graphUuid}/saveAsset`,params)
+      if(response.data.status == this.$appConst.status){
+        vm.$message.success("添加成功");
+        vm.firstShow = true;
+        vm.secondShow = false;
+        vm.thirdShow = false;
+        vm.$refs.uploadFileComponent.resetFileList();
+        vm.page = 1;
+        vm.$refs.tableRef.resetCurrentPage();
+        vm.search();
+      }
+    },
+    async updateAsset() {
+      var vm = this;
+      this.newForm["@class"]="com.evisible.trade.core.domain.entity.TradeContract";
+      this.newForm.contractOrgId = this.user.orgId;
+      var response = await this.$http.post(`${this.$apiUrl.updateAsset}`,this.newForm);
+      if(response.data.status == this.$appConst.status){
+        vm.firstShow = true;
+        vm.secondShow = false;
+        vm.thirdShow = false;
+        vm.$refs.uploadFileComponent.resetFileList();
+        vm.search();
+      }
+    },
+    async sure() {
+      var attachments = this.$refs.uploadFileComponent.getFile();
+      if(attachments.length==0){
+        this.$message.error('请上传附件');
+        return;
+      }
+      if(this.operation == 'add'){
+        var graphUuid = await this.createAssetGraph();
+        this.save(graphUuid); 
+      }else{
+        this.newForm.attachments = attachments;
+        this.updateAsset();
+      }
+    },
+    // 添加合同
+    async handleAddAsset() {
+      var vm = this;
+      vm.operation = 'add';
+      vm.$refs.dialogCommonComponent3.show();
+      vm.$refs.uploadFileComponent.resetFileList();
+      vm.businessTypeVal = '';
+      try{
+        // 获取业务模式
+        vm.platFormOptions = [];
+        var response = await vm.$http.get(`${this.$apiUrl.getPatternGraphInfos}`);
+        if(response.data.status == this.$appConst.status){
+            response.data.data.forEach(item => {
+              vm.platFormOptions.push({
+                label:item.name,
+                value:item.graphUuid
+              });
+            });
+        }
+      }catch(error){
+        vm.$message.error(error.data.message);
+      }
     },
     // 详情
     details(row) {
@@ -173,7 +307,10 @@ export default {
     edit(row){
       this.firstShow = false;
       this.secondShow = true;
-      this.$refs.contractInfoComponentNew.init('edit',row);
+      this.operation = 'edit';
+      this.newForm = Object.assign({},row);
+      this.$refs.contractInfoComponentNew.init('edit',this.newForm);
+      this.$refs.uploadFileComponent.init(this.newForm);
     },
     // 推送
     handlePushClick(row) {

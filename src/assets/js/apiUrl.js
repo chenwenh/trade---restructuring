@@ -34,4 +34,7 @@ export let apiUrl = {
     getStatistic:currentApiUrl + '/asset/statistic',//首页获取统计数据
     confirmRecvgGoods:currentApiUrl + '/asset/confirmRecvgGoods/by',//单条确认收货
     confirmRecvgGoodsByBatch:currentApiUrl + '/asset/confirmRecvgGoodsByBatch',//批量确认收货
+    getPatternGraphInfos:currentApiUrl + '/pattern-graph-infos/get',//获取业务类型
+    createAssetGraph:currentApiUrl + '/asset-graph/create',//创建
+    updateAsset:currentApiUrl +　'/asset/updateAsset',//编辑合同
 }
