@@ -60,7 +60,7 @@
                             </el-dropdown-item>
                             <el-dropdown-item>
                              <el-button
-                                icon="el-icon-share"
+                                icon="el-icon-edit"
                                 class="collectBtn"
                                 size="medium"
                                 type="text"

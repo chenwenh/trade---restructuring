@@ -40,7 +40,7 @@
                         <el-dropdown-menu slot="dropdown">
                           <el-dropdown-item>
                              <el-button
-                                icon="el-icon-share"
+                                icon="el-icon-edit"
                                 class="collectBtn"
                                 size="medium"
                                 type="text"
@@ -53,7 +53,7 @@
                           </el-dropdown-item>
                           <el-dropdown-item>
                               <el-button
-                                  icon="el-icon-share"
+                                  icon="el-icon-tickets"
                                   class="collectBtn"
                                   size="medium"
                                   type="text"
@@ -65,7 +65,7 @@
                           </el-dropdown-item>
                           <el-dropdown-item>
                               <el-button
-                                  icon="el-icon-share"
+                                  icon="el-icon-goods"
                                   class="collectBtn"
                                   size="medium"
                                   type="text"
@@ -195,21 +195,34 @@ export default {
         this.$message.error('请至少选择一条数据');
         return;
       }
+      var everyNumber = 10; //每次发送的个数。 
+      this.common(0,vm.entityUuids,everyNumber);
+    },
+    async common(i,allIds,everyNumber) {
+      var vm = this;
+      var allNumber = Math.ceil(allIds.length/everyNumber); 
+      var everyIds = allIds.slice(i * everyNumber,(i+1) * everyNumber); 
       try{
-        vm.confirmLoading = true;
-        var params = {
-          entityUuids:vm.entityUuids
-        };
-        var response  = await this.$http.post(`${this.$apiUrl.confirmRecvgGoodsByBatch}`,params);
-        if(response.data.status == this.$appConst.status){
-          vm.$message.success('批量确认成功！');
-          vm.search();
-          vm.$refs.tableRef.clearSelection();
-          vm.confirmLoading = false;
+        let response = await this.$http.post(`${this.$apiUrl.confirmRecvgGoodsByBatch}`,{entityUuids:everyIds});
+        if(response.data.status == 200) {
+          i = i+1;
+          vm.$bus.$emit('showProgress',(i/allNumber)*100);
+          if (i==allNumber){
+            setTimeout(()=> {
+              vm.$bus.$emit('hideProgress');
+              vm.$message.success('批量确认成功！!');
+              vm.search();
+              vm.$refs.tableRef.clearSelection();
+              vm.confirmLoading = false;
+            },1000);
+            return;
+          }
+          vm.common(i,allIds,everyNumber);
         }
-      }catch(error){
+      }catch(err){
         vm.confirmLoading = false;
-        vm.$message.error(error.data.message);
+        vm.$message.error(err.data.message);
+        vm.$bus.$emit('hideProgress');
       }
     },
     getAttachments(row){

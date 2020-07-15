@@ -39,7 +39,7 @@
                         <el-dropdown-menu slot="dropdown">
                           <el-dropdown-item>
                              <el-button
-                                icon="el-icon-share"
+                                icon="el-icon-edit"
                                 class="collectBtn"
                                 size="medium"
                                 type="text"
@@ -51,7 +51,7 @@
                           </el-dropdown-item>
                           <el-dropdown-item>
                               <el-button
-                                  icon="el-icon-share"
+                                  icon="el-icon-tickets"
                                   class="collectBtn"
                                   size="medium"
                                   type="text"
