@@ -1,5 +1,6 @@
 <template>
     <div >
+        <div class="allSuttleWeight">总净重:<span style="margin-left:10px;margin-right:6px;">{{allSuttleWeight}}</span></div>
         <!-- 表格 -->
         <Table
               ref="tableRef"
@@ -43,6 +44,7 @@ export default {
       page: 1,
       pageSize: 10,
       loading: false,
+      allSuttleWeight:''
     };
   },
   components: {
@@ -56,8 +58,23 @@ export default {
   },
   created() {
     this.search();
+    this.getAllSuttleWeight();
   },
   methods: {
+    // 获取总净重
+    async getAllSuttleWeight(){
+      var vm = this;
+      var params = {
+          "page":1,
+          "pageSize":10000,
+          "orgId":this.user.orgId,
+          "assetType":"TRADEPONDERATION"
+      };
+      var response = await this.$http.post(`${this.$apiUrl.sumTotalAmount}`,params);
+      if (response.data.status == this.$appConst.status) {
+        vm.allSuttleWeight = response.data.data;
+      }
+    },
     // 搜索
     search() {
       this.mainTable.tableData = [];
@@ -97,6 +114,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.allSuttleWeight{
+  text-align:right;
+  margin-right:130px;
+  font-size:16px;
+  padding:10px 0;
+}
 .approval__box{
   .search{
     height: 120px;

@@ -37,4 +37,5 @@ export let apiUrl = {
     getPatternGraphInfos:currentApiUrl + '/pattern-graph-infos/get',//获取业务类型
     createAssetGraph:currentApiUrl + '/asset-graph/create',//创建
     updateAsset:currentApiUrl +　'/asset/updateAsset',//编辑合同
+    sumTotalAmount:currentApiUrl + '/asset/sumTotalAmount',//查询总额
 }

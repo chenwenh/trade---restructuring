@@ -1,6 +1,7 @@
 <template>
     <div>
         <div  v-show="firstShow">
+        <p>
         <!-- 表格 -->
          <el-button style="margin-bottom:20px;"
                 type="primary"
@@ -8,6 +9,8 @@
                 @click="handleAddAsset()">
             添加
         </el-button>
+        <span class="totalAmount">结算单总金额:<span style="margin-left:10px;margin-right:6px;">{{totalAmount | MoneyFormat}}</span>元</span>
+        </p>
         <Table
               ref="tableRef"
               :mainTable="mainTable"
@@ -125,7 +128,9 @@ export default {
       totalCount: 0, // 数据总数
       page: 1,
       pageSize: 10,
-      loading: false
+      loading: false,
+      totalAmount:'',
+      user:JSON.parse(sessionStorage.getItem('user'))
     };
   },
   components: {
@@ -145,8 +150,23 @@ export default {
       vm.firstShow = true;
       vm.secondShow = false;
     });
+    vm.getTotalAmount();
   },
   methods: {
+    // 获取结算单总金额
+    async getTotalAmount(){
+      var vm = this;
+      var params = {
+          "page":1,
+          "pageSize":10000,
+          "orgId":this.user.orgId,
+          "assetType":"TRADESETTLEMENT"
+      };
+      var response = await this.$http.post(`${this.$apiUrl.sumTotalAmount}`,params);
+      if (response.data.status == this.$appConst.status) {
+        vm.totalAmount = response.data.data;
+      }
+    },
     close() {
       this.$bus.$emit('closeDialog');
     },
@@ -231,6 +251,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.totalAmount{
+  width:calc(100% - 200px);
+  text-align:right;
+  display:inline-block;
+  position:relative;
+  bottom:-16px;
+  font-size:16px;
+}
 .approval__box{
   .search{
     height: 120px;
