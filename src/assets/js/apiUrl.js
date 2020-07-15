@@ -38,4 +38,5 @@ export let apiUrl = {
     createAssetGraph:currentApiUrl + '/asset-graph/create',//创建
     updateAsset:currentApiUrl +　'/asset/updateAsset',//编辑合同
     sumTotalAmount:currentApiUrl + '/asset/sumTotalAmount',//查询总额
+    queryEagleCoinListBySettlement:currentApiUrl + '/asset/queryEagleCoinListBySettlement/',//根据结算单查询山鹰币
 }

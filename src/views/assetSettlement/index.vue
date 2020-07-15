@@ -53,6 +53,18 @@
                             </el-button>
                           </el-dropdown-item>
                           <el-dropdown-item>
+                             <el-button
+                                icon="el-icon-edit"
+                                class="collectBtn"
+                                size="medium"
+                                type="text"
+                                style="margin-left:0px; "
+                                @click="handleSearchEaglecointransaction(scope.row)"
+                               >
+                                山鹰币查询
+                            </el-button>
+                          </el-dropdown-item>
+                          <el-dropdown-item>
                               <el-button
                                   icon="el-icon-tickets"
                                   class="collectBtn"
@@ -89,6 +101,13 @@
               <el-button type="primary" size="small" @click="sure">确定</el-button>
             </div>  
         </dialogCommonComponent>
+        <!-- 山鹰币查询 -->
+        <dialogCommonComponent ref="dialogCommonComponent4" title="山鹰币查询" width="60%">
+            <eagleCoinListBySettlement ref="eagleCoinListBySettlement"></eagleCoinListBySettlement>
+            <div style="text-align:center;margin-top:20px;">
+              <el-button plain size="small" @click="close()">取消</el-button>
+            </div>  
+        </dialogCommonComponent>
     </div>
 </template>
 
@@ -99,6 +118,7 @@ import goodsDetailComponent from './goodsDetailComponent';
 import assetView from '@/components/assetView';
 import uploadFileComponent from '@/components/uploadFileComponent';
 import addSettlement from './addSettlement';
+import eagleCoinListBySettlement from './eagleCoinListBySettlement';
 
 export default {
   name: '',
@@ -139,7 +159,8 @@ export default {
     goodsDetailComponent,
     assetView,
     uploadFileComponent,
-    addSettlement
+    addSettlement,
+    eagleCoinListBySettlement
   },
   created() {
     this.search();
@@ -153,6 +174,12 @@ export default {
     vm.getTotalAmount();
   },
   methods: {
+    handleSearchEaglecointransaction(row) {
+      this.$refs.dialogCommonComponent4.show();
+      this.$nextTick(() =>{
+        this.$refs.eagleCoinListBySettlement.init(row.entityUuid);
+      });
+    },
     // 获取结算单总金额
     async getTotalAmount(){
       var vm = this;
