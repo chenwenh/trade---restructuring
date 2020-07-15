@@ -14,6 +14,11 @@
               :height2="height"
               >
         </Table>
+        <p v-show="selected">
+        备注：
+        <el-input type="textarea" :rows="4" placeholder="请输入内容" v-model="remarks">
+        </el-input>
+        </p>
         <!-- 合计 -->
 		    <div style="float:right;margin-top:20px;overflow:hidden;width:100%;" v-show="selected">
             <el-col :span="18">&nbsp;</el-col>
@@ -29,7 +34,7 @@
         </div>
         <div class="dialog-footer" style="margin-top:62px;">
           <el-button plain  @click="close()" size="medium">取消</el-button>
-          <el-button type="primary"  @click="sure()" size="medium" :loading="loading">确定</el-button>
+          <el-button type="primary"  @click="sure()" size="medium" :loading="loading" v-show="selected">确定</el-button>
         </div>
     </div>
 </template>
@@ -74,7 +79,8 @@ export default {
       assetsUidList:[],
       selectedAssetsList:[],
       entityUuid:'',
-      recvgAmount:''
+      recvgAmount:'',
+      remarks:""
     };
   },
   components: {
@@ -109,13 +115,17 @@ export default {
     },
     async sure() {
       const vm = this;
+      if(this.assetsUidList.length == 0){
+        this.$message.error('未选择数据，无法确认收货');
+        return;
+      }
       if(this.assetsUidList.length<this.allData.length){
         this.$message.error('请勾选全部的数据');
         return;
       }
       var params = {
         goods:this.allData,
-        remarks:'',
+        remarks:this.remarks,
         recvgAmount:this.recvgAmount
       };
       try{

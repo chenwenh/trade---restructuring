@@ -53,7 +53,7 @@ a, a:hover, a:focus {
 }
 
 ::-webkit-scrollbar {
-    width: 7px;
+    width: 10px;
     height: 10px;
 }
 
@@ -78,7 +78,8 @@ a, a:hover, a:focus {
 ::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, .2);
   background-clip: padding-box;
-  border: solid transparent
+  border: solid transparent;
+  border-radius:20px;
 }
 
 ::-webkit-scrollbar-thumb:vertical {

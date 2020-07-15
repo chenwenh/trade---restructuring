@@ -18,7 +18,7 @@
 						  	:class="{cursor:isCursor}"
 				      		style="flex: 1; position:relative;"
 				      		@click="handleClick(item.assetType)">
-				      		<h4>{{$appConst.dataType[item.assetType]}}：</h4>
+				      		<p style="font-size:16px;font-weight:bold;">{{$appConst.dataType[item.assetType]}}：</p>
 					      	<div class="showData">
 					      		合计：{{item.totalNum}} 条
 					      	</div>
