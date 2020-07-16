@@ -402,7 +402,7 @@ export default {
       }
       if (isDown !== "down" && isDown) { // 向上关联
         targetAssetType = this.selectAssetType.replace('*up', '');
-        url = `${this.$$apiUrl.assetGraphStart}/${assetGraphUuid}/connect/to/${assetUuid}/${this.nowSelectPatternNode.typename}/from/${targetAssetType}`;
+        url = `${this.$apiUrl.assetGraphStart}/${assetGraphUuid}/connect/to/${assetUuid}/${this.nowSelectPatternNode.typename}/from/${targetAssetType}`;
       }
       this.text = "关联";
       let params = [];
