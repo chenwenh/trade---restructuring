@@ -83,6 +83,10 @@
                   </Table>
               </el-tab-pane>
           </el-tabs>
+          <div style="float: right; margin-top: 10px; font-size: 16px;">
+              <span>合计：共 <b>{{nowSelectInvoice.length}}</b> 条</span>
+              <span  style="margin-right: 10px; margin-left: 30px;">共 <b>{{$appConst.fmoney(totalAmount, 2)}}</b> 元</span>
+          </div>
             <div style="text-align: center;margin: 20px 0">
                 <el-button type="warning" @click="handlePrev()">上一步</el-button>
                 <el-button type="primary" @click="handleRelateSure('confirm')">确定</el-button>
@@ -100,6 +104,7 @@ export default {
   name: '',
   data() {
     return {
+      totalAmount: 0,
       isCreateOrCancelRelation: '',
       nowSelectInvoice: [],
       assetsUidList: [],
@@ -174,6 +179,10 @@ export default {
       vm.assetsUidList = value1;
       vm.nowSelectInvoice = value2;
       console.log(vm.assetsUidList, vm.nowSelectInvoice, '选中')
+      vm.totalAmount = 0;
+      vm.nowSelectInvoice.forEach(val => {
+        vm.totalAmount += val.amount;
+      });
     })
   },
   methods: {
