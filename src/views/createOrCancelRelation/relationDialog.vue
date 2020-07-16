@@ -129,15 +129,7 @@ export default {
       mainTable: {
         tableHeader: {},
         tableData: [],
-        // tableWidth: {
-        //   name: "150",
-        //   entityNo: "150",
-        //   amount: "150",
-        //   seller: "120",
-        //   buyer: "120",
-        //   recvgStatusFlag: "100",
-		    //   drDate: "100"
-        // }
+        // tableWidth: {}
       },
       totalCount: 0, // 数据总数
       page: 1,
@@ -147,8 +139,6 @@ export default {
       pageSize2: 10,
       pageSize3: 10,
       loading: false,
-      nowSendIndex: 0, // 当前发送第几次
-      totalSendNum: 0, // 总共需要发送多少次
       text: '', // 关联或者取消关联提示文字
       multipleSectionParams: [], // 关联或取消关联选中的数据uuid
       sendUrl: '' // 关联或取消关联请求的url
@@ -160,7 +150,6 @@ export default {
     watch: {
     'selectAssetType': function a() {
       const vm = this;
-      console.log(vm.selectAssetType.includes('TRADERECVGGOODS'), '下课', vm.selectAssetType)
       if (vm.selectAssetType.includes('TRADEDLVRGOODS')) { // 贸易发货单下
         vm.mainTable.tableHeader = tabHeader.delvTabHead;
       } else if (vm.selectAssetType.includes('TRADERECVGGOODS')) { // 贸易收货单下
@@ -267,7 +256,7 @@ export default {
         if (response && response.length) {
           response.map((val, index) => {
             this.assetTypeOptions[index]["options"] = [];
-            if (val.data.status === 200) {
+            if (val.data.status === this.$appConst.status) {
               if (val.data.data && val.data.data.length) {
                 let data = val.data.data
                 let isUpOrDown = "";
@@ -336,13 +325,15 @@ export default {
         }
         this.$http.post(url, params).then(res => {
           this.loading = false;
-          if (res.data.status === 200) {
+          if (res.data.status === this.$appConst.status) {
             this.mainTable.tableData = res.data.data.content;
             this.totalCount = res.data.data.totalElements;
             this.mainTable.tableData.map(item => {
               if (this.selectAssetType.includes('TRADECONTRACT')) {
                 item.businessType = this.$appConst.businessTypes[item.buzType];
                 item.cType = this.$appConst.cTypes[item.type];
+              } else if (this.selectAssetType.includes('TRADEDLVRGOODS')) {
+                item.recvgStatusFlag = item.recvgStatus === 'false' || item.recvgStatus === "FALSE"? '未收货':'收货完成';
               }
             });
           }
@@ -353,9 +344,14 @@ export default {
       if (this.activeName === 'first') {
         this.$http.post(autoUrl, params).then(res => {
           this.loading = false;
-          if (res.data.status === 200) {
+          if (res.data.status === this.$appConst.status) {
             this.mainTable.tableData = res.data.data.content;
             this.totalCount = res.data.data.totalElements;
+            this.mainTable.tableData.map(item => {
+              if (this.selectAssetType.includes('TRADEDLVRGOODS')) {
+                item.recvgStatusFlag = item.recvgStatus === 'false' || item.recvgStatus === "FALSE"? '未收货':'收货完成';
+              }
+            });
             // console.log('99999999999999999999993', this.mainTable)
           }
         })
@@ -367,9 +363,14 @@ export default {
         }
         this.$http.post(url, params).then(res => {
           this.loading = false;
-          if (res.data.status === 200) {
+          if (res.data.status === this.$appConst.status) {
             this.mainTable.tableData = res.data.data.content;
             this.totalCount = res.data.data.totalElements;
+            this.mainTable.tableData.map(item => {
+              if (this.selectAssetType.includes('TRADEDLVRGOODS')) {
+                item.recvgStatusFlag = item.recvgStatus === 'false' || item.recvgStatus === "FALSE"? '未收货':'收货完成';
+              }
+            });
           }
         })
       }
@@ -430,80 +431,48 @@ export default {
       //   url = `/graph/asset-connect/${assetGraphUuid}/from/${assetUuid}/${sourceAssetType}/to/${targetAssetType}` // 向下关联
       // }
       let totalLength = params.length; // 总条数
-      this.totalSendNum = Math.ceil(totalLength / this.$appConst.everySendNum); // 总共发送多少次
       this.multipleSectionParams = params;
       this.sendUrl = url;
-      // this.handleFullScreenLoadingShow()
       this.handleSaveConfirmData(0);
     },
     // 关联 处理数据
     handleSaveConfirmData (n) {
       console.log(this.multipleSectionParams, 'multipleSectionParams')
       if (this.multipleSectionParams.length) {
-        let start = n * this.$appConst.everySendNum;
-        let end = (n + 1) * this.$appConst.everySendNum;
-        let sendArr = [];
-        sendArr = this.multipleSectionParams.slice(start, end);
-        console.log(sendArr, 'sendArr2222');
-        if (sendArr.length) {
-          this.handleSendRelationData(sendArr);
-        } else {
-          // let tit = "完成100%，即将刷新请稍候……"
-          let tit = '';
-          this.assetRelationTabsShow = false;
-          // this.handleLoadingTitText(tit)
-          // this.handleFullScreenLoadingShow()
-          // this.handleInit(tit)
-          this.handlRestData();
-        }
+        this.$bus.$emit('showProgress',0); 
+        this.common(0, this.multipleSectionParams, this.$appConst.everySendNum);
       } else {
         this.$message.warning("至少选择一条，请选择！");
       }
     },
-    async handleSendRelationData (sendArr) {
-      let vm = this;
-      // this.$store.commit("SET_BATCH_STATUS", true);
-      const loading = this.$loading({
-				lock: true,
-				text: 'Loading',
-				spinner: 'el-icon-loading',
-				background: 'rgba(0, 0, 0, 0.7)'
-      });
-      let response = await this.$http.post(this.sendUrl, sendArr);
-      loading.close();
-      if (response.data.status === 200) {
-        vm.nowSendIndex++;
-        this.assetRelationTabsShow = false;
-        this.handlRestData();
-        this.$message.success(this.text + "成功！");
-        this.$emit('openTabs', true);
-
-        // if (vm.nowSendIndex < vm.totalSendNum) {
-        //   let num = Math.floor((vm.nowSendIndex / vm.totalSendNum) * 100);
-        //   let tit = `完成${num}%，请稍候……`;
-        //   // vm.handleLoadingTitText(tit)
-        //   vm.handleSaveConfirmData(vm.nowSendIndex);
-        // } else {
-        //   console.log('zou')
-        //   // let tit = '完成100%，即将刷新请稍候……'
-        //   let tit = '';
-        //   let isNeedFlush = 0;
-        //   this.assetRelationTabsShow = false;
-        //   // this.handleInit(tit, isNeedFlush)
-        //   this.handlRestData();
-        //   this.$message.success(this.text + "成功！");
-        //   this.$emit('openTabs', true);
-        // }
-      } else {
-        let tit = `请求失败，请稍后重试！`;
-        let isNeedFlush = 0;
-        // this.handleInit(tit, isNeedFlush)
-        // this.$store.commit("SET_BATCH_STATUS", false)
+    async common(i,allIds,everyNumber) {
+      var vm = this;
+      var allNumber = Math.ceil(allIds.length/everyNumber); 
+      var everyIds = allIds.slice(i * everyNumber,(i+1) * everyNumber); 
+      try{
+        let response = await this.$http.post(this.sendUrl,everyIds);
+        if(response.data.status == 200) {
+          i = i+1;
+          vm.$bus.$emit('showProgress',(i/allNumber)*100);
+          if (i==allNumber){
+            setTimeout(()=> {
+              vm.$bus.$emit('hideProgress');
+              vm.assetRelationTabsShow = false;
+              vm.handlRestData();
+              vm.$message.success(vm.text + "成功！");
+              vm.$emit('openTabs', true);
+              // vm.$refs.tableRef.clearSelection();
+            },1000);
+            return;
+          }
+          vm.common(i,allIds,everyNumber);
+        }
+      }catch(err){
+        vm.$message.error(err.data.message);
+        vm.$bus.$emit('hideProgress');
       }
     },
     handlRestData () {
-      this.totalSendNum = 0;
-      this.nowSendIndex = 0;
       this.multipleSectionParams = [];
       this.sendUrl = '';
       this.nowSelectInvoice = [];

@@ -146,9 +146,7 @@ export default {
       vm.entityUuids = this.selectedAssetsList.map(item => item.entityUuid);
       vm.close();
       vm.$bus.$emit('showProgress',0);
-
-      var everyNumber = 10; //每次发送的个数。 
-      this.common(0,vm.entityUuids,everyNumber);
+      this.common(0,vm.entityUuids,this.$appConst.everySendNum);
     },
     async common(i,allIds,everyNumber) {
       var vm = this;

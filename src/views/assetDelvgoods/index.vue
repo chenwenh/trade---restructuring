@@ -220,9 +220,8 @@ export default {
       if(this.assetsUidList.length==0){
         this.$message.error('请至少选择一条数据');
         return;
-      }
-      var everyNumber = 10; //每次发送的个数。 
-      this.common(0,vm.entityUuids,everyNumber);
+      } 
+      this.common(0,vm.entityUuids,this.$appConst.everySendNum);
     },
     async common(i,allIds,everyNumber) {
       var vm = this;
