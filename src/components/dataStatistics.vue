@@ -55,40 +55,40 @@
     }
 </script>
 <style scoped>
-	.icon{
-		color: #974621;
-	}
-	.cursor{
-		cursor: pointer;
-	}
-	.dataRight {
-		margin-left:20px; 
-		height:400px;
-	}
-	.counter-content {
-		width: 45px;
-		height: 45px;
-		border: 15px solid #ccc;
-		border-bottom-color: #fff;
-		border-radius: 50%;
-	}
-	.counter-content-one {
-		border-color: #4d9fcf;
-		border-bottom-color: #fff;
-	}
-	.counter-content-two {
-		border-color: #AA7A53;
-		border-bottom-color: #fff;
-	}
-	.counter-content-tree {
-		border-color: #36c6d3;
-		border-bottom-color: #fff;
-	}
-	.icon:nth-child(odd) {
-		color: #974621;
-	}
-	.showData {
-		font-size: 14px;
-		margin-top: 3px;
-	}
+  .icon{
+    color: #974621;
+  }
+  .cursor{
+    cursor: pointer;
+  }
+  .dataRight {
+    margin-left:20px; 
+    height:400px;
+  }
+  .counter-content {
+    width: 45px;
+    height: 45px;
+    border: 15px solid #ccc;
+    border-bottom-color: #fff;
+    border-radius: 50%;
+  }
+  .counter-content-one {
+    border-color: #4d9fcf;
+    border-bottom-color: #fff;
+  }
+  .counter-content-two {
+    border-color: #AA7A53;
+    border-bottom-color: #fff;
+  }
+  .counter-content-tree {
+    border-color: #36c6d3;
+    border-bottom-color: #fff;
+  }
+  .icon:nth-child(odd) {
+    color: #974621;
+  }
+  .showData {
+    font-size: 14px;
+    margin-top: 3px;
+  }
 </style>

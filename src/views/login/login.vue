@@ -181,6 +181,8 @@ export default {
         .then(res => {
           if (res.data.status === 200) {
             sessionStorage.setItem('user', JSON.stringify(res.data.data.user));
+            this.handleUserOrgRoles(res.data.data.user.roles);
+            this.handleGetOrgInfo(res.data.data.authorities);
             // sessionStorage.setItem('token', `${res.data.data.token}`);
             // sessionStorage.setItem('authorities', JSON.stringify(res.data.data.authorities));
             let data = res.data;
@@ -543,7 +545,34 @@ export default {
       } else {
         this.loginErrorMessage = error.message;
       }
-    }
+    },
+    // 获取企业信息 判断企业为 核心企业 供应商 第三方
+    handleGetOrgInfo(authorities) {
+        let roleType =[]
+        let orgRoles = ["SUPPLIER","CORE_ENT","THIRD_PARTY_ENTERPRISE"]
+        let status = false //返回结果content是否有信息
+        authorities.forEach(item=>{
+            if(orgRoles.includes(item)){
+                status = true
+                roleType.push(item)
+            }
+        })
+        if(status === false){
+            roleType.push("THIRD_PARTY_ENTERPRISE")
+        }
+        sessionStorage.setItem("authorizationRoleType", JSON.stringify(roleType))
+    },
+    // 判断企业是否为企业管理员
+    handleUserOrgRoles(userRolesArr) {
+        let userRolesIsManager = false
+        for(let i=0; i<userRolesArr.length; i++) {
+            if(userRolesArr[i]["name"] === "EM") {
+                userRolesIsManager = true
+                break;
+            }
+        }
+        sessionStorage.setItem("userRolesIsManager", userRolesIsManager)
+    },
   }
 };
 </script>

@@ -9,6 +9,7 @@ export let apiUrl = {
     uploadFileApi:uploadFile + fileQuery,//文件上传
     businessAuthorize:currentApiUrl,//企业授权
     tradeAuthQuery:currentApiUrl+ '/auth/query',//已授权企业查询
+    // getOrgInfoByOrgId:currentApiUrl + '/org-info/getOrgInfoByOrgId/' , //根据orgId查询企业
     querySettlementByContract:currentApiUrl + '/asset/querySettlementByContract',//根据合同查询结算单
     pushFullAssetPackage:currentApiUrl + '/asset/pushFullAssetPackage',//合同下的结算单推送
     getAssetGraphUuid:currentApiUrl + '/graph/pattern-graph/asset-graph-uuid/',//获取patterenGraphUuid

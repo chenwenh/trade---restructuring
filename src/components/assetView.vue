@@ -8,10 +8,10 @@
                         <span v-if="assetType === 'TRADEPONDERATION'" style="float:right;color:#000;">总净重:<span style="margin-left:10px;margin-right:6px;">{{responseSumTotalAmount}}</span></span>
                     </protle-title-component>
                     <el-col
-                            v-if="nowSelectVal.length>0"
+                            v-show="nowSelectVal.length>0"
                             class="formItem"
                             :span="24"
-                            v-for="(item, index) in nowSelectVal"
+                            v-for="item in nowSelectVal"
                             :key="item.entityUuid">
 
                         <span
@@ -49,7 +49,7 @@
                     </el-col>
 
                     <el-col
-                            v-else
+                            v-show="nowSelectVal.length === 0"
                             :span="24"
                             class="el-table__empty-text"
                             style="text-align: center; height: 30px;">
@@ -114,7 +114,7 @@
 <script>
 import {dataDetailForm} from './dataDetailForm.js';
 import protleTitleComponent from "@/components/protleTitleComponent";
-import dialogCommonComponent from '@/components/dialogCommonComponent';
+// import dialogCommonComponent from '@/components/dialogCommonComponent';
 import contractInfoDetailComponent from '@/components/contractInfoDetailComponent';
  export default {
      data(){
@@ -147,7 +147,7 @@ import contractInfoDetailComponent from '@/components/contractInfoDetailComponen
      },
      components:{
         protleTitleComponent,
-        dialogCommonComponent,
+        // dialogCommonComponent,
         contractInfoDetailComponent,
      },
      mounted() {
@@ -229,12 +229,10 @@ import contractInfoDetailComponent from '@/components/contractInfoDetailComponen
             || key === "taxamount"
             || key === "goodsamount"
             || key === "sumamount") {
-            let amount = ""
-            return amount = this.$appConst.fmoney(val, 2)
+            return this.$appConst.fmoney(val, 2)
             }
             if (key === 'createTime' || (typeof key === 'string' && key.endsWith('Date'))) {
-            let date = ""
-            return date = this.$appConst.handleSetTime(val)
+            return this.$appConst.handleSetTime(val)
             }
             if (key === 'buzType'){
                 return this.$appConst.businessTypes[val];

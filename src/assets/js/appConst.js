@@ -2,6 +2,7 @@
 export default{
     uploadFile:uploadFile,
     fileQuery:fileQuery,
+    nowBusinessScenarios:nowBusinessScenarios,
     everySendNum: 10,//每次分批关联或者推送的单据数量
     pages: 10,
     pageSize: [10, 20, 30], // [20, 30, 50]
