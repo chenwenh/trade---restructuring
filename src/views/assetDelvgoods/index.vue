@@ -1,5 +1,6 @@
 <template>
     <div>
+         <breadcrumb :breadcrumbList="breadcrumbs"/>
         <div  v-show="firstShow">
         <!-- 表格 -->
          <el-button style="margin-bottom:20px;"
@@ -146,11 +147,13 @@ import uploadFileComponent from '@/components/uploadFileComponent';
 import relationDialog from '../createOrCancelRelation/relationDialog.vue';
 import addDelv from './addDelv';
 import selectForm from '@/components/selectForm.vue';
+import breadcrumb from '@/components/breadcrumb.vue';
 
 export default {
   name: '',
   data() {
     return {
+      breadcrumbs: ['贸易管理', '发货单管理'],
       queryTerms:{
         "entityNo":"发货单单号",
         "name":"发货单名称"
@@ -192,7 +195,8 @@ export default {
     addDelv,
     relationDialog,
     uploadFileComponent,
-    selectForm
+    selectForm,
+    breadcrumb
   },
   created() {
     this.search();

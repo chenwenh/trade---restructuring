@@ -1,5 +1,6 @@
 <template>
     <div >
+        <breadcrumb :breadcrumbList="breadcrumbs"/>
         <!-- 表格 -->
         <Table
               ref="tableRef"
@@ -32,12 +33,14 @@
 
 <script>
 import Table from '@/components/Table.vue';
-import { mapGetters } from 'vuex'
+// import { mapGetters } from 'vuex';
+import breadcrumb from '@/components/breadcrumb.vue';
 
 export default {
   name: '',
   data() {
     return {
+      breadcrumbs: ['贸易管理', '发票管理'],
       workDate: '',
       // 表格数据
       mainTable: {
@@ -66,7 +69,8 @@ export default {
     };
   },
   components: {
-    Table
+    Table,
+    breadcrumb
   },
   computed: {
     
@@ -79,10 +83,10 @@ export default {
   },
   methods: {
     // 详情
-    details(scope) {
+    details( ) {
     },
     // 搜索
-    search(searchData) {
+    search() {
       this.mainTable.tableData = [];
       const params = {
         page: this.page,

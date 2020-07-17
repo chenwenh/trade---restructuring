@@ -1,5 +1,6 @@
 <template>
     <div >
+        <breadcrumb :breadcrumbList="breadcrumbs"/>
         <div class="allSuttleWeight">总净重:<span style="margin-left:10px;margin-right:6px;">{{allSuttleWeight}}</span></div>
         <!-- 表格 -->
         <Table
@@ -18,11 +19,13 @@
 
 <script>
 import Table from '@/components/Table.vue';
+import breadcrumb from '@/components/breadcrumb.vue';
 
 export default {
   name: '',
   data() {
     return {
+      breadcrumbs: ['贸易管理', '过磅单管理'],
       workDate: '',
       // 表格数据
       mainTable: {
@@ -48,7 +51,8 @@ export default {
     };
   },
   components: {
-    Table
+    Table,
+    breadcrumb
   },
   computed: {
     
