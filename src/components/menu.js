@@ -38,6 +38,13 @@ export default [
         "title": "贸易管理",
         "subs": [
             {
+                "index": "/supplierQuery",
+                "title": "供应商管理",
+                "subs": [],
+                "enterprise": ['yndl'],
+                "authRole": ['CORE_ENT', 'SUPPLIER']
+            },
+            {
                 "index": "/contractQuery",
                 "title": "合同管理",
                 "billType": "contract",
@@ -121,6 +128,13 @@ export default [
                 "title": "过磅单管理",
                 "subs": [],
                 "enterprise": ['tyjt', 'yjgf', 'yth'],
+                "authRole": ['CORE_ENT', 'SUPPLIER']
+            },
+            {
+                "index": "/warehouseQuery",
+                "title": "库存单管理",
+                "subs": [],
+                "enterprise": ['tyjt', 'yndl'],
                 "authRole": ['CORE_ENT', 'SUPPLIER']
             },
         ]
