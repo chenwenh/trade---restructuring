@@ -9,6 +9,7 @@
                 @click="handleAddAsset()">
             添加
         </el-button>
+        <selectForm ref="selectForm" :queryTerms="queryTerms" @search="reSearch"></selectForm>
         <span class="totalAmount">结算单总金额:<span style="margin-left:10px;margin-right:6px;">{{totalAmount | MoneyFormat}}</span>元</span>
         </p>
         <Table
@@ -144,11 +145,19 @@ import uploadFileComponent from '@/components/uploadFileComponent';
 import addSettlement from './addSettlement';
 import relationDialog from '../createOrCancelRelation/relationDialog.vue';
 import eagleCoinListBySettlement from './eagleCoinListBySettlement';
+import selectForm from '@/components/selectForm.vue';
 
 export default {
   name: '',
   data() {
     return {
+      queryTerms:{
+        "orgName":" 买方或卖方企业名称",
+        "entityNo":"结算单单号",
+        "name":"结算单名称",
+        "TradeContract_amount":"结算单总金额区间",
+        "TradeSettlement_settleDate":"结算日期区间"
+      },
       firstShow:true,
       secondShow:false,
       // 表格数据
@@ -175,7 +184,8 @@ export default {
       pageSize: 10,
       loading: false,
       totalAmount:'',
-      user:JSON.parse(sessionStorage.getItem('user'))
+      user:JSON.parse(sessionStorage.getItem('user')),
+      searchForm:{}
     };
   },
   components: {
@@ -186,7 +196,8 @@ export default {
     uploadFileComponent,
     addSettlement,
     relationDialog,
-    eagleCoinListBySettlement
+    eagleCoinListBySettlement,
+    selectForm
   },
   created() {
     this.search();
@@ -275,17 +286,30 @@ export default {
         this.$refs.goodsDetailComponent.init(row);
       }); 
     },
+    reSearch(searchForm) {
+      this.page = 1;
+      this.searchForm = searchForm;
+      this.search(searchForm);
+    }, 
     // 搜索
-    search(searchData) {
-      console.log(searchData);
+    search(searchForm) {
       this.mainTable.tableData = [];
-      const params = {
+      const origionParams = {
         page: this.page,
         pageSize: this.pageSize,
         orgId:sessionStorage.getItem('orgId'),
         assetType:'TRADESETTLEMENT',
         sortDirection: 'DESC'
       };
+      const params = Object.assign({},searchForm,origionParams);
+      if(params.TradeSettlement_settleDate){
+        params.timeInterval = {
+          "TradeSettlement_settleDate":{
+            startDate:params.TradeSettlement_settleDate[0],
+            endDate : params.TradeSettlement_settleDate[1]
+          }
+        }
+      }
       this.loading = true;
       const url = `${this.$apiUrl.queryContract}`;
       this.$http.post(url,params)
@@ -326,7 +350,7 @@ export default {
   text-align:right;
   display:inline-block;
   position:relative;
-  bottom:-16px;
+  bottom:24px;
   font-size:16px;
 }
 .approval__box{

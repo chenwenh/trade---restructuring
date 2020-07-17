@@ -8,6 +8,7 @@
                 @click="handleAddAsset()">
             添加
         </el-button>
+        <selectForm ref="selectForm" :queryTerms="queryTerms" @search="reSearch"></selectForm>
         <Table
               ref="tableRef"
               :mainTable="mainTable"
@@ -144,11 +145,16 @@ import assetView from '@/components/assetView';
 import uploadFileComponent from '@/components/uploadFileComponent';
 import relationDialog from '../createOrCancelRelation/relationDialog.vue';
 import addDelv from './addDelv';
+import selectForm from '@/components/selectForm.vue';
 
 export default {
   name: '',
   data() {
     return {
+      queryTerms:{
+        "entityNo":"发货单单号",
+        "name":"发货单名称"
+      },
       confirmLoading:false,
       selected:true,
       title:'',
@@ -174,7 +180,8 @@ export default {
       pageSize: 10,
       loading: false,
       assetsUidList:[],
-      selectedAssetsList:[]
+      selectedAssetsList:[],
+      searchForm:{}
     };
   },
   components: {
@@ -184,7 +191,8 @@ export default {
     assetView,
     addDelv,
     relationDialog,
-    uploadFileComponent
+    uploadFileComponent,
+    selectForm
   },
   created() {
     this.search();
@@ -236,7 +244,7 @@ export default {
             setTimeout(()=> {
               vm.$bus.$emit('hideProgress');
               vm.$message.success('批量确认成功！!');
-              vm.search();
+              vm.search(this.searchForm);
               vm.$refs.tableRef.clearSelection();
               vm.confirmLoading = false;
             },1000);
@@ -267,7 +275,7 @@ export default {
       if (response.data.status == this.$appConst.status) {
         this.$bus.$emit('closeDialog');
         this.$message.success('附件修改成功');
-        this.search();
+        this.search(this.searchForm);
       }
     },
     handleAddAsset() {
@@ -316,16 +324,22 @@ export default {
       }); 
       this.title = '收货详情';
     },
+    reSearch(searchForm) {
+      this.page = 1;
+      this.searchForm = searchForm;
+      this.search(searchForm);
+    }, 
     // 搜索
-    search() {
+    search(searchForm) {
       this.mainTable.tableData = [];
-      const params = {
+      const origionParams = {
         page: this.page,
         pageSize: this.pageSize,
         orgId:sessionStorage.getItem('orgId'),
         assetType:'TRADEDLVRGOODS',
         sortDirection: 'DESC'
       };
+      const params = Object.assign({},searchForm,origionParams);
       this.loading = true;
       const url = `${this.$apiUrl.queryContract}`;
       this.$http.post(url,params)
@@ -347,13 +361,13 @@ export default {
     // 分页
     handleCurrentChange(currentPage) {
       this.page = currentPage;
-      this.search();
+      this.search(this.searchForm);
     },
     handleSizeChange(size){
       this.pageSize = size;
       this.page = 1;
       this.$refs.tableRef.resetCurrentPage();
-      this.search();
+      this.search(this.searchForm);
     }
   }
 };

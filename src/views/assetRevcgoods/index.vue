@@ -8,6 +8,7 @@
                 @click="handleAddAsset()">
             添加
         </el-button>
+        <selectForm ref="selectForm" :queryTerms="queryTerms" @search="reSearch"></selectForm>
         <Table
               ref="tableRef"
               :mainTable="mainTable"
@@ -121,11 +122,18 @@ import assetView from '@/components/assetView';
 import uploadFileComponent from '@/components/uploadFileComponent';
 import relationDialog from '../createOrCancelRelation/relationDialog.vue';
 import addRevc from './addRevc';
+import selectForm from '@/components/selectForm.vue';
 
 export default {
   name: '',
   data() {
     return {
+      queryTerms:{
+        "orgName":" 买方或卖方企业名称",
+        "entityNo":"收货单单号",
+        "TradeRecvgGoods_drDate":"收货日期",
+        "TradeRecvgGoods_createTime":"创建日期"
+      },
       firstShow:true,
       secondShow:false,
       // 表格数据
@@ -145,7 +153,8 @@ export default {
       totalCount: 0, // 数据总数
       page: 1,
       pageSize: 10,
-      loading: false
+      loading: false,
+      searchForm:{}
     };
   },
   components: {
@@ -155,7 +164,8 @@ export default {
     assetView,
     uploadFileComponent,
     relationDialog,
-    addRevc
+    addRevc,
+    selectForm
   },
   created() {
     this.search();
@@ -178,7 +188,7 @@ export default {
       if (response.data.status == this.$appConst.status) {
         this.$bus.$emit('closeDialog');
         this.$message.success('附件修改成功');
-        this.search();
+        this.search(this.searchForm);
       }
     },
     getAttachments(row){
@@ -223,16 +233,38 @@ export default {
         this.$refs.goodsDetailComponent.init(row);
       }); 
     },
+    reSearch(searchForm) {
+      this.page = 1;
+      this.searchForm = searchForm;
+      this.search(searchForm);
+    }, 
     // 搜索
-    search() {
+    search(searchForm) {
       this.mainTable.tableData = [];
-      const params = {
+      const origionParams = {
         page: this.page,
         pageSize: this.pageSize,
         orgId:sessionStorage.getItem('orgId'),
         assetType:'TRADERECVGGOODS',
         sortDirection: 'DESC'
       };
+      const params = Object.assign({},searchForm,origionParams);
+      if(params.TradeRecvgGoods_drDate){
+        params.timeInterval = {
+          "TradeRecvgGoods_drDate":{
+            startDate:params.TradeRecvgGoods_drDate[0],
+            endDate : params.TradeRecvgGoods_drDate[1]
+          }
+        }
+      }
+      if(params.TradeRecvgGoods_createTime){
+        params.timeInterval.TradeRecvgGoods_createTime = {
+            startDate:params.TradeRecvgGoods_createTime[0],
+            endDate : params.TradeRecvgGoods_createTime[1]
+          }
+      }
+      delete params.TradeRecvgGoods_drDate;
+      delete params.TradeRecvgGoods_createTime;
       this.loading = true;
       const url = `${this.$apiUrl.queryContract}`;
       this.$http.post(url,params)
@@ -252,13 +284,13 @@ export default {
     // 分页
     handleCurrentChange(currentPage) {
       this.page = currentPage;
-      this.search();
+      this.search(this.searchForm);
     },
     handleSizeChange(size){
       this.pageSize = size;
       this.page = 1;
       this.$refs.tableRef.resetCurrentPage();
-      this.search();
+      this.search(this.searchForm);
     }
   }
 };

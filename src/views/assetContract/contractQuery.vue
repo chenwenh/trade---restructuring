@@ -8,6 +8,7 @@
                 @click="handleAddAsset()">
             添加
         </el-button>
+        <selectForm ref="selectForm" :queryTerms="queryTerms" @search="reSearch"></selectForm>
         <Table
               ref="tableRef"
               :mainTable="mainTable"
@@ -162,11 +163,19 @@ import settlement from './settlement';
 import assetView from '@/components/assetView';
 import relationDialog from '../createOrCancelRelation/relationDialog.vue';
 import uploadFileComponent from '@/components/uploadFileComponent';
+import selectForm from '@/components/selectForm.vue';
 
 export default {
   name: '',
   data() {
     return {
+      queryTerms:{
+        "orgName":" 买方或卖方企业名称",
+        "entityNo":"合同编号",
+        "name":"合同名称",
+        "TradeContract_amount":"合同金额区间",
+        "TradeContract_signingDate":"合同签署时间区间"
+      },
       platFormOptions:[],
       businessTypeVal:'',
       showCancel:true,
@@ -200,7 +209,8 @@ export default {
       thirdShow:false,
       user:JSON.parse(sessionStorage.getItem('user')),
       operation:'',//代表是添加还是编辑。
-      newForm: {}
+      newForm: {},
+      searchForm:{}
     };
   },
   components: {
@@ -211,7 +221,8 @@ export default {
     settlement,
     assetView,
     relationDialog,
-    uploadFileComponent
+    uploadFileComponent,
+    selectForm
   },
   created() {
     this.search();
@@ -269,7 +280,7 @@ export default {
         vm.$refs.uploadFileComponent.resetFileList();
         vm.page = 1;
         vm.$refs.tableRef.resetCurrentPage();
-        vm.search();
+        vm.search(this.searchForm);
       }
     },
     async updateAsset() {
@@ -282,7 +293,7 @@ export default {
         vm.secondShow = false;
         vm.thirdShow = false;
         vm.$refs.uploadFileComponent.resetFileList();
-        vm.search();
+        vm.search(this.searchForm);
       }
     },
     async sure() {
@@ -368,16 +379,31 @@ export default {
         this.$refs.assetView.init(row);
       });
     },
+    reSearch(searchForm) {
+      this.page = 1;
+      this.searchForm = searchForm;
+      this.search(searchForm);
+    }, 
     // 搜索
-    search() {
+    search(searchForm) {
       this.mainTable.tableData = [];
-      const params = {
+      const origionParams = {
         page: this.page,
         pageSize: this.pageSize,
         orgId:sessionStorage.getItem('orgId'),
         assetType:'TRADECONTRACT',
         sortDirection: 'DESC'
       };
+      const params = Object.assign({},searchForm,origionParams);
+      if(params.TradeContract_signingDate){
+        params.timeInterval = {
+          "TradeContract_signingDate":{
+            startDate:params.TradeContract_signingDate[0],
+            endDate : params.TradeContract_signingDate[1]
+          }
+        }
+      }
+      delete params.TradeContract_signingDate;
       this.loading = true;
       const url = `${this.$apiUrl.queryContract}`;
       this.$http.post(url,params)
@@ -399,13 +425,13 @@ export default {
     // 分页
     handleCurrentChange(currentPage) {
       this.page = currentPage;
-      this.search();
+      this.search(this.searchForm);
     },
     handleSizeChange(size){
       this.pageSize = size;
       this.page = 1;
       this.$refs.tableRef.resetCurrentPage();
-      this.search();
+      this.search(this.searchForm);
     }
   }
 };
