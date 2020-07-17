@@ -156,6 +156,22 @@ const routes = [
         },
         component: resolve => require(['../views/assetSettlement/index.vue'], resolve)
     },
+      {
+        path: '/supplierQuery',
+        name: 'supplierQuery',
+        meta: {
+            title: '供应商管理',
+        },
+        component: resolve => require(['../views/assetSupplier/index.vue'], resolve)
+      },
+      {
+        path: '/warehouseQuery',
+        name: 'warehouseQuery',
+        meta: {
+            title: '库存单管理',
+        },
+        component: resolve => require(['../views/assetWarehouse/index.vue'], resolve)
+      },
     ]
   },
   
