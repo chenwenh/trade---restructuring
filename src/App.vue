@@ -37,4 +37,9 @@ export default {
   color:green !important;
   font-size:25px !important;
 }
+#app{
+  width:100%;
+  height:100%;
+  background:rgb(239,238,248);
+}
 </style>

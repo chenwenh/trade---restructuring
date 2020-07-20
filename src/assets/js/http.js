@@ -45,10 +45,13 @@ axios.interceptors.response.use(
         return response
     },
     error => {
+        if(error.response.data.message.indexOf('无效的Token')!=-1){
+            router.push({
+                path: '/login'
+            })
+        }
         store.commit('SET_LOADING', false)
         // loader.close()
-        // let errMsg = error.response.data.message
-        // global.errMsg(errMsg);
         return Promise.reject(error.response)
     }
 )
