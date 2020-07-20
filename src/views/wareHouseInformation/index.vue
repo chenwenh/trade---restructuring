@@ -269,7 +269,7 @@
         font-size: 15px;
         color: #48576a;
         border: 1px solid #e7ecf1 !important;
-        margin-top: 30px;
+        /* margin-top: 30px; */
     }
     .portlet.light {
         padding: 12px 20px 15px 20px;

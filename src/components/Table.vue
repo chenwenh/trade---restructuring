@@ -141,7 +141,7 @@ export default {
         return this.height2 +'px';
       };
       var height2 = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-      return height2 - 300 + 'px';
+      return height2 - 360 + 'px';
     },
   },
   methods: {

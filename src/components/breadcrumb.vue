@@ -27,7 +27,7 @@ export default {
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05);
     height: 44px;
     line-height: 44px;
-    margin: 15px 0 18px;
+    margin: 0 0 18px;
     padding-left: 15px;
     color: #343957;
   }

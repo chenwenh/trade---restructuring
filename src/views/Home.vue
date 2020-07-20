@@ -1,7 +1,7 @@
 <template>
 <div style="width:100%;height:100%;">
         <div class="header">
-            <img src="static/images/logos.png"/>
+            <img src="static/images/logos.png" class="logoSrc"/>
             <span class="orgName">{{orgName}}</span>,<label style="color: #2A2A2A;font-size:16px;margin-left:10px;">欢迎您进入贸易系统</label>
             <div style="float:right;margin-right:40px;">
                 <el-dropdown trigger="click" @command="handleCommand">
@@ -17,12 +17,9 @@
             </div>
         </div>
         <el-container>
-            <el-aside class="el-aside">
-                <div class="logo">
-                    <img src="static/images/logos.png"/>
-                </div>
+            <div class="el-aside" id="aside">
                 <sidebar></sidebar>
-            </el-aside>
+            </div>
             <el-main class="el-main">
                 <router-view></router-view>
             </el-main>
@@ -64,6 +61,12 @@
     }
 </script>
 <style lang="scss" scoped>
+    .logoSrc{
+        border-right: 1px solid #EDEDED;
+        position: relative;
+        top: 10px;
+        padding-right: 34px;
+    }
     .header{
         width:100%;
         height:60px;
@@ -84,16 +87,17 @@
 
     }
     .el-aside{
-        width: 220px !important;
+        // width: 220px;
         float:left;
         background:rgb(0, 78, 145);
+        overflow: hidden;
     }
     .el-main{
         width:calc(100% - 220px);
         float:right;
         overflow:auto;
-        margin-left:20px;
-        background:white;
+        padding-top:0 !important;
+        // background:white;
     }
     .user-logo{
         width:40px;

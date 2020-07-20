@@ -3,12 +3,13 @@
         <el-menu
             :default-active="activeIndex"
             class="el-menu-vertical-demo"
-            text-color="#bfcbd9"
+            :text-color="textColor"
             unique-opened
             router
-            background-color="#004e91"
+            :background-color="backgroundColor"
             ref='sidebar'
             :default-openeds='openeds'
+            @open="handleOpen" @close="handleClose" :collapse="isCollapse"
         >
             <template v-for="item in menuList">
                 <template v-if="item.subs.length">
@@ -39,6 +40,7 @@
                 </template>
             </template>
         </el-menu>
+        <i class="el-icon-s-unfold" style="position:fixed;bottom:20px;left:20px;cursor:pointer;font-size:20px;" @click="foldClick"></i>
     </div>
 </template>
 
@@ -51,6 +53,7 @@ import {mapMutations} from 'vuex'
     name: 'sideBar',
     data () {
         return {
+            isCollapse:true,
             menuList:[],
             openeds: [],
             roleType: [], // 当前企业 角色  核心企业  供应商  第三方
@@ -61,7 +64,19 @@ import {mapMutations} from 'vuex'
     computed: {
         activeIndex () {
             return this.$route.path;
-        }
+        },
+        textColor() {
+            if(currentCssStyle != 'defaultStyle'){
+                return "#bfcbd9";
+            }
+        },
+        backgroundColor() {
+            if(currentCssStyle == 'defaultStyle'){
+                return "white";
+            }else{
+                return "#004e91";
+            }
+        },
     },
     watch: {
     },
@@ -87,6 +102,19 @@ import {mapMutations} from 'vuex'
         //         this.handleSetSideItem()
         //     }
         // },
+        handleOpen(key, keyPath) {
+            if(!this.isCollapse){
+                $('#aside').css({"width":"220px !important;"});
+            }
+        },
+        foldClick() {
+            this.isCollapse = !this.isCollapse;
+        },
+        handleClose(key, keyPath) {
+            if(this.isCollapse){
+                $('#aside').css("width","51px !important;");
+            }
+        },
         // 匹配菜单
         handleSetSideItem() {
             this.menuList = JSON.parse(JSON.stringify(menuList));
@@ -149,6 +177,7 @@ import {mapMutations} from 'vuex'
         }
     },
     mounted () {
+        $('#aside').css({"width":"51px !important"});
     },
     created() {
         this.handleSetSideItem();  
@@ -157,105 +186,22 @@ import {mapMutations} from 'vuex'
 </script>
 
 <style scoped lang="scss">
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+}
 .el-menu{
     border-right:none;
 }
 .el-menu-item.is-active {
-    color: #ffc037!important;
+    color: #ffc037;
 }
 .sideIcon {
-    color:hsla(0,0%,100%,.8)!important;
+    // color:hsla(0,0%,100%,.8)!important;
     font-size: 18px;
     padding-right:12px;
 }
 .el-submenu .el-menu-item{
     padding-left:55px !important;
 }
-    // .el-menu-vertical-demo
-    // /deep/ .el-menu--inline {
-    //     .el-menu-item {
-    //         position: relative;
-    //         width: auto !important;
-    //         font-size: 12px !important;
-    //         color: #666 !important;
-    //     }
-    // }
-
-    // .sideBar {
-    //     display: none;
-    //     position: absolute;
-    //     left: 0;
-    //     top: 20px;
-    //     width: 4px;
-    //     height: 19px;
-    //     background: #E59D28;
-    // }
-
-    // .el-aside {
-    //     position: relative;
-    //     background: #fff;
-        
-    //     .sideIcon {
-    //         display: inline-block;
-    //         margin-top: -3px;
-    //         margin-right: 8px;
-    //         font-size: 18px;
-    //         color: #B7C2D1 !important;
-    //     }
-
-    //     .el-menu-item.is-active /deep/,
-    //     .el-menu-item.is-active:hover {
-    //         color: #4A3718 !important;
-    //         background: #FFF1DB !important;
-
-    //         .sideIcon {
-    //             color: #E79C2A !important;
-    //         }
-
-    //         .sideBar {
-    //             display: block;
-    //         }
-    //     }
-
-    //     .el-menu-item:hover /deep/ {
-    //         color: #E59D28 !important;
-    //         background: transparent !important;
-
-    //         .sideIcon {
-    //             color: #E79C2A !important;
-    //         }
-    //     }
-
-    //     .sidebar {
-    //         width:100%;
-    //         padding-top: 9px;
-    //         ul {
-    //             border-right:none !important;
-    //         }
-    //         .sideConfig {
-    //             position: absolute;
-    //             bottom: 0;
-    //             left: 0;
-    //             width: 220px;
-    //             height: 45px;
-    //             border-top: 1px solid #E7EFF7;
-    //             text-align: center;
-    //             line-height: 45px;
-    //             font-size: 14px;
-    //             color: #B7C2D1;
-    //             cursor: not-allowed;
-
-    //             .iconfont {
-    //                 // margin-right: 12px;
-    //             }
-    //         }
-    //         .active, .active:hover {
-    //             color: #333;
-    //             cursor: pointer;
-    //             // .iconfont {
-    //             //     color: #228BF7;
-    //             // }
-    //         }
-    //     }
-    // }
 </style>

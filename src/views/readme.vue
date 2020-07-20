@@ -1,6 +1,5 @@
 <template>
     <div>
-        <div class="welcome"><span>{{userName}}，</span>欢迎您进入贸易系统</div>
         <div>
             <h3>平台</h3>
             <data-statistics
