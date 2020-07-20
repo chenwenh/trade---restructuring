@@ -1,5 +1,6 @@
 <template>
     <div >
+        <breadcrumb :breadcrumbList="breadcrumbs"/>
         <!-- 表格 -->
         <Table
               ref="tableRef"
@@ -17,11 +18,13 @@
 
 <script>
 import Table from '@/components/Table.vue';
+import breadcrumb from '@/components/breadcrumb.vue';
 
 export default {
   name: '',
   data() {
     return {
+      breadcrumbs: ['贸易管理', '机票销售管理'],
       workDate: '',
       // 表格数据
       mainTable: {
@@ -44,7 +47,8 @@ export default {
     };
   },
   components: {
-    Table
+    Table,
+    breadcrumb
   },
   computed: {
     

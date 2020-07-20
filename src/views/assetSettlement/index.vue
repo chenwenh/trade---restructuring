@@ -1,5 +1,6 @@
 <template>
     <div>
+        <breadcrumb :breadcrumbList="breadcrumbs"/>
         <div  v-show="firstShow">
         <p>
         <!-- 表格 -->
@@ -146,11 +147,13 @@ import addSettlement from './addSettlement';
 import relationDialog from '../createOrCancelRelation/relationDialog.vue';
 import eagleCoinListBySettlement from './eagleCoinListBySettlement';
 import selectForm from '@/components/selectForm.vue';
+import breadcrumb from '@/components/breadcrumb.vue';
 
 export default {
   name: '',
   data() {
     return {
+      breadcrumbs: ['贸易管理', '结算单管理'],
       queryTerms:{
         "orgName":" 买方或卖方企业名称",
         "entityNo":"结算单单号",
@@ -197,7 +200,8 @@ export default {
     addSettlement,
     relationDialog,
     eagleCoinListBySettlement,
-    selectForm
+    selectForm,
+    breadcrumb
   },
   created() {
     this.search();
