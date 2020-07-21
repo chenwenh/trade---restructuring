@@ -5,6 +5,7 @@
         <!-- 表格 -->
          <el-button style="margin-bottom:20px;"
                 type="primary"
+                class="addButton"
                 icon="el-icon-plus"
                 @click="handleAddAsset()">
             添加

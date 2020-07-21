@@ -1,16 +1,20 @@
 <template>
     <div>
-        <div>
-            <h3>平台</h3>
-            <data-statistics
-                :isCursor="!isCursor"
-                :content="content2">
-            </data-statistics>
-            <h3>{{orgName}}</h3>
+        <div style="background:white;padding-bottom:50px;">
+            <div style="margin-bottom:50px;padding-top:20px;">
+                <span :class="{'active':currentShow}" class="spanName" @click="currentClick">{{orgName}}<label v-show="currentShow"></label></span>
+                <span :class="{'active':!currentShow}" class="spanName" @click="currentClick">平台<label v-show="!currentShow"></label></span>
+            </div>
             <!-- 统计 -->
             <data-statistics
+                v-show="currentShow"
                 :isCursor="isCursor"
                 :content="content">
+            </data-statistics>
+            <data-statistics
+                v-show="!currentShow"
+                :isCursor="!isCursor"
+                :content="content2">
             </data-statistics>
         </div>
     </div>
@@ -23,6 +27,7 @@
         name: 'home',
         data () {
             return {
+                currentShow:true,
                 isCursor:true,
                 content:[],
                 content2:[],
@@ -40,16 +45,23 @@
         methods: {
             async init() {
                 var vm = this;
-                var response = await this.$http.get(`${this.$apiUrl.getStatistic}`);
-                if (response.data.status == this.$appConst.status){
-                    var result = response.data.data;
-                    vm.content = result.filter(item=>this.subMenuList.indexOf(item.assetType)!=-1);
+                if(this.currentShow){
+                    var response = await this.$http.get(`${this.$apiUrl.getStatistic}`);
+                    if (response.data.status == this.$appConst.status){
+                        var result = response.data.data;
+                        vm.content = result.filter(item=>this.subMenuList.indexOf(item.assetType)!=-1);
+                    }
+                    return;
                 }
                 var response2 = await this.$http.get(`${this.$apiUrl.getStatistic}?isEffOrg=false`);
                 if (response2.data.status == this.$appConst.status){
                     var result2 = response2.data.data;
                     vm.content2 = result2.filter(item=>this.subMenuList.indexOf(item.assetType)!=-1);
                 }
+            },
+            currentClick() {
+                this.currentShow = !this.currentShow;
+                this.init();
             }
         },
         mounted() {
@@ -79,7 +91,7 @@
         },
     }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     .welcome{
         top: 30px;
         left: 3px;
@@ -90,5 +102,28 @@
             color: #333333;
             font-weight: 600;
         }
+    }
+    .spanName{
+        font-size: 18px;
+        letter-spacing: 0;
+        margin-right:20px;
+        margin-left:20px;
+        color: #999999;
+        cursor: pointer;
+        position: relative;
+    }
+    .spanName label{
+        position: absolute;
+        width: 30px;
+        height: 4px;
+        color: #FF5701;
+        background: #FF5701;
+        left: 50%;
+        margin-left:-13px;
+        bottom: -6px;
+    }
+    .spanName.active{
+        color: #333333;
+        font-weight: bold;
     }
 </style>

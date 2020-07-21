@@ -40,7 +40,8 @@
                 </template>
             </template>
         </el-menu>
-        <i class="el-icon-s-unfold" style="position:fixed;bottom:20px;left:20px;cursor:pointer;font-size:20px;" @click="foldClick"></i>
+        <i class="el-icon-s-fold" v-show="!isCollapse" style="position:fixed;bottom:20px;left:20px;cursor:pointer;font-size:20px;" @click="foldClick"></i>
+        <i class="el-icon-s-unfold" v-show="isCollapse" style="position:fixed;bottom:20px;left:20px;cursor:pointer;font-size:20px;" @click="foldClick"></i>
     </div>
 </template>
 
