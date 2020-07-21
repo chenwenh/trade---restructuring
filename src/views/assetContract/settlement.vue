@@ -19,7 +19,7 @@
             <label style="font-weight:bold;color: #666666">已选中金额：<span
                     style="color: #0068BD">{{amount|MoneyFormat}}</span></label>
         </div>
-         <div style="text-align:center;margin-top:40px;">
+         <div style="text-align:center;margin-top:40px;padding-bottom:20px;">
             <el-button type="warning" @click="back">上一步</el-button>
             <el-button :disabled="isDisabled" type="primary" icon="el-icon-share" @click="handlePush" class="primaryButton">
                 推送
@@ -125,7 +125,7 @@ export default {
   methods: {
     height2() {
       var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-      return height - 260;
+      return height - 370;
     },
     selectable (row, index) {
       if (row.lockState) {

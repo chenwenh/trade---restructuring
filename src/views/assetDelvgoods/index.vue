@@ -24,12 +24,12 @@
               :showPagination="true">
               <!-- 操作 -->
               <el-table-column 
-                        label="操作" width="200"
+                        label="操作" width="120"
                         >
                   <template slot-scope="scope">
                     <el-button
                         icon="el-icon-view"
-                        class="collectBtn"
+                        class="collectBtn redBtn"
                         size="medium"
                         type="text"
                         style="margin-left:0px; "
@@ -38,7 +38,7 @@
                     </el-button>
                     <el-dropdown trigger="click">
                         <span class="el-dropdown-link">
-                          更多<i class="el-icon-arrow-down el-icon--right"></i>
+                          <i class="el-icon-more iconMore"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
                           <el-dropdown-item v-if="scope.row.graphUuid&&scope.row.graphUuid!='00000000-0000-0000-0000-000000000000'">

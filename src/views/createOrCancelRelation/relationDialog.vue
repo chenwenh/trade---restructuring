@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-dialog v-dialogDrag top="3vh" :title="title" :close-on-click-modal="false" :append-to-body="true"
+        <el-dialog v-dialogDrag :title="title" :close-on-click-modal="false" :append-to-body="true"
                     :visible.sync="dialogVisible"
                     :before-close="close" width="30%">
           <div>
@@ -26,7 +26,7 @@
             </el-select>
             <div style="margin-top:20px; margin-left: 35%;">
               <el-button plain @click="close()" size="medium">取消</el-button>
-              <el-button type="primary" @click="sure('confirm')" size="medium">确定</el-button>
+              <el-button type="primary" @click="sure('confirm')" size="medium" class="primaryButton">确定</el-button>
             </div>
           </div>
         </el-dialog>
