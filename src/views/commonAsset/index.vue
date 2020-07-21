@@ -198,15 +198,24 @@ export default {
     breadcrumb
   },
   created() {
+    this.assetType = this.$route.params.assetType;
     this.breadcrumbs = commonSetData.breadcrumbs[this.assetType];
     this.queryTerms = commonSetData.queryTerms[this.assetType];
     this.mainTable.tableHeader = commonSetData.tableHeader[this.assetType];
     this.search();
   },
+  beforeRouteUpdate(to,from,next){
+    this.assetType = to.params.assetType;
+    this.breadcrumbs = commonSetData.breadcrumbs[this.assetType];
+    this.queryTerms = commonSetData.queryTerms[this.assetType];
+    this.mainTable.tableHeader = commonSetData.tableHeader[this.assetType];
+    this.search();
+    next();
+  },
   computed: {
-    assetType() {
-      return this.$route.params.assetType;
-    },
+    // assetType() {
+    //   return this.$route.params.assetType;
+    // },
     addFormTitle() {
       return '添加'+ this.$appConst.dataType[this.assetType];
     }

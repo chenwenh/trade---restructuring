@@ -10,13 +10,18 @@ export default {
     props: ['breadcrumbList'],
     data() {
         return {
-          breadcrumbs: []
+        
         }
+    },
+    computed:{
+      breadcrumbs() {
+        return this.breadcrumbList;
+      }
     },
     components: {},
     methods: {},
     created() {
-      this.breadcrumbs = this.breadcrumbList;
+      
     }
 }
 </script>

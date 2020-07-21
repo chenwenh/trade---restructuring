@@ -75,7 +75,7 @@ export default [
                 "authRole": ['CORE_ENT', 'SUPPLIER']
             },
             {
-                "index": "/revcgoodsQuery",
+                "index": "/commonAsset/TRADERECVGGOODS",
                 "title": "收货单管理",
                 "subs": [],
                 "enterprise": ['hsyy', 'jhyy', 'zhyy', 'tyjt', 'yzyy', 'tlyy', 'ycdl', 'yndl', 'kggm', 'mlf'],

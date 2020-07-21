@@ -132,12 +132,8 @@ export default {
   name: '',
   data() {
     return {
-      breadcrumbs: ['贸易管理', '收货单管理'],
+      breadcrumbs: [],
       queryTerms:{
-        "orgName":" 买方或卖方企业名称",
-        "entityNo":"收货单单号",
-        "TradeRecvgGoods_drDate":"收货日期",
-        "TradeRecvgGoods_createTime":"创建日期"
       },
       firstShow:true,
       secondShow:false,
