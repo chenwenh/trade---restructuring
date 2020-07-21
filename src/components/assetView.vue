@@ -52,7 +52,7 @@
                             v-show="nowSelectVal.length === 0"
                             :span="24"
                             class="el-table__empty-text"
-                            style="text-align: center; height: 30px;">
+                            style="text-align: center;">
                         暂无数据
                     </el-col>
 

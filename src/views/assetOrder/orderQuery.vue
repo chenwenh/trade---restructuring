@@ -10,7 +10,7 @@
                 @click="handleAddAsset()">
             添加
         </el-button>
-        <selectForm ref="selectForm" :queryTerms="queryTerms" @search="reSearch"></selectForm>
+        <selectForm ref="selectForm" :queryTerms="queryTerms" @search="reSearch" class="selectForm"></selectForm>
         <Table
               ref="tableRef"
               :mainTable="mainTable"
@@ -23,13 +23,13 @@
               :showPagination="true">
               <!-- 操作 -->
               <el-table-column 
-                        label="操作" width="150"
+                        label="操作" width="100"
                         fixed="right"
                         >
                   <template slot-scope="scope">
                     <el-button
                         icon="el-icon-view"
-                        class="collectBtn"
+                        class="collectBtn redBtn"
                         size="medium"
                         type="text"
                         style="margin-left:0px; "
@@ -37,8 +37,11 @@
                         详情
                     </el-button>
                     <el-dropdown trigger="click">
-                        <span class="el-dropdown-link">
+                        <!-- <span class="el-dropdown-link">
                           更多<i class="el-icon-arrow-down el-icon--right"></i>
+                        </span> -->
+                         <span class="el-dropdown-link">
+                          <i class="el-icon-more iconMore"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
                           <el-dropdown-item v-if="scope.row.graphUuid&&scope.row.graphUuid!='00000000-0000-0000-0000-000000000000'">
@@ -97,6 +100,15 @@
         <div v-show="secondShow" style="background:white;">
           <addOrder ref="addOrder" @search="search"></addOrder>
         </div>
+        <el-drawer
+          style="overflow:auto;"
+          class="drawer"
+          title="添加订单"
+          size="40%"
+          :visible.sync="drawer"
+          >
+          <addOrder ref="addOrder" @search="search"></addOrder>
+        </el-drawer>
         <dialogCommonComponent ref="dialogCommonComponent" title="订单详情" width="80%">
             <goodsDetailComponent  ref="goodsDetailComponent"></goodsDetailComponent>
         </dialogCommonComponent>
@@ -109,7 +121,7 @@
             <uploadFileComponent ref="uploadFileComponent" title="附件"></uploadFileComponent>
             <div style="text-align:center;margin-top:20px;">
               <el-button plain size="small" @click="close()">取消</el-button>
-              <el-button type="primary" size="small" @click="sure">确定</el-button>
+              <el-button type="primary" size="small" @click="sure" class="primaryButton">确定</el-button>
             </div>  
         </dialogCommonComponent>
         <!-- 创建关联 -->
@@ -132,6 +144,7 @@ export default {
   name: '',
   data() {
     return {
+      drawer:false,
       breadcrumbs: ['贸易管理', '订单管理'],
       queryTerms:{
         "orgName":" 买方或卖方企业名称",
@@ -203,11 +216,15 @@ export default {
       vm.firstShow = true;
       vm.secondShow = false;
     });
+    this.$bus.$on('addClose',function() {
+      vm.drawer = false;
+    });
   },
   methods: {
     handleAddAsset() {
-      this.firstShow = false;
-      this.secondShow = true;
+      // this.firstShow = false;
+      // this.secondShow = true;
+      this.drawer = true;
     },
     close() {
       this.$bus.$emit('closeDialog');
@@ -322,4 +339,5 @@ export default {
     margin: 5px;
   }
 }
+
 </style>

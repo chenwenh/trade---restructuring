@@ -1,6 +1,6 @@
 <template>
 	<div>
-        <div style="margin-bottom:20px;">
+        <div style="margin-bottom:20px;" v-show="titleShow!='false'">
             <protle-title-component>
                 <span class="el-dialog__title">{{title}}</span>
             </protle-title-component>
@@ -20,12 +20,8 @@
 		    drag
 		    :show-file-list="showFileList"
 		    >
-		    <i class="el-icon-upload"></i>
-		    <div class="el-upload__text">将文件拖到此处，或
-				<em>点击上传</em>
-	    	</div>
-		    <br>
-  			<div class="el-upload__tip" slot="tip">只能上传{{ acceptNew }}文件，且不超过30M</div>
+			<span class="uploadButton">点击上传</span>
+		    <div class="el-upload__text" style="color:#999999;">或将文件拖到此处，大小不得超过30MB<span class="redColor">（仅支持{{acceptNew}}文件）</span></div>
 		    <slot>
 		    </slot>
 		</el-upload>
@@ -36,7 +32,7 @@
     import protleTitleComponent from "@/components/protleTitleComponent";
 	import showFileDetail from './showFileDetail.vue'
 	export default {
-		props: ["title"],
+		props: ["title","titleShow"],
 		data() {
 			return {
 		        fileList: [],

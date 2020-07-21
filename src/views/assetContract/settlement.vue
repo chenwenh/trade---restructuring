@@ -21,7 +21,7 @@
         </div>
          <div style="text-align:center;margin-top:40px;">
             <el-button type="warning" @click="back">上一步</el-button>
-            <el-button :disabled="isDisabled" type="primary" icon="el-icon-share" @click="handlePush">
+            <el-button :disabled="isDisabled" type="primary" icon="el-icon-share" @click="handlePush" class="primaryButton">
                 推送
             </el-button>
         </div>
@@ -45,7 +45,7 @@
                         :disabled="!sendUrl"
                         size="small"
                         type="primary"
-                        @click="handleDailogConfirm()">
+                        @click="handleDailogConfirm()" class="primaryButton">
                     确 定
                 </el-button>
             </div>

@@ -53,6 +53,7 @@
                             :loading="authBtnLoading"
                             type="primary"
                             size="small"
+                            class="primaryButton"
                             @click="handleAuthEnterprise">
                         授权
                     </el-button>

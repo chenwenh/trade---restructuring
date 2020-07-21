@@ -304,7 +304,7 @@
         <div style="clear:both;"></div>
         <div style="text-align:center;">
             <el-button plain size="small" @click="back()">返回</el-button>
-            <el-button type="primary" size="small" @click="handleNext('form')">下一步</el-button>
+            <el-button type="primary" size="small" @click="handleNext('form')" class="primaryButton">下一步</el-button>
         </div>
     </div>
 </template>

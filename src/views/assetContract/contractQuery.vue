@@ -10,7 +10,7 @@
                 @click="handleAddAsset()">
             添加
         </el-button>
-        <selectForm ref="selectForm" :queryTerms="queryTerms" @search="reSearch"></selectForm>
+        <selectForm ref="selectForm" :queryTerms="queryTerms" @search="reSearch" class="selectForm"></selectForm>
         <Table
               ref="tableRef"
               :mainTable="mainTable"
@@ -46,7 +46,6 @@
                     </el-button>
                     <el-dropdown trigger="click">
                         <span class="el-dropdown-link">
-                          <!-- 更多<i class="el-icon-arrow-down el-icon--right"></i> -->
                           <i class="el-icon-more iconMore"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
@@ -111,7 +110,7 @@
             <uploadFileComponent ref="uploadFileComponent" title="附件"></uploadFileComponent>
             <div style="text-align:center;margin-top:20px;">
               <el-button plain size="small" @click="prev()">上一步</el-button>
-              <el-button type="primary" size="small" @click="sure">确定</el-button>
+              <el-button type="primary" size="small" @click="sure" class="primaryButton">确定</el-button>
             </div>  
         </div>
         <!-- 推送时展示结算单 -->
@@ -147,6 +146,7 @@
                         :disabled="!businessTypeVal"
                         size="small"
                         type="primary"
+                        class="primaryButton"
                         @click="handleDailogConfirm()">
                     确 定
                 </el-button>

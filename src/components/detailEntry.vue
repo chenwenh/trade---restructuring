@@ -3,7 +3,6 @@
 		<el-table 
 			ref="multipleTable" 
 			tooltip-effect="dark" 
-			border
 			stripe 
 			class="detailEntry"
 			:data="tabData"
@@ -51,39 +50,28 @@
 		      	label="操作"
 		      	width="120">
 			    <template slot-scope="scope">
-			        <el-button
-			        	type="success"
-			          	size="mini"
-			          	@click.native.prevent="handleDeleteRow(scope.$index, key)">
-			          	删除
-			        </el-button>
+					<i class="el-icon-delete" @click="handleDeleteRow(scope.$index)"  style="cursor:pointer;font-size:18px"></i>
 			    </template>
 		    </el-table-column>
 		</el-table> 
-		
+		<div class="detailAdd">
+			<span class="redColor" @click="handleDetailAdd()"><i class="el-icon-plus"></i>添加</span>
+		</div>
 		<!-- 合计 -->
-		<div style="float:right;margin-top:20px;overflow:hidden;width:100%;">
-            <el-col :span="18">&nbsp;</el-col>
-            <el-col :span="6" style="line-height: 36px;float:right;">
+		<div style="float:left;margin-top:20px;overflow:hidden;width:100%;">
+            <el-col :span="6" style="line-height: 36px;">
                 <el-col :span="3">
                     <span class="elInput">合计：</span>
                 </el-col>
-                <el-col :span="8">共 <span class="elInput">{{num}}</span>条</el-col>
-                <el-col :span="12">共<span style="width:70%; padding:0; display:inline-block; border-bottom:1px solid #ccc;text-indent:10px;" class="elInput">{{amount}}</span>
+                <el-col :span="8">共 <span class="elInput">{{num}}</span>&nbsp;条</el-col>
+                <el-col :span="12">共<span style="width:70%; padding:0; display:inline-block;text-indent:10px;" class="elInput">{{amount}}</span>
                     元
                 </el-col>
             </el-col>
         </div>
-
-			<el-button 
-				type="warning" 
-				size="mini" @click="handleDetailAdd()">
-				添加
-			</el-button>
-
         <div style="text-align:center;">
-            <el-button plain size="small" @click="close()">取消</el-button>
-            <el-button type="primary" size="small" @click="sure()">确认</el-button>
+            <!-- <el-button plain size="small" @click="close()">取消</el-button> -->
+            <el-button type="primary" size="small" @click="sure()" class="primaryButton" style="width:236px;height:40px;">确认</el-button>
         </div>
 	</div>
 </template>
@@ -120,7 +108,7 @@
             },
 			sure() {
                 if (!this.handleValidateAll())return;
-                this.$emit('getGoods',this.tabData);
+                this.$emit('getGoods',this.tabData.concat());
                 this.$bus.$emit('closeDialog');
             },
        		// 添加行

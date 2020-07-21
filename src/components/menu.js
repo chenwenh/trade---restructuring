@@ -19,9 +19,9 @@ export default [
                 "icon": "el-icon-s-order",
                 "index": "/authorization",
                 "title": "企业授权",
-                "userRole": ["EM"], // 企业管理员
-                "authRole": ['CORE_ENT'],
-                "enterprise": ['ems', 'hsyy','jhyy', 'zhyy','tyjt', 'yzyy', 'tlyy', 'ycdl', 'rlhk', 'yjgf', 'yndl', 'bohai', 'kggm', 'mlf']
+                // "userRole": ["EM"], // 企业管理员
+                // "authRole": ['CORE_ENT'],
+                // "enterprise": ['ems', 'hsyy','jhyy', 'zhyy','tyjt', 'yzyy', 'tlyy', 'ycdl', 'rlhk', 'yjgf', 'yndl', 'bohai', 'kggm', 'mlf']
             },
             {
                 "index": "/orgRolesManage",

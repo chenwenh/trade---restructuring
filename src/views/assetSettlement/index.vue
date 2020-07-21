@@ -6,11 +6,12 @@
         <!-- 表格 -->
          <el-button style="margin-bottom:20px;"
                 type="primary"
+                class="addButton"
                 icon="el-icon-plus"
                 @click="handleAddAsset()">
             添加
         </el-button>
-        <selectForm ref="selectForm" :queryTerms="queryTerms" @search="reSearch"></selectForm>
+        <selectForm ref="selectForm" :queryTerms="queryTerms" @search="reSearch" class="selectForm"></selectForm>
         <span class="totalAmount">结算单总金额:<span style="margin-left:10px;margin-right:6px;">{{totalAmount | MoneyFormat}}</span>元</span>
         </p>
         <Table
@@ -122,7 +123,7 @@
             <uploadFileComponent ref="uploadFileComponent" title="附件"></uploadFileComponent>
             <div style="text-align:center;margin-top:20px;">
               <el-button plain size="small" @click="close()">取消</el-button>
-              <el-button type="primary" size="small" @click="sure">确定</el-button>
+              <el-button type="primary" size="small" @click="sure" class="primaryButton">确定</el-button>
             </div>  
         </dialogCommonComponent>
         <!-- 山鹰币查询 -->
@@ -350,11 +351,11 @@ export default {
 
 <style lang="scss" scoped>
 .totalAmount{
-  width:calc(100% - 200px);
+  width:100%;
   text-align:right;
   display:inline-block;
   position:relative;
-  bottom:24px;
+  bottom:7px;
   font-size:16px;
 }
 .approval__box{

@@ -17,14 +17,14 @@
                 </el-date-picker>
             </el-form-item>
             <el-form-item v-else-if="queryTerm&&queryTerm.indexOf('amount')!=-1">
-                <el-input type="number" v-model="selectTerms['minAmount']" placeholder="最低金额"  style="width:200px;"></el-input>
+                <el-input type="number" v-model="selectTerms['minAmount']" placeholder="最低金额"  style="width:120px;"></el-input>
                 <span style="margin-left:25px;margin-right:20px;"> —— </span>
-                <el-input type="number"  v-model="selectTerms['maxAmount']" placeholder="最高金额"  style="width:200px;"></el-input>
+                <el-input type="number"  v-model="selectTerms['maxAmount']" placeholder="最高金额"  style="width:120px;"></el-input>
             </el-form-item>
             <el-form-item v-else-if="queryTerm">
                 <el-input v-model="selectTerms[queryTerm]" :placeholder="queryTerms[queryTerm]" clearable=""></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item style="margin-right:0;">
                 <el-button class="primaryButton" @click="query" >查询</el-button>
                 <el-tag
                     v-for="(tag,index) in dynamicTags"

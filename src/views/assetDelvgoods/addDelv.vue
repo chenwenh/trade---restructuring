@@ -58,7 +58,7 @@
         </div>
         <div style="text-align:center;">
             <el-button plain size="small" @click="back()">返回</el-button>
-            <el-button type="primary" size="small" @click="handleNext('form')">确定</el-button>
+            <el-button type="primary" size="small" @click="handleNext('form')" class="primaryButton">确定</el-button>
         </div>
         <!-- 查看合同详情 -->
         <dialogCommonComponent ref="dialogCommonComponent" title="明细录入" width="80%">

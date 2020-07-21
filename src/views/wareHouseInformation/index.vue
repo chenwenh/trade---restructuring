@@ -191,7 +191,7 @@
         </div>
     </div>
     <div class="button">
-       <el-button type="primary" @click="Top()">回到顶部</el-button>
+       <el-button type="primary" @click="Top()" class="primaryButton">回到顶部</el-button>
     </div>
     </div>
 </template>

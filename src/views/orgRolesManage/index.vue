@@ -64,7 +64,7 @@
                         取 消
                     </el-button>
                     <el-button  size="small" type="primary" :loading="loading"
-                            @click="handleDailogConfirm()">
+                            @click="handleDailogConfirm()" class="primaryButton">
                         确 定
                     </el-button>
                 </div>

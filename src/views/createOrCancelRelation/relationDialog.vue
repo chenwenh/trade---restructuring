@@ -89,7 +89,7 @@
           </div>
             <div style="text-align: center;margin: 20px 0">
                 <el-button type="warning" @click="handlePrev()">上一步</el-button>
-                <el-button type="primary" @click="handleRelateSure('confirm')">确定</el-button>
+                <el-button type="primary" @click="handleRelateSure('confirm')" class="primaryButton">确定</el-button>
             </div>
         </div>
     </div>
@@ -178,7 +178,7 @@ export default {
       // nowSelectInvoice为选中的行的所有数据。
       vm.assetsUidList = value1;
       vm.nowSelectInvoice = value2;
-      console.log(vm.assetsUidList, vm.nowSelectInvoice, '选中')
+      // console.log(vm.assetsUidList, vm.nowSelectInvoice, '选中')
       vm.totalAmount = 0;
       vm.nowSelectInvoice.forEach(val => {
         vm.totalAmount += val.amount;

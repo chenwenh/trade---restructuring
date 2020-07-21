@@ -2,8 +2,8 @@
     <div class="addFormClass">
         <br>
         <!-- 合同基本信息 -->
-        <el-form :rules="rules" :model="form" ref="form" class="contractInfo" label-width="230px" style="float:left;">
-            <div class="portlet-title">
+        <el-form :rules="rules" :model="form" ref="form" class="contractInfo" label-width="120px" style="float:left;">
+            <!-- <div class="portlet-title">
                 <div class="caption">
                     <i class="el-icon-edit"></i>
                     <span id="wizard-top" class="caption-subject font-purple bold uppercase">
@@ -11,13 +11,10 @@
 			        <span class="step-title"></span></span>
                 </div>
             </div>
-            <br>
-            <div style="margin-left:13%;">
+            <br> -->
+            <div>
                 <el-col :span="24" class="elCol" v-for="(value,key) in formItem" :key="key">
-                    <el-col class="elLable" :span="4">
-                        &nbsp;
-                    </el-col>
-                    <el-col :span="14">
+                    <el-col :span="22">
                         <el-form-item :label="value" :prop="key" v-if="key=='startDate'||key==='endDate'||key==='inputDate'">
                             <el-date-picker style="width:100%;" value-format="yyyy-MM-dd" class="elPiker expTime"
                                             v-model="form[key]" type="date" @change="change($event)"
@@ -47,11 +44,11 @@
         </el-form>
         <div style="clear:both;"></div>
         <div class="contractInfo attachment" style="padding-bottom:30px;">
-            <uploadFileComponent ref="uploadFileComponent" title="添加附件"></uploadFileComponent>
+            <uploadFileComponent ref="uploadFileComponent" title="添加附件" titleShow="false"></uploadFileComponent>
         </div>
-        <div style="text-align:center;">
-            <el-button plain size="small" @click="back()">返回</el-button>
-            <el-button type="primary" size="small" @click="handleNext('form')">确定</el-button>
+        <div style="text-align:center;padding-bottom:20px;">
+            <!-- <el-button plain size="small" @click="back()">返回</el-button> -->
+            <el-button type="primary" size="small" class="primaryButton" @click="handleNext('form')" style="width:300px;height:40px;">确定</el-button>
         </div>
     </div>
 </template>
@@ -144,7 +141,7 @@ import uploadFileComponent from '@/components/uploadFileComponent';
                 this.$forceUpdate();
             },
             back() {
-                this.$bus.$emit('back');
+                this.$bus.$emit('addClose');
                 this.$refs.form.resetFields();
                 this.$refs.uploadFileComponent.resetFileList();
             },

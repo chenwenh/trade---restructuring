@@ -5,11 +5,12 @@
         <!-- 表格 -->
          <el-button style="margin-bottom:20px;"
                 type="primary"
+                class="addButton"
                 icon="el-icon-plus"
                 @click="handleAddAsset()">
             添加
         </el-button>
-        <selectForm ref="selectForm" :queryTerms="queryTerms" @search="reSearch"></selectForm>
+        <selectForm ref="selectForm" :queryTerms="queryTerms" @search="reSearch" class="selectForm"></selectForm>
         <Table
               ref="tableRef"
               :mainTable="mainTable"
@@ -107,7 +108,7 @@
             <uploadFileComponent ref="uploadFileComponent" title="附件"></uploadFileComponent>
             <div style="text-align:center;margin-top:20px;">
               <el-button plain size="small" @click="close()">取消</el-button>
-              <el-button type="primary" size="small" @click="sure">确定</el-button>
+              <el-button type="primary" size="small" @click="sure" class="primaryButton">确定</el-button>
             </div>  
         </dialogCommonComponent>
         <!-- 创建关联 -->
