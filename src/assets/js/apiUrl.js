@@ -29,6 +29,7 @@ export let apiUrl = {
         receive: currentApiUrl + "/asset/saveAsset/TRADERECVGGOODS",//添加收货单
         settlement: currentApiUrl + "/asset/saveAsset/TRADESETTLEMENT",//添加结算单
     },
+    saveAsset2:currentApiUrl + "/asset/saveAsset/",//添加保存
     queryBusiness:currentApiUrl + '/org-info/query',//企业查询
     deleteBusiness:currentApiUrl + '/org-info/delete',//删除企业
     saveBusiness:currentApiUrl + '/org-info/save',//添加企业

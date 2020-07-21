@@ -172,6 +172,14 @@ const routes = [
         },
         component: resolve => require(['../views/assetWarehouse/index.vue'], resolve)
       },
+      {
+        path: '/commonAsset/:assetType',
+        name: 'commonAsset',
+        meta: {
+            title: '公共的资产组件',
+        },
+        component: resolve => require(['../views/commonAsset/index.vue'], resolve)
+      },
     ]
   },
   
