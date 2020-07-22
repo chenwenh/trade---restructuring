@@ -7,6 +7,7 @@
                 type="primary"
                 class="addButton"
                 icon="el-icon-plus"
+                v-if="addButtonIsShow()"
                 @click="handleAddAsset()">
             添加
         </el-button>
@@ -26,6 +27,7 @@
               <el-table-column 
                       fixed="right"
                         label="操作" width="120"
+                        v-if="operationButtionIsShow()"
                         >
                   <template slot-scope="scope">
                     <el-button
@@ -34,6 +36,7 @@
                         size="medium"
                         type="text"
                         style="margin-left:0px; "
+                        v-if="detailButtonIsShow()"
                         @click="details(scope.row)">
                         详情
                     </el-button>
@@ -265,6 +268,39 @@ export default {
       this.mainTable.tableHeader = commonSetData.tableHeader[this.assetType];
       this.search();
     },
+    // 添加按钮是否显示
+    addButtonIsShow() {
+      if(this.assetType == 'TRADEINVOICE' || this.assetType == 'TRADEPONDERATION' ||this.assetType == 'TRADEQUALITY' || this.assetType=='TRADESUPPLIER'){
+        return false;
+      }
+      if(this.assetType == 'TRADEAVIATIONSERVICEFEE' || this.assetType == 'TRADEAVIATIONOILDATA' || this.assetType == 'TRADEEAGLECOINTRANSACTION' ||  this.assetType == 'TRADETICKETSALES'){
+        return false;
+      }
+      if(this.assetType == 'TRADEWAREHOUSE'){
+        return false;
+      }
+      return true;
+    },
+    // 操作栏是否显示
+    operationButtionIsShow() {
+      if(this.assetType == 'TRADEINVOICE' || this.assetType == 'TRADEPONDERATION' ||this.assetType == 'TRADEQUALITY' || this.assetType == 'TRADESUPPLIER'){
+        return false;
+      }
+      if(this.assetType == 'TRADEAVIATIONSERVICEFEE' || this.assetType == 'TRADEAVIATIONOILDATA' ||this.assetType == 'TRADEEAGLECOINTRANSACTION' || this.assetType == 'TRADETICKETSALES'){
+        return false;
+      }
+      if(this.assetType == 'TRADEWAREHOUSE'){
+        return false;
+      }
+      return true;
+    },
+    // 详情按钮是否显示
+    detailButtonIsShow() {
+      if(this.assetType == 'TRADEINVOICE'){
+        return false;
+      }
+      return true;
+    },
     // 判断是否有勾选框。发货的时候存在。
     selected() {
       if(this.assetType === 'TRADEDLVRGOODS'){
@@ -444,6 +480,31 @@ export default {
             }
           }
         }
+        delete params.TradeSettlement_settleDate;
+      }
+      // 过磅单的处理
+      if(this.assetType === 'TRADEPONDERATION'){
+        if(params.TradePonderation_weighingDate){
+          params.timeInterval = {
+            "TradePonderation_weighingDate":{
+              startDate:params.TradePonderation_weighingDate[0],
+              endDate : params.TradePonderation_weighingDate[1]
+            }
+          }
+        }
+        delete params.TradePonderation_weighingDate;
+      }
+      // 质检单的处理
+      if(this.assetType === 'TRADEQUALITY'){
+        if(params.TradeQuality_qualityDate){
+          params.timeInterval = {
+            "TradeQuality_qualityDate":{
+              startDate:params.TradeQuality_qualityDate[0],
+              endDate : params.TradeQuality_qualityDate[1]
+            }
+          }
+        }
+        delete params.TradeQuality_qualityDate;
       }
       this.loading = true;
       const url = `${this.$apiUrl.queryContract}`;
@@ -475,11 +536,27 @@ export default {
               item.orderAmount = this.$appConst.fmoney(item.amount, 2);
               item.cType = this.$appConst.cTypes[item.type];
             }
+            // 航空服务费字段处理
+            if(this.assetType == 'TRADEAVIATIONSERVICEFEE'){
+              item.airportServiceFee2 = this.$appConst.fmoney(item.airportServiceFee, 2);
+              item.civilAviationDevelopmentFund2 = this.$appConst.fmoney(item.civilAviationDevelopmentFund, 2);
+            }
+            // 山鹰币数据管理
+            if(this.assetType == 'TRADEEAGLECOINTRANSACTION'){
+              item.balance2 = this.$appConst.fmoney(item.balance, 2);
+              item.changeMoney2 = this.$appConst.fmoney(item.changeMoney, 2);
+            }
+            // 机票小数管理
+            if(this.assetType == 'TRADETICKETSALES'){
+              item.daySaleMoney2 = this.$appConst.fmoney(item.daySaleMoney, 2);
+              item.dayRefundsMoney2 = this.$appConst.fmoney(item.dayRefundsMoney, 2);
+            }
           });
           this.loading = false;
         }).catch(err => {
           this.loading = false;
-          this.$message.warning(err.message || '服务器错误，请稍后再试!');
+          this.totalCount = 0;
+          this.$message.warning(err.data.message || '服务器错误，请稍后再试!');
         });
     },
     // 分页

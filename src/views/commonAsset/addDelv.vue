@@ -16,7 +16,7 @@
             <div>
                 <el-col :span="24" class="elCol" v-for="(value,key) in formItem" :key="key">
                     <el-col :span="20">
-                        <el-form-item :label="value" :prop="key" v-if="key=='drDate'">
+                        <el-form-item :label="value" :prop="key" v-if="key.indexOf('Date')!=-1">
                             <el-date-picker style="width:100%;" value-format="yyyy-MM-dd" class="elPiker expTime"
                                             v-model="form[key]" type="date" @change="change($event)"
                                         ></el-date-picker>
@@ -103,9 +103,48 @@ import commonSetData from '@/assets/js/commonSetData.js';
                     "drDate": [
                         {required: true, message: '请输入日期！', trigger: 'blur'},
                     ],
+                    "signingDate": [
+                        {required: true, message: '请输入合同签署时间！', trigger: 'blur'},
+                    ],
+                    "startDate": [
+                        {required: true, message: '请输入发起日期！', trigger: 'blur'},
+                    ],
+                    "endDate": [
+                        {required: true, message: '请输入结束日期！', trigger: 'blur'}
+                    ],
+                    "inputDate": [
+                        {required: true, message: '请输入结束日期！', trigger: 'blur'}
+                    ],
+                    "settleDate": [
+                        {required: true, message: '请输入结算日期！', trigger: 'blur'},
+                    ],
                     "myRoles": [
                         {required: true, message: '请输入我方角色！', trigger: 'change', type: "string"}
-                    ]
+                    ],
+                    "buyerTel": [
+                        {required: true, message: '请输入买家电话！', trigger: 'blur'},
+                        { pattern: /^1[34578]\d{9}$/, message: '手机号格式不正确' }
+                    ],
+                    "sellerTel": [
+                        {required: true, message: '请输入买家电话！', trigger: 'blur'},
+                        { pattern: /^1[34578]\d{9}$/, message: '手机号格式不正确' }
+                    ],
+                    "settlePrice": [
+                        {required: true, message: '请输入结算单价！', trigger: 'blur'},
+                        {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
+                    ],
+                    "totalAmount": [
+                        {required: true, message: '请输入结算单总金额！', trigger: 'blur'},
+                        {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
+                    ],
+                    "paidAmount": [
+                        {required: true, message: '请输入结算单支付金额！', trigger: 'blur'},
+                        {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
+                    ],
+                    "balanceAmount": [
+                        {required: true, message: '请输入余额！', trigger: 'blur'},
+                        {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
+                    ],
                 },
                 rolesOptions: [
                     {

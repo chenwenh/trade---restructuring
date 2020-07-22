@@ -38,7 +38,7 @@ export default [
         "title": "贸易管理",
         "subs": [
             {
-                "index": "/supplierQuery",
+                "index": "/commonAsset/TRADESUPPLIER",
                 "title": "供应商管理",
                 "subs": [],
                 "enterprise": ['yndl'],
@@ -60,7 +60,7 @@ export default [
                 "authRole": ['CORE_ENT', 'SUPPLIER']
             }, 
             {
-                "index": "/invoiceQuery",
+                "index": "/commonAsset/TRADEINVOICE",
                 "title": "发票管理",
                 "subs": [],
                 "billType": "invoice",
@@ -89,49 +89,49 @@ export default [
                 "authRole": ['CORE_ENT', 'SUPPLIER']
             },
             {
-                "index": "/aviationServiceQuery",
+                "index": "/commonAsset/TRADEAVIATIONSERVICEFEE",
                 "title": "航空服务费管理",
                 "subs": [],
                 "enterprise": ['rlhk'],
                 "authRole": ['CORE_ENT', 'SUPPLIER']
             },
             {
-                "index": "/aviationOilQuery",
+                "index": "/commonAsset/TRADEAVIATIONOILDATA",
                 "title": "航油数据管理",
                 "subs": [],
                 "enterprise": ['rlhk'],
                 "authRole": ['CORE_ENT', 'SUPPLIER']
             },
             {
-                "index": "/mountainEagleCoin",
+                "index": "/commonAsset/TRADEEAGLECOINTRANSACTION",
                 "title": "山鹰币数据管理",
                 "subs": [],
                 "enterprise": ['rlhk'],
                 "authRole": ['CORE_ENT', 'SUPPLIER']
             },
             {
-                "index": "/ticketSales",
+                "index": "/commonAsset/TRADETICKETSALES",
                 "title": "机票销售管理",
                 "subs": [],
                 "enterprise": ['rlhk'],
                 "authRole": ['CORE_ENT', 'SUPPLIER']
             },
             {
-                "index": "/qualityQuery",
+                "index": "/commonAsset/TRADEQUALITY",
                 "title": "质检单管理",
                 "subs": [],
                 "enterprise": ['tyjt', 'yjgf'],
                 "authRole": ['CORE_ENT', 'SUPPLIER']
             },
             {
-                "index": "/ponderationQuery",
+                "index": "/commonAsset/TRADEPONDERATION",
                 "title": "过磅单管理",
                 "subs": [],
                 "enterprise": ['tyjt', 'yjgf', 'yth'],
                 "authRole": ['CORE_ENT', 'SUPPLIER']
             },
             {
-                "index": "/warehouseQuery",
+                "index": "/commonAsset/TRADEWAREHOUSE",
                 "title": "库存单管理",
                 "subs": [],
                 "enterprise": ['tyjt', 'yndl'],
