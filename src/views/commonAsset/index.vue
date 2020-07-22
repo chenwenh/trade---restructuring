@@ -381,6 +381,25 @@ export default {
         sortDirection: 'DESC'
       };
       const params = Object.assign({},searchForm,origionParams);
+      // 查询条件收货单的处理
+      if(this.assetType === 'TRADERECVGGOODS'){
+        if(params.TradeRecvgGoods_drDate){
+          params.timeInterval = {
+            "TradeRecvgGoods_drDate":{
+              startDate:params.TradeRecvgGoods_drDate[0],
+              endDate : params.TradeRecvgGoods_drDate[1]
+            }
+          }
+        }
+        if(params.TradeRecvgGoods_createTime){
+          params.timeInterval.TradeRecvgGoods_createTime = {
+              startDate:params.TradeRecvgGoods_createTime[0],
+              endDate : params.TradeRecvgGoods_createTime[1]
+            }
+        }
+        delete params.TradeRecvgGoods_drDate;
+        delete params.TradeRecvgGoods_createTime;
+      }
       this.loading = true;
       const url = `${this.$apiUrl.queryContract}`;
       this.$http.post(url,params)
@@ -389,11 +408,12 @@ export default {
           this.totalCount = res.data.data.totalElements;
           this.mainTable.tableData = res.data.data.content;
           this.mainTable.tableData.map(item => {
-            if(vm.assetType == 'TRADEDLVRGOODS'){
-              item.delvAmount = this.$appConst.fmoney(item.amount, 2);
-              item.recvgStatusFlag = item.recvgStatus === 'false' || item.recvgStatus === "FALSE"? '未收货':'收货完成';
-              item.delvDate = this.$appConst.handleSetTime(item.drDate);
-            }
+            // 发货单字段的处理
+            item.delvAmount = this.$appConst.fmoney(item.amount, 2);
+            item.recvgStatusFlag = item.recvgStatus === 'false' || item.recvgStatus === "FALSE"? '未收货':'收货完成';
+            item.delvDate = this.$appConst.handleSetTime(item.drDate);
+            // 收货单中金额字段的处理
+            item.revcAmount = this.$appConst.fmoney(item.amount, 2);
           });
           this.loading = false;
         }).catch(err => {

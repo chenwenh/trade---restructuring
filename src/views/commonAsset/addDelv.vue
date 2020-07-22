@@ -101,7 +101,7 @@ import commonSetData from '@/assets/js/commonSetData.js';
                         {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
                     ],
                     "drDate": [
-                        {required: true, message: '请输入发货日期！', trigger: 'blur'},
+                        {required: true, message: '请输入日期！', trigger: 'blur'},
                     ],
                     "myRoles": [
                         {required: true, message: '请输入我方角色！', trigger: 'change', type: "string"}
