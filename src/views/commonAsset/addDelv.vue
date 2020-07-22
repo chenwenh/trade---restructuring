@@ -120,7 +120,7 @@ import commonSetData from '@/assets/js/commonSetData.js';
                 orgName: sessionStorage.getItem("orgName"),
                 orgId: sessionStorage.getItem("orgId"),
                 user: JSON.parse(sessionStorage.getItem('user')),
-                assetType:""
+                assetType:"",
             }
         },
         computed: {
@@ -133,8 +133,14 @@ import commonSetData from '@/assets/js/commonSetData.js';
         },
         methods: {
             init(assetType) {
+                var vm = this;
                 this.assetType = assetType;
                 this.formItem = commonSetData.addFormItem[this.assetType];
+                this.$refs.form.resetFields();
+                this.$refs.uploadFileComponent.resetFileList();
+                // 使得明细中的数据初始化。
+                vm.$bus.$emit('initForm');
+                this.form.goods = [];
             },
             getGoods(value) {
                 this.form.goods = value;

@@ -80,7 +80,7 @@
 		props: [],
 		data() {
 			return {
-                amount:'',
+                amount:0,
                 tabData:[],
 				refEle: [],
                 formItem:{
@@ -101,8 +101,12 @@
             num() {
                 return this.tabData.length;
             }
-        },
+		},
 		methods: {
+			init(){
+				this.tabData = [];
+				this.amount = 0;
+			},
             close() {
                 this.$bus.$emit('closeDialog');
             },
@@ -172,7 +176,10 @@
             }
 		},
 		mounted() {
-			
+			var vm = this;
+			vm.$bus.$on('initForm',function() {
+				vm.init();
+			});
 		},
 		components: {
 			

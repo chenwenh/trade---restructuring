@@ -14,7 +14,7 @@
         <Table
               ref="tableRef"
               :mainTable="mainTable"
-              :selected="selected"
+              :selected="selected()"
               :selectable="selectable"
               :loading="loading"
               :pageSize="pageSize"
@@ -112,6 +112,7 @@
                 type="primary"
                 class="primaryButton"
                 style="margin-left:0px;margin-top:-20px;"
+                v-show="assetType === 'TRADEDLVRGOODS'"
                 @click="handleConfrim()">
             批量确认
         </el-button>
@@ -120,7 +121,7 @@
         <el-drawer
           style="overflow:auto;"
           class="drawer"
-          :title="addFormTitle"
+          :title="addFormTitle()"
           size="40%"
           :visible.sync="drawer"
           >
@@ -166,7 +167,7 @@ export default {
       breadcrumbs: [],
       queryTerms:{},
       confirmLoading:false,
-      selected:true,
+      // selected:true,
       title:'',
       firstShow:true,
       secondShow:false,
@@ -183,7 +184,7 @@ export default {
       loading: false,
       assetsUidList:[],
       selectedAssetsList:[],
-      searchForm:{}
+      searchForm:{},
     };
   },
   components: {
@@ -198,27 +199,16 @@ export default {
     breadcrumb
   },
   created() {
-    this.assetType = this.$route.params.assetType;
-    this.breadcrumbs = commonSetData.breadcrumbs[this.assetType];
-    this.queryTerms = commonSetData.queryTerms[this.assetType];
-    this.mainTable.tableHeader = commonSetData.tableHeader[this.assetType];
-    this.search();
+    // 首次用到该组件的时候执行这个。
+    var assetType = this.$route.params.assetType;
+    this.initExecute(assetType);
   },
   beforeRouteUpdate(to,from,next){
-    this.assetType = to.params.assetType;
-    this.breadcrumbs = commonSetData.breadcrumbs[this.assetType];
-    this.queryTerms = commonSetData.queryTerms[this.assetType];
-    this.mainTable.tableHeader = commonSetData.tableHeader[this.assetType];
-    this.search();
+    // 上一次用到该组件，路由变化之后还是用到该组件，则执行这个。
+    this.initExecute(to.params.assetType);
     next();
   },
   computed: {
-    // assetType() {
-    //   return this.$route.params.assetType;
-    // },
-    addFormTitle() {
-      return '添加'+ this.$appConst.dataType[this.assetType];
-    }
   },
   mounted() {
     var vm = this;
@@ -241,14 +231,36 @@ export default {
     })
   },
   methods: {
+    initExecute(assetType) {
+      this.assetType = assetType;
+      this.breadcrumbs = commonSetData.breadcrumbs[this.assetType];
+      this.queryTerms = commonSetData.queryTerms[this.assetType];
+      this.mainTable.tableHeader = commonSetData.tableHeader[this.assetType];
+      this.search();
+    },
+    // 判断是否有勾选框。发货的时候存在。
+    selected() {
+      if(this.assetType === 'TRADEDLVRGOODS'){
+        return true;
+      }else{
+        return false;
+      }
+    },
+    // 添加时标题。
+    addFormTitle() {
+      return '添加'+ this.$appConst.dataType[this.assetType];
+    },
+    // 判断什么情况下可以勾选。
     selectable (row) {
+      // 发货单有这个功能。
+      if(this.assetType != 'TRADEDLVRGOODS') return true;
       if (row.recvgStatusFlag === '未收货') {
         return true
       } else {
         return false
       }
     },
-    // 批量确认
+    // 发货单管理中的批量确认
     async handleConfrim() {
       const vm = this;
       if(this.assetsUidList.length==0){
@@ -305,8 +317,6 @@ export default {
       }
     },
     handleAddAsset() {
-      // this.firstShow = false;
-      // this.secondShow = true;
       this.drawer = true;
       this.$nextTick(() => {
         this.$refs.addDelv.init(this.assetType);
