@@ -52,7 +52,7 @@ export default [
                 "authRole": ['CORE_ENT', 'SUPPLIER']
             },
             {
-                "index": "/orderQuery",
+                "index": "/commonAsset/TRADEORDER",
                 "title": "订单管理",
                 "subs": [],
                 "billType": "order",
@@ -82,7 +82,7 @@ export default [
                 "authRole": ['CORE_ENT', 'SUPPLIER']
             },
             {
-                "index": "/settlementQuery",
+                "index": "/commonAsset/TRADESETTLEMENT",
                 "title": "结算单管理",
                 "subs": [],
                 "enterprise": ['ems', 'hsyy', 'jhyy', 'zhyy', 'tyjt', 'yzyy', 'tlyy', 'ycdl', 'rlhk', 'yjgf', 'yndl', 'kggm', 'mlf'],

@@ -51,7 +51,7 @@
         </el-form>
         <div style="clear:both;"></div>
         <div class="contractInfo attachment" style="padding-bottom:30px;">
-            <uploadFileComponent ref="uploadFileComponent" title="添加附件"></uploadFileComponent>
+            <uploadFileComponent ref="uploadFileComponent" title="添加附件" titleShow="false"></uploadFileComponent>
         </div>
         <div style="text-align:center;padding-bottom:30px;">
             <!-- <el-button plain size="small" @click="back()">返回</el-button> -->

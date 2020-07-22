@@ -71,19 +71,19 @@
                 if(item.index==='/contractQuery'){
                     vm.subMenuList.push('TRADECONTRACT');
                 }
-                if(item.index==='/orderQuery'){
+                if(item.index.indexOf('TRADEORDER')!=-1){
                     vm.subMenuList.push('TRADEORDER');
                 }
                 if(item.index==='/invoiceQuery'){
                     vm.subMenuList.push('TRADEINVOICE');
                 }
-                if(item.index==='/delvgoodsQuery'){
+                if(item.index.indexOf('TRADEDLVRGOODS')!=-1){
                     vm.subMenuList.push('TRADEDLVRGOODS');
                 }
-                if(item.index==='/revcgoodsQuery'){
+                if(item.index.indexOf('TRADERECVGGOODS')!=-1){
                     vm.subMenuList.push('TRADERECVGGOODS');
                 }
-                if(item.index==='/settlementQuery'){
+                if(item.index.indexOf('TRADESETTLEMENT')!=-1){
                     vm.subMenuList.push('TRADESETTLEMENT');
                 }
             });

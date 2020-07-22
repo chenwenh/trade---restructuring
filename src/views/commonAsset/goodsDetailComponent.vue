@@ -34,7 +34,7 @@
         </div>
         <div class="dialog-footer" style="margin-top:62px;">
           <el-button plain  @click="close()" size="medium">取消</el-button>
-          <el-button type="primary"  @click="sure()" size="medium" :loading="loading" v-show="selected">确定</el-button>
+          <el-button type="primary"  @click="sure()" size="medium" :loading="loading" v-show="selected" class="primaryButton">确定</el-button>
         </div>
     </div>
 </template>

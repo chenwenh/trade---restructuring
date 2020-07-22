@@ -24,6 +24,7 @@
               :showPagination="true">
               <!-- 操作 -->
               <el-table-column 
+                      fixed="right"
                         label="操作" width="120"
                         >
                   <template slot-scope="scope">
@@ -101,6 +102,19 @@
                                   收货
                               </el-button>
                           </el-dropdown-item>
+                          <el-dropdown-item>
+                             <el-button
+                                icon="el-icon-edit"
+                                class="collectBtn"
+                                size="medium"
+                                type="text"
+                                style="margin-left:0px; "
+                                @click="handleSearchEaglecointransaction(scope.row)"
+                                v-if="assetType === 'TRADESETTLEMENT'"
+                               >
+                                山鹰币查询
+                            </el-button>
+                          </el-dropdown-item>
                         </el-dropdown-menu>
                       </el-dropdown>
                   </template>
@@ -142,6 +156,13 @@
               <el-button type="primary" size="small" @click="sure" class="primaryButton">确定</el-button>
             </div>  
         </dialogCommonComponent>
+        <!-- 山鹰币查询 -->
+        <dialogCommonComponent ref="dialogCommonComponent4" title="山鹰币查询" width="60%">
+            <eagleCoinListBySettlement ref="eagleCoinListBySettlement"></eagleCoinListBySettlement>
+            <div style="text-align:center;margin-top:20px;">
+              <el-button plain size="small" @click="close()">取消</el-button>
+            </div>  
+        </dialogCommonComponent>
         <!-- 创建关联 -->
         <relation-dialog  ref="relationDialog" @openTabs="openTabs"></relation-dialog>
     </div>
@@ -153,6 +174,7 @@ import dialogCommonComponent from '@/components/dialogCommonComponent';
 import goodsDetailComponent from './goodsDetailComponent';
 import assetView from '@/components/assetView';
 import uploadFileComponent from '@/components/uploadFileComponent';
+import eagleCoinListBySettlement from '@/components/eagleCoinListBySettlement';
 import relationDialog from '../createOrCancelRelation/relationDialog.vue';
 import addDelv from './addDelv';
 import selectForm from '@/components/selectForm.vue';
@@ -176,6 +198,10 @@ export default {
         tableHeader: {},
         tableData: [],
         tableWidth: {
+          name:120,
+          entityNo:120,
+          createTime:120,
+          startDate:120
         }
       },
       totalCount: 0, // 数据总数
@@ -196,7 +222,8 @@ export default {
     relationDialog,
     uploadFileComponent,
     selectForm,
-    breadcrumb
+    breadcrumb,
+    eagleCoinListBySettlement
   },
   created() {
     // 首次用到该组件的时候执行这个。
@@ -303,6 +330,13 @@ export default {
         this.$refs.uploadFileComponent.init(row);
       });
     },
+    // 山鹰币查询
+    handleSearchEaglecointransaction(row) {
+      this.$refs.dialogCommonComponent4.show();
+      this.$nextTick(() =>{
+        this.$refs.eagleCoinListBySettlement.init(row.entityUuid);
+      });
+    },
     close() {
       this.$bus.$emit('closeDialog');
     },
@@ -359,7 +393,7 @@ export default {
     receiveGoods(row){
       this.$refs.dialogCommonComponent.show();
       this.$nextTick(() => {
-        this.$refs.goodsDetailComponent.init(row);
+        this.$refs.goodsDetailComponent.init(row,this.assetType);
         this.$refs.goodsDetailComponent.setSelected(true);
       }); 
       this.title = '收货详情';
@@ -400,6 +434,17 @@ export default {
         delete params.TradeRecvgGoods_drDate;
         delete params.TradeRecvgGoods_createTime;
       }
+      // 查询条件结算单的处理
+      if(this.assetType === 'TRADESETTLEMENT'){
+        if(params.TradeSettlement_settleDate){
+          params.timeInterval = {
+            "TradeSettlement_settleDate":{
+              startDate:params.TradeSettlement_settleDate[0],
+              endDate : params.TradeSettlement_settleDate[1]
+            }
+          }
+        }
+      }
       this.loading = true;
       const url = `${this.$apiUrl.queryContract}`;
       this.$http.post(url,params)
@@ -409,11 +454,27 @@ export default {
           this.mainTable.tableData = res.data.data.content;
           this.mainTable.tableData.map(item => {
             // 发货单字段的处理
-            item.delvAmount = this.$appConst.fmoney(item.amount, 2);
-            item.recvgStatusFlag = item.recvgStatus === 'false' || item.recvgStatus === "FALSE"? '未收货':'收货完成';
-            item.delvDate = this.$appConst.handleSetTime(item.drDate);
+            if(this.assetType == 'TRADEDLVRGOODS'){
+              item.delvAmount = this.$appConst.fmoney(item.amount, 2);
+              item.recvgStatusFlag = item.recvgStatus === 'false' || item.recvgStatus === "FALSE"? '未收货':'收货完成';
+              item.delvDate = this.$appConst.handleSetTime(item.drDate);
+            }
             // 收货单中金额字段的处理
-            item.revcAmount = this.$appConst.fmoney(item.amount, 2);
+            if(this.assetType == 'TRADERECVGGOODS'){
+              item.revcAmount = this.$appConst.fmoney(item.amount, 2);
+            }
+            // 结算单中金额字段的处理
+            if(this.assetType == 'TRADESETTLEMENT'){
+              item.settlePrice = this.$appConst.fmoney(item.settlePrice, 2);
+              item.totalAmount = this.$appConst.fmoney(item.totalAmount, 2);
+              item.paidAmount = this.$appConst.fmoney(item.paidAmount, 2);
+              item.balanceAmount = this.$appConst.fmoney(item.balanceAmount, 2);
+            }
+            // 订单中字段处理
+            if(this.assetType == 'TRADEORDER'){
+              item.orderAmount = this.$appConst.fmoney(item.amount, 2);
+              item.cType = this.$appConst.cTypes[item.type];
+            }
           });
           this.loading = false;
         }).catch(err => {
