@@ -463,42 +463,9 @@ export default {
           this.totalCount = res.data.data.totalElements;
           this.mainTable.tableData = res.data.data.content;
           this.mainTable.tableData.map(item => {
-            // 发货单字段的处理
-            if(this.assetType == 'TRADEDLVRGOODS'){
-              item.delvAmount = this.$appConst.fmoney(item.amount, 2);
-              item.recvgStatusFlag = item.recvgStatus === 'false' || item.recvgStatus === "FALSE"? '未收货':'收货完成';
-              item.delvDate = this.$appConst.handleSetTime(item.drDate);
-            }
-            // 收货单中金额字段的处理
-            if(this.assetType == 'TRADERECVGGOODS'){
-              item.revcAmount = this.$appConst.fmoney(item.amount, 2);
-            }
-            // 结算单中金额字段的处理
-            if(this.assetType == 'TRADESETTLEMENT'){
-              item.settlePrice = this.$appConst.fmoney(item.settlePrice, 2);
-              item.totalAmount = this.$appConst.fmoney(item.totalAmount, 2);
-              item.paidAmount = this.$appConst.fmoney(item.paidAmount, 2);
-              item.balanceAmount = this.$appConst.fmoney(item.balanceAmount, 2);
-            }
             // 订单中字段处理
             if(this.assetType == 'TRADEORDER'){
-              item.orderAmount = this.$appConst.fmoney(item.amount, 2);
               item.cType = this.$appConst.cTypes[item.type];
-            }
-            // 航空服务费字段处理
-            if(this.assetType == 'TRADEAVIATIONSERVICEFEE'){
-              item.airportServiceFee2 = this.$appConst.fmoney(item.airportServiceFee, 2);
-              item.civilAviationDevelopmentFund2 = this.$appConst.fmoney(item.civilAviationDevelopmentFund, 2);
-            }
-            // 山鹰币数据管理
-            if(this.assetType == 'TRADEEAGLECOINTRANSACTION'){
-              item.balance2 = this.$appConst.fmoney(item.balance, 2);
-              item.changeMoney2 = this.$appConst.fmoney(item.changeMoney, 2);
-            }
-            // 机票小数管理
-            if(this.assetType == 'TRADETICKETSALES'){
-              item.daySaleMoney2 = this.$appConst.fmoney(item.daySaleMoney, 2);
-              item.dayRefundsMoney2 = this.$appConst.fmoney(item.dayRefundsMoney, 2);
             }
           });
           this.loading = false;

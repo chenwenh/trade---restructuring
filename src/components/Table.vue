@@ -28,11 +28,13 @@
                        :label="item"
                        :width='handlewidth(key)'>
         <template slot-scope="scope">
-          <span v-if="key === 'signingDate' || key==='startDate' || key==='endDate' || key === 'createTime' || key==='drDate'
-                    || key==='settleDate' || key.includes('Date') || key.includes('Time')">
+          <span v-if="key.indexOf('Date')!=-1 || key.indexOf('Time')!=-1">
             {{$appConst.handleSetTime(scope.row[key])}}
           </span>
-          <span v-else-if="key === 'amount'">
+          <span v-else-if="key === 'recvgStatus'">
+            {{scope.row.recvgStatus === "FALSE" || scope.row.recvgStatus === 'false' ? '未收货':'收货完成'}}
+          </span>
+          <span v-else-if="key === 'amount' || key.indexOf('Amount') !=-1 || key.indexOf('Price')!=-1 || key==='airportServiceFee' ||key==='civilAviationDevelopmentFund'||key==='balance' || key.indexOf('Money')!=-1">
             {{$appConst.fmoney(scope.row[key], 2)}}
           </span>
           <span v-else>{{(scope.row[key] && scope.row[key] !== '') || (scope.row[key] === 0) ?  scope.row[key] : '/'}}</span>

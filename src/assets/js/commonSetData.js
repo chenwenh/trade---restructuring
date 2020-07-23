@@ -79,11 +79,11 @@ export default{
         "TRADEDLVRGOODS":{
             name: "发货单名称",
             entityNo: "发货单单号",
-            delvAmount: "发货单总金额",
+            amount: "发货单总金额",
             seller: "卖方名称",
             buyer: "买方名称",
-            recvgStatusFlag: "收货状态",
-            delvDate: "发货日期"
+            recvgStatus: "收货状态",
+            drDate: "发货日期"
         },
         "TRADERECVGGOODS":{
             entityNo: "收货单单号",
@@ -91,7 +91,7 @@ export default{
             seller: "卖方名称",
             createTime: '创建日期',
             drDate: "收货日期",
-            revcAmount: "收货单总金额",
+            amount: "收货单总金额",
         },
         "TRADESETTLEMENT":{
             entityNo: "结算单单号",
@@ -109,7 +109,7 @@ export default{
         "TRADEORDER":{
             name: "订单名称",
             entityNo: "订单单号",
-            orderAmount: "订单金额",
+            amount: "订单金额",
             buyer: "买方名称",
             seller: "卖方名称",
             createTime: "订单创建日期",
@@ -173,8 +173,8 @@ export default{
             flightNumber: "航班号",
             airplaneNumber: "飞机号",
             passage: "航段",
-            airportServiceFee2: "机场服务费",
-            civilAviationDevelopmentFund2: "民航发展基金",
+            airportServiceFee: "机场服务费",
+            civilAviationDevelopmentFund: "民航发展基金",
             serviceDate: "日期"
         },
         "TRADEAVIATIONOILDATA":{
