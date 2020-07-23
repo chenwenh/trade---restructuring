@@ -23,7 +23,6 @@ export default {
     return {
       progressShow: false,
       percentage: 0,
-      isRouterAlive: true,
       visible: false,
       roleType: [], // 当前企业 角色  核心企业  供应商  第三方
     };
