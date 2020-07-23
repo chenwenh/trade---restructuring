@@ -1,6 +1,7 @@
 
 /* eslint-disable */
 export let apiUrl = {
+    tokenRefresh:apiGateway + '/auth/api/v1.0/token/refresh/v2',//获取最新的token用户信息
     loginUrl: apiGateway + '/auth/api/v1.0/token/new',
     queryContract:currentApiUrl + '/asset/query',//合同查询
     orguserList:apiGateway + '/orguser/org/v1.0/list',//获取企业列表

@@ -1,5 +1,9 @@
 /* eslint-disable */
 export default{
+    SYSTEMS:SYSTEMS,
+    ClIENT_ID:ClIENT_ID,
+    home:home,
+    loginNavigation:loginNavigation,
     uploadFile:uploadFile,
     fileQuery:fileQuery,
     nowBusinessScenarios:nowBusinessScenarios,

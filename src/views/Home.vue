@@ -34,6 +34,9 @@
         name: 'home',
         data () {
             return {
+                isRouterAlive: true,
+                visible: true,
+                roleType: [], // 当前企业 角色  核心企业  供应商  第三方
                 userName: JSON.parse(sessionStorage.getItem('user')).username,
                 orgName: JSON.parse(sessionStorage.getItem('user')).orgName,
             }
@@ -51,9 +54,11 @@
                 if (command === 'logout') {
                     sessionStorage.clear()
                     localStorage.clear()
-                    this.$router.push({path:'/login'});
+                    // this.$router.push({path:'/login'});
+                    window.location.href = `${this.$appConst.loginNavigation}/login?logout=yes`
                 }
             },
+            
         },
         components: {
             sidebar

@@ -1,14 +1,15 @@
 /* eslint-disable */
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import appConst from '@/assets/js/appConst';
 
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '/',
-    redirect: '/login'
-  },
+  // {
+  //   path: '/',
+  //   redirect: '/login'
+  // },
   {
     path: '*',
     redirect:'/home'
@@ -100,18 +101,19 @@ const router = new VueRouter({
 });
 router.beforeEach((to, from, next) => {
     const user = JSON.parse(sessionStorage.getItem('user'));
-    if (to.path=='/login'){
-      next();
+    let token = sessionStorage.getItem("access_token");
+    if (!token) {
       sessionStorage.clear();
-    }else{
-      if (!user) {
-        next('/login');
-        return;
-      }
-      else {
-        next();
-      }
+      window.location.href = encodeURI(`${appConst.loginNavigation}/?clientId=${appConst.ClIENT_ID}&redirectUri=${appConst.home}`)//统一登录页面的地址；
+      next();
+      return;
     }
+    if (to.path === '/login' || to.path === "/"){
+        window.location.href = encodeURI(`${appConst.loginNavigation}/?clientId=${appConst.ClIENT_ID}&redirectUri=${appConst.home}`)
+        next()
+        return 
+    } 
+    next();
 });
 export default router;
 /* eslint-enable */
