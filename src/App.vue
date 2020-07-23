@@ -87,7 +87,7 @@ export default {
                     });
                 },
                 handleUserOrgRoles(userRolesArr) {
-                    let arr = [];
+                    // let arr = [];
                     let userRolesIsManager = false;
                     for (let i = 0; i < userRolesArr.length; i++) {
                         if (userRolesArr[i]["name"] === "EM") {
@@ -106,8 +106,8 @@ export default {
                     }
                     return arr;
                 },
-                handleSetSession(data, rolesArr) {
-                    let flag = 0;
+                handleSetSession(data) {
+                    // let flag = 0;
                     let currentEnterprise = this.$appConst.currentEnterprise;
                     let roles = [];
                     roles.push(data.data.user.orgRole);

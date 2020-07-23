@@ -83,70 +83,74 @@ import commonSetData from '@/assets/js/commonSetData.js';
                     goods:[]
                 },
                 rules: {
-                    "entityNo": [
-                        {required: true, message: '请输入单号！', trigger: 'blur'}
-                    ],
-                    "name": [
-                        {required: true, message: '请输入名称！', trigger: 'blur'}
-                    ],
-                    "buyer": [
-                        {required: true, message: '请输入买方名称！', trigger: 'blur'}
-                    ],
-                    "orderAddress": [
-                        {required: true, message: '请输入地址！', trigger: 'blur'}
-                    ],
-                    "seller": [
-                        {required: true, message: '请输入卖方名称！', trigger: 'blur'}
-                    ],
-                    "amount": [
-                        {required: true, message: '请输入金额！', trigger: 'blur'},
-                        {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
-                    ],
-                    "drDate": [
-                        {required: true, message: '请输入日期！', trigger: 'blur'},
-                    ],
-                    "signingDate": [
-                        {required: true, message: '请输入合同签署时间！', trigger: 'blur'},
-                    ],
-                    "startDate": [
-                        {required: true, message: '请输入发起日期！', trigger: 'blur'},
-                    ],
-                    "endDate": [
-                        {required: true, message: '请输入结束日期！', trigger: 'blur'}
-                    ],
-                    "inputDate": [
-                        {required: true, message: '请输入结束日期！', trigger: 'blur'}
-                    ],
-                    "settleDate": [
-                        {required: true, message: '请输入结算日期！', trigger: 'blur'},
-                    ],
-                    "myRoles": [
-                        {required: true, message: '请输入我方角色！', trigger: 'change', type: "string"}
-                    ],
-                    "buyerTel": [
-                        {required: true, message: '请输入买家电话！', trigger: 'blur'},
-                        { pattern: /^1[34578]\d{9}$/, message: '手机号格式不正确' }
-                    ],
-                    "sellerTel": [
-                        {required: true, message: '请输入买家电话！', trigger: 'blur'},
-                        { pattern: /^1[34578]\d{9}$/, message: '手机号格式不正确' }
-                    ],
-                    "settlePrice": [
-                        {required: true, message: '请输入结算单价！', trigger: 'blur'},
-                        {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
-                    ],
-                    "totalAmount": [
-                        {required: true, message: '请输入结算单总金额！', trigger: 'blur'},
-                        {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
-                    ],
-                    "paidAmount": [
-                        {required: true, message: '请输入结算单支付金额！', trigger: 'blur'},
-                        {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
-                    ],
-                    "balanceAmount": [
-                        {required: true, message: '请输入余额！', trigger: 'blur'},
-                        {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
-                    ],
+                    // "entityNo": [
+                    //     {required: true, message: '请输入单号！', trigger: 'blur'}
+                    // ],
+                    // "name": [
+                    //     {required: true, message: '请输入名称！', trigger: 'blur'}
+                    // ],
+                    // "buyer": [
+                    //     {required: true, message: '请输入买方名称！', trigger: 'blur'}
+                    // ],
+                    // "orderAddress": [
+                    //     {required: true, message: '请输入地址！', trigger: 'blur'}
+                    // ],
+                    // "seller": [
+                    //     {required: true, message: '请输入卖方名称！', trigger: 'blur'}
+                    // ],
+                    // "amount": [
+                    //     {required: true, message: '请输入金额！', trigger: 'blur'},
+                    //     {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
+                    // ],
+                    // "drDate": [
+                    //     {required: true, message: '请输入日期！', trigger: 'blur'},
+                    // ],
+                    // "signingDate": [
+                    //     {required: true, message: '请输入合同签署时间！', trigger: 'blur'},
+                    // ],
+                    // "startDate": [
+                    //     {required: true, message: '请输入发起日期！', trigger: 'blur'},
+                    // ],
+                    // "endDate": [
+                    //     {required: true, message: '请输入结束日期！', trigger: 'blur'}
+                    // ],
+                    // "inputDate": [
+                    //     {required: true, message: '请输入结束日期！', trigger: 'blur'}
+                    // ],
+                    // "settleDate": [
+                    //     {required: true, message: '请输入结算日期！', trigger: 'blur'},
+                    // ],
+                    // "myRoles": [
+                    //     {required: true, message: '请输入我方角色！', trigger: 'change', type: "string"}
+                    // ],
+                    // "buyerTel": [
+                    //     {required: true, message: '请输入买家电话！', trigger: 'blur'},
+                    //     { pattern: /^1[34578]\d{9}$/, message: '手机号格式不正确' }
+                    // ],
+                    // "sellerTel": [
+                    //     {required: true, message: '请输入买家电话！', trigger: 'blur'},
+                    //     { pattern: /^1[34578]\d{9}$/, message: '手机号格式不正确' }
+                    // ],
+                    // "settlePrice": [
+                    //     {required: true, message: '请输入结算单价！', trigger: 'blur'},
+                    //     {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
+                    // ],
+                    // "totalAmount": [
+                    //     {required: true, message: '请输入结算单总金额！', trigger: 'blur'},
+                    //     {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
+                    // ],
+                    // "paidAmount": [
+                    //     {required: true, message: '请输入结算单支付金额！', trigger: 'blur'},
+                    //     {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
+                    // ],
+                    // "balanceAmount": [
+                    //     {required: true, message: '请输入余额！', trigger: 'blur'},
+                    //     {pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'}
+                    // ],
+                    // "quantity":  [
+                    //     { required: true, message: '请输入数量！', trigger: 'change', type: "string" },
+                    //     { pattern: /^\d+$/, message: '数量只能为数字，请重新输入！' }
+                    // ],
                 },
                 rolesOptions: [
                     {
@@ -178,6 +182,7 @@ import commonSetData from '@/assets/js/commonSetData.js';
                 this.assetType = assetType;
                 this.formItem = commonSetData.addFormItem[this.assetType];
                 this.$refs.form.resetFields();
+                this.handleSetRules();
                 this.$refs.uploadFileComponent.resetFileList();
                 // 使得明细中的数据初始化。
                 vm.$bus.$emit('initForm');
@@ -185,6 +190,84 @@ import commonSetData from '@/assets/js/commonSetData.js';
             },
             getGoods(value) {
                 this.form.goods = value;
+            },
+            handleSetRules() {
+                for(let i in this.formItem) {
+                    let arr = [];
+                    let json = null
+                    let patternJson = null
+                    if(i === 'checkApplyNumber' || i === 'inspectionNumber' || i === 'reachNumber' || i === 'roughWeight' || i === 'tareWeight' || i === 'suttleWeight' || i === 'quantity') {
+                        json = {
+                            required: true,
+                            message: '请输入' + this.formItem[i],
+                            trigger: 'blur',
+                            type: 'string' 
+                        }
+                        patternJson = {
+                            pattern: /^[0-9]+$/g, message: this.formItem[i] + '只能为数字，请重新输入！'
+                        }
+                    }else if(i === 'carPlateNumber' || i === 'carCode') {
+                        json = {
+                            required: true,
+                            message: '请输入' + this.formItem[i],
+                            trigger: 'blur',
+                            type: 'string'
+                        }
+                        patternJson = {
+                            pattern: /^(([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z](([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳使领]))$/g, message: '格式不正确，请重新输入！' 
+                        }
+                    }else if(i === 'mobile' || i === 'buyerTel' || i === 'sellerTel') {
+                        json = {
+                            required: true,
+                            message: '请输入' + this.formItem[i],
+                            trigger: 'blur',
+                            type: 'string'
+                        }
+                        patternJson = {
+                            pattern: /^1[34578]\d{9}$/, message: '电话格式不正确！'
+                        }
+                    }else if(i === 'amount' || i === 'settlePrice' || i === 'totalAmount' || i === 'paidAmount' || i === 'balanceAmount') {
+                        json = {
+                            required: true,
+                            message: '请输入' + this.formItem[i],
+                            trigger: 'blur',
+                            type: 'string'
+                        }
+                        patternJson = {
+                            pattern: /^\d{1,3}(,?\d{3})*(\.\d{1,2})?$/g, message: '金额格式不正确'
+                        }
+                    }else if(i === 'idCard') {
+                        json = {
+                            required: true,
+                            message: '请输入' + this.formItem[i],
+                            trigger: 'blur',
+                            type: 'string'
+                        }
+                        patternJson = {
+                            pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '身份证号格式不正确！'
+                        }
+                    }else if(i === 'remarks' || i === 'resourceType' || i === 'isused' || i === 'deliveryType'
+                    || i === 'unloadAddress' || i === 'clientName' || i === 'operator' || i === 'buyerAddress'
+                    || i === 'sellerAddress') {
+                        json = {
+                            required: false,
+                        }
+                    }else {
+                        json = {
+                            required: true,
+                            message: '请输入' + this.formItem[i],
+                            trigger: 'blur',
+                            type: 'string'
+                        }
+                        // arr.push(json)
+                    }
+                    arr.push(json);
+                    if(patternJson) {
+                        arr.push(patternJson)
+                    }
+                    this.rules[i] = arr;
+                }
+                // console.log(this.rules, 'this.rules arrr')
             },
             // 明细录入弹出框
             handleDetailEntry() {
@@ -219,8 +302,8 @@ import commonSetData from '@/assets/js/commonSetData.js';
                         this.$message.error("您有必填项未填或填写有误！")
                     }else{
                         var params = Object.assign({},vm.form);
-                        // var asset = this.$appConst.domainEntity[this.assetType];
-                        params["@class"] = `com.evisible.trade.core.domain.entity${vm.assetType}`;
+                        var asset = this.$appConst.domainEntity[this.assetType];
+                        params["@class"] = `com.evisible.trade.core.domain.entity.${asset}`;
                         params.attachments = vm.$refs.uploadFileComponent.getFile();
                         var response = await vm.$http.post(`${vm.$apiUrl.saveAsset2}${vm.assetType}`,params);
                         if(response.data.status === vm.$appConst.status) {
