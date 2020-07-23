@@ -204,7 +204,11 @@ export default {
           name:120,
           entityNo:120,
           createTime:120,
-          startDate:120
+          startDate:120,
+          totalAmount:150,
+          paidAmount:150,
+          endDate:150,
+          startDate:150
         }
       },
       totalCount: 0, // 数据总数
@@ -451,61 +455,6 @@ export default {
         sortDirection: 'DESC'
       };
       const params = Object.assign({},searchForm,origionParams);
-      // 查询条件收货单的处理
-      if(this.assetType === 'TRADERECVGGOODS'){
-        if(params.TradeRecvgGoods_drDate){
-          params.timeInterval = {
-            "TradeRecvgGoods_drDate":{
-              startDate:params.TradeRecvgGoods_drDate[0],
-              endDate : params.TradeRecvgGoods_drDate[1]
-            }
-          }
-        }
-        if(params.TradeRecvgGoods_createTime){
-          params.timeInterval.TradeRecvgGoods_createTime = {
-              startDate:params.TradeRecvgGoods_createTime[0],
-              endDate : params.TradeRecvgGoods_createTime[1]
-            }
-        }
-        delete params.TradeRecvgGoods_drDate;
-        delete params.TradeRecvgGoods_createTime;
-      }
-      // 查询条件结算单的处理
-      if(this.assetType === 'TRADESETTLEMENT'){
-        if(params.TradeSettlement_settleDate){
-          params.timeInterval = {
-            "TradeSettlement_settleDate":{
-              startDate:params.TradeSettlement_settleDate[0],
-              endDate : params.TradeSettlement_settleDate[1]
-            }
-          }
-        }
-        delete params.TradeSettlement_settleDate;
-      }
-      // 过磅单的处理
-      if(this.assetType === 'TRADEPONDERATION'){
-        if(params.TradePonderation_weighingDate){
-          params.timeInterval = {
-            "TradePonderation_weighingDate":{
-              startDate:params.TradePonderation_weighingDate[0],
-              endDate : params.TradePonderation_weighingDate[1]
-            }
-          }
-        }
-        delete params.TradePonderation_weighingDate;
-      }
-      // 质检单的处理
-      if(this.assetType === 'TRADEQUALITY'){
-        if(params.TradeQuality_qualityDate){
-          params.timeInterval = {
-            "TradeQuality_qualityDate":{
-              startDate:params.TradeQuality_qualityDate[0],
-              endDate : params.TradeQuality_qualityDate[1]
-            }
-          }
-        }
-        delete params.TradeQuality_qualityDate;
-      }
       this.loading = true;
       const url = `${this.$apiUrl.queryContract}`;
       this.$http.post(url,params)

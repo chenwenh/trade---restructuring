@@ -24,6 +24,7 @@
               <!-- 操作 -->
               <el-table-column 
                         label="操作" width="200"
+                        fixed="right"
                         >
                   <template slot-scope="scope">
                     <el-button
@@ -106,11 +107,11 @@
             <contractInfoComponentNew ref="contractInfoComponentNew" @contractStep="contractStep"></contractInfoComponentNew>
         </div>
         <!-- 附件 -->
-        <div v-show="thirdShow" style="background:white;">
+        <div v-show="thirdShow" style="background:white;padding-bottom:30px;">
             <uploadFileComponent ref="uploadFileComponent" title="附件"></uploadFileComponent>
             <div style="text-align:center;margin-top:20px;">
-              <el-button plain size="small" @click="prev()">上一步</el-button>
-              <el-button type="primary" size="small" @click="sure" class="primaryButton">确定</el-button>
+              <el-button plain size="small" @click="prev()" style="height:40px;">上一步</el-button>
+              <el-button type="primary" size="small" @click="sure" class="primaryButton" style="width:236px;height:40px;">确定</el-button>
             </div>  
         </div>
         <!-- 推送时展示结算单 -->

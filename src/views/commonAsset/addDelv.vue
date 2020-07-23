@@ -78,6 +78,8 @@ import commonSetData from '@/assets/js/commonSetData.js';
                 // 为表单里面要展示的字段
                 formItem:{},
                 form: {
+                    buyer:"",
+                    seller:"",
                     goods:[]
                 },
                 rules: {

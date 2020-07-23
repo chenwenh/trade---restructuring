@@ -308,13 +308,13 @@ export default {
   .el-table{
     font-size:14px;
   }
-.el-table__body tr:hover>td{
-    background-color: rgb(255,252,249) !important
-  }
+// .el-table__body tr:hover>td{
+//     background-color: rgb(255,252,249) !important
+//   }
  
-  .el-table__body tr.current-row>td{
-    background-color: rgb(255,252,249) !important
-  }
+//   .el-table__body tr.current-row>td{
+//     background-color: rgb(255,252,249) !important
+//   }
 .el-pagination.is-background .el-pager li:not(.disabled).active {
     color: #fff !important;
     background: #312F2F !important;

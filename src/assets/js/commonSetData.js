@@ -287,7 +287,8 @@ export default{
             startDate: "订单发起日期",
             endDate: "订单结束日期",
             inputDate: "订单录入日期",
-            remarks: "备注"
+            remarks: "备注",
+            detailEntry:''
         }
     },
     // 详情

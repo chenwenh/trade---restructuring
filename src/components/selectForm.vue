@@ -46,8 +46,11 @@ export default {
     data(){
         return{
             queryTerm:"",
-            selectTerms:{},
-            dynamicTags: []
+            selectTerms:{
+                timeInterval: {}
+            },
+            dynamicTags: [],
+            newSelectTerms:{}
         }
     },
     watch:{
@@ -63,34 +66,56 @@ export default {
             var vm = this;
             this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
             var type = tag.type;
-            vm.selectTerms[type] = "";
+            vm.newSelectTerms[type] = "";
             //如果参数值为空，则不传递。
             if(type=='TradeContract_amount'){
-                delete vm.selectTerms.minAmount;
-                delete vm.selectTerms.maxAmount;
+                delete vm.newSelectTerms.minAmount;
+                delete vm.newSelectTerms.maxAmount;
             }
-            for(var param in vm.selectTerms){
-                if(vm.selectTerms[param]==""){
-                    delete vm.selectTerms[param];
+            if(type.indexOf('Date')!=-1 || type.indexOf('Time')!=-1){
+                delete vm.newSelectTerms.timeInterval[type];
+                vm.selectTerms[type] = [];
+            }
+            if(vm.newSelectTerms.timeInterval && Object.keys(vm.newSelectTerms.timeInterval).length == 0){
+                delete vm.newSelectTerms.timeInterval;
+            }
+            for(var param in vm.newSelectTerms){
+                if(vm.newSelectTerms[param]==""){
+                    delete vm.newSelectTerms[param];
                 }
             }
-            if(JSON.stringify(vm.selectTerms) === "{}"){
+            if(JSON.stringify(vm.newSelectTerms) === "{}"){
                 vm.queryTerm = "";
             }
-            vm.$emit("search",vm.selectTerms);
+            vm.$emit("search",vm.newSelectTerms);
         },
         query(){
             var vm = this;
+            var selectTerms = Object.assign({},vm.selectTerms);
+            vm.newSelectTerms = selectTerms;
             var label = vm.queryTerms[vm.queryTerm];
             vm.commonOperation(vm.dynamicTags,vm.queryTerm,label);
             //如果参数值为空，则不传递。
-            for(var param in vm.selectTerms){
-                if(!vm.selectTerms[param]){
-                    delete vm.selectTerms[param];
+            for(var param in selectTerms){
+                if(!selectTerms[param]){
+                    delete selectTerms[param];
+                }
+                // 对日期的处理，因为他们是统一的接口
+                if((param.indexOf('Date')!=-1 ||param.indexOf('Time')!=-1) &&　selectTerms[param]){
+                    selectTerms.timeInterval = Object.assign({},selectTerms.timeInterval,{
+                        [param]:{
+                            startDate:selectTerms[param][0],
+                            endDate : selectTerms[param][1]
+                        }
+                    })
+                    delete selectTerms[param];
                 }
             }
-            if( Object.keys(vm.selectTerms).length != 0 ){
-                vm.$emit("search",vm.selectTerms);
+            if( Object.keys(selectTerms.timeInterval).length == 0 ){
+                delete selectTerms.timeInterval;
+            }
+            if( Object.keys(selectTerms).length != 0 ){
+                vm.$emit("search",selectTerms);
             }else {
                 vm.$message.warning("查询内容不能为空！");
             }
