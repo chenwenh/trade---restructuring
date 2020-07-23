@@ -208,7 +208,7 @@ export default {
           totalAmount:150,
           paidAmount:150,
           endDate:150,
-          startDate:150
+          // startDate:150
         }
       },
       totalCount: 0, // 数据总数
@@ -274,7 +274,7 @@ export default {
     },
     // 添加按钮是否显示
     addButtonIsShow() {
-      if(this.assetType == 'TRADEINVOICE' || this.assetType == 'TRADEPONDERATION' ||this.assetType == 'TRADEQUALITY' || this.assetType=='TRADESUPPLIER'){
+      if(this.assetType=='TRADESUPPLIER'){
         return false;
       }
       if(this.assetType == 'TRADEAVIATIONSERVICEFEE' || this.assetType == 'TRADEAVIATIONOILDATA' || this.assetType == 'TRADEEAGLECOINTRANSACTION' ||  this.assetType == 'TRADETICKETSALES'){
@@ -300,7 +300,7 @@ export default {
     },
     // 详情按钮是否显示
     detailButtonIsShow() {
-      if(this.assetType == 'TRADEINVOICE'){
+      if(this.assetType == 'TRADEINVOICE' || this.assetType == 'TRADELOGISTICS'){
         return false;
       }
       return true;
@@ -446,7 +446,7 @@ export default {
     // 搜索
     search(searchForm) {
       var vm = this;
-      this.mainTable.tableData = [];
+      vm.mainTable.tableData = [];
       const origionParams = {
         page: this.page,
         pageSize: this.pageSize,
