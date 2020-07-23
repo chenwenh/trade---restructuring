@@ -137,6 +137,27 @@ export default [
                 "enterprise": ['tyjt', 'yndl'],
                 "authRole": ['CORE_ENT', 'SUPPLIER']
             },
+            {
+                "index": "/commonAsset/TRADELOGISTICS",
+                "title": "物流单管理",
+                "subs": [],
+                "enterprise": ['tyjt'],
+                "authRole": ['CORE_ENT', 'SUPPLIER']
+            },
+            {
+                "index": "/commonAsset/TRADECHECKAPPLY",
+                "title": "报检单管理",
+                "subs": [],
+                "enterprise": ['tyjt'],
+                "authRole": ['CORE_ENT', 'SUPPLIER']
+            },
+            {
+                "index": "/commonAsset/TRADEPRESETTLEMENT",
+                "title": "单次结算单管理",
+                "subs": [],
+                "enterprise": ['ems', 'tyjt'],
+                "authRole": ['CORE_ENT', 'SUPPLIER']
+            },
         ]
     },
 ]

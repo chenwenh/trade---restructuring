@@ -219,8 +219,8 @@ import commonSetData from '@/assets/js/commonSetData.js';
                         this.$message.error("您有必填项未填或填写有误！")
                     }else{
                         var params = Object.assign({},vm.form);
-                        var asset = this.$appConst.domainEntity[this.assetType];
-                        params["@class"] = `com.evisible.trade.core.domain.entity${assetType}`;
+                        // var asset = this.$appConst.domainEntity[this.assetType];
+                        params["@class"] = `com.evisible.trade.core.domain.entity${vm.assetType}`;
                         params.attachments = vm.$refs.uploadFileComponent.getFile();
                         var response = await vm.$http.post(`${vm.$apiUrl.saveAsset2}${vm.assetType}`,params);
                         if(response.data.status === vm.$appConst.status) {

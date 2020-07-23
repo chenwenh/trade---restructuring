@@ -3,11 +3,11 @@ import axios from 'axios'
 import router from '../../router'
 import store from '../../store'
 // import { global } from '@/assets/js/global'
-import Vue from 'vue'
+// import Vue from 'vue'
 
 axios.defaults.timeout = 500000
 
-let loader = null
+// let loader = null
 axios.interceptors.request.use(
     config => {
         config.headers = {
