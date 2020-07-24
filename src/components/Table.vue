@@ -22,7 +22,7 @@
         width="55">
       </el-table-column>
       <el-table-column  v-if="key != 'goodsHead'" v-for="(item, key) in mainTable.tableHeader "
-                       :key="key"
+                       :key="key + Math.random()"
                        :prop="key"
                        show-overflow-tooltip
                        :label="item"
