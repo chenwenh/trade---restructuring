@@ -1,38 +1,23 @@
 <template>
-    <div>
-        <el-dialog v-dialogDrag :title="title" :close-on-click-modal="false" :append-to-body="true"
-                    :visible.sync="dialogVisible"
-                    :before-close="close" width="30%">
-          <div>
-            <i class="el-icon-info" style="font-size: 16px;">
-                请选择关联资产类型
-            </i>
-            <el-select
-                    v-model="selectAssetType"
-                    placeholder="请选择资产类型"
-                    style="width: 100%; margin-top: 15px;">
-                <!-- v-if="group && group.options.length" -->
-                <el-option-group
-                        v-for="group in assetTypeOptions"
-                        :key="group.label"
-                        :label="group.label">
-                    <el-option
-                            v-for="item in group.options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-option-group>
-            </el-select>
-            <div style="margin-top:20px; margin-left: 35%;">
-              <el-button plain @click="close()" size="medium">取消</el-button>
-              <el-button type="primary" @click="sure('confirm')" size="medium" class="primaryButton">确定</el-button>
-            </div>
-          </div>
-        </el-dialog>
-
+    <div style="background: #FFF; width: 100%; overflow:hidden;">
+        <div v-if="dialogVisible" class="f-l">
+              <div  class="relationlist"
+                      v-for="group in assetTypeOptions"
+                      :key="group.label"
+                      >
+                  <p class="titLabel">{{ group.label }}</p>
+                  <p class="texItem"
+                          v-for="item in group.options"
+                          :key="item.value"
+                          :value="item.value"
+                          :class="{'liColor': item.active}"
+                          @click="sureRelation(item.value)">
+                          {{ item.label }}
+                  </p>
+              </div>
+        </div>
         <!-- 创建关联之后的tabs -->
-        <div v-if="assetRelationTabsShow" style="margin-top: 50px;">
+        <div v-if="assetRelationTabsShow" class="f-r" style="margin-top: 20px; position: relative;">
           <Table
                 v-if="selectAssetType==='TRADECONTRACT*up'|| isCreateOrCancelRelation === 'cancelRelation'"
                 ref="tableRef3"
@@ -64,7 +49,8 @@
                       :totalCount="totalCount"
                       @handleSizeChange="handleSizeChange"
                       @handleCurrentChange="handleCurrentChange"
-                      :showPagination="true">
+                      :showPagination="true"
+                      :height2="height2()">
                 </Table>
               </el-tab-pane>
               <el-tab-pane label="属于当前合同（待关联）" name="second">
@@ -79,17 +65,18 @@
                         :totalCount="totalCount"
                         @handleSizeChange="handleSizeChange2"
                         @handleCurrentChange="handleCurrentChange2"
-                        :showPagination="true">
+                        :showPagination="true"
+                        :height2="height2()">
                   </Table>
               </el-tab-pane>
           </el-tabs>
-          <div style="float: right; margin-top: 10px; font-size: 16px;">
-              <span>合计：共 <b>{{nowSelectInvoice.length}}</b> 条</span>
-              <span  style="margin-right: 10px; margin-left: 30px;">共 <b>{{$appConst.fmoney(totalAmount, 2)}}</b> 元</span>
+          <div style="position: absolute; bottom: 84px; font-size: 14px; left: 10px;" v-if="nowSelectInvoice.length>0">
+              <span>合计：共 <b class="redColor">{{nowSelectInvoice.length}}</b> 条</span>
+              <span  style="margin-right: 10px; margin-left: 10px;">共 <b class="redColor">{{$appConst.fmoney(totalAmount, 2)}}</b> 元</span>
           </div>
             <div style="text-align: center;margin: 20px 0">
                 <el-button type="warning" @click="handlePrev()">上一步</el-button>
-                <el-button type="primary" @click="handleRelateSure('confirm')" class="primaryButton">确定</el-button>
+                <el-button type="primary" @click="handleRelateSure('confirm')" class="primaryButton" style="width: 84px;">确定</el-button>
             </div>
         </div>
     </div>
@@ -186,6 +173,10 @@ export default {
     })
   },
   methods: {
+    height2() {
+      var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+      return height - 370;
+    },
     selectable (row) {
       if (row.lockState) {
         return false
@@ -194,8 +185,10 @@ export default {
       }
     },
     handlePrev() {
-      this.$emit('openTabs', true);
+      this.nowSelectInvoice = [];
       this.assetRelationTabsShow = false;
+      this.dialogVisible = false;
+      this.$emit('openTabs', true);
     },
     handleClick(tab) {
       this.activeName = tab.name;
@@ -203,13 +196,12 @@ export default {
       this.$refs.tableRef2.clearSelection();
       this.handleCreateRelationGetData(this.nowRelationRow);
     },
-    close() {
-      this.dialogVisible = false;
-    },
     show(row, isCreateRelation, typeParam) {
       this.selectAssetType = '';
       this.nowRelationRow = row;
+      this.$emit('openTabs', false); // 隐藏父组件
       this.dialogVisible = true;
+      this.assetRelationTabsShow = true;
       this.isCreateOrCancelRelation = isCreateRelation;
       this.nowSelectPatternNode.typename = typeParam;
       this.init(row);
@@ -286,6 +278,10 @@ export default {
                 } else if (this.nowSelectPatternNode.typename === 'TRADECONTRACT' && this.isCreateOrCancelRelation === "cancelRelation") {
                   this.assetTypeOptions = this.assetTypeOptions.slice(1, 2);
                 }
+                let defaultSelet = this.assetTypeOptions[0].options;
+                if (defaultSelet.length > 0) {
+                  this.sureRelation(defaultSelet[0].value);// 默认显示第一条
+                }
               }
             }
           })
@@ -293,15 +289,27 @@ export default {
       }
 
     },
-    sure (isConfirm) {
-      // console.log(isConfirm, '点击弹框里面确认第一层', this.selectAssetType, '隔开', this.nowRelationRow)
-      if (isConfirm && this.selectAssetType.length) {
+    sureRelation(val) {
+      if (this.assetTypeOptions.length > 0) { // 点击的那行高亮显示
+        this.assetTypeOptions.forEach( group => {
+          group.options.forEach(item => {
+            item.active = false;
+            if (val === item.value) {
+              item.active = true;
+            }
+          })
+        })
+      }
+      if (val) {
+        this.selectAssetType = val;
         this.handleCreateRelationGetData(this.nowRelationRow);
-        this.dialogVisible = false;
-        this.$emit('openTabs', false); // 隐藏父组件
-        this.assetRelationTabsShow = true;
-      } else this.selectAssetType = '';
-      this.dialogVisible = false;
+      } else {
+        this.selectAssetType = '';
+      }
+      this.$emit('openTabs', false); // 隐藏父组件
+      this.dialogVisible = true;
+      this.assetRelationTabsShow = true;
+      // console.log(this.assetTypeOptions, '点击弹框里面确认第一层', this.selectAssetType, '隔开', this.nowRelationRow)
     },
     // 创建关联  获取上一节点资产数据
     async handleCreateRelationGetData (row, nowNum) {
@@ -395,6 +403,7 @@ export default {
         return
       } else this.selectAssetType = '';
       this.assetRelationTabsShow = false;
+      this.dialogVisible = false;
       this.$emit('openTabs', true);
     },
     // 资产关联 or 取消关联
@@ -467,6 +476,7 @@ export default {
             setTimeout(()=> {
               vm.$bus.$emit('hideProgress');
               vm.assetRelationTabsShow = false;
+              vm.dialogVisible = false;
               vm.handlRestData();
               vm.$message.success(vm.text + "成功！");
               vm.$emit('openTabs', true);
@@ -526,5 +536,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.f-l {
+  float: left;
+  width: 15%;
+  max-height: calc(100vh - 166px);
+  height: calc(100vh - 166px);
+  border-right: 1px solid rgba(225,229,239,1);
+    .relationlist {
+      .titLabel {
+        padding-left: 10px;
+        height:27px;
+        // width: 48px;
+        font-size:12px;
+        color:rgba(102,102,102,1);
+        line-height:27px;
+      }
 
+      .texItem{
+        padding-left: 20px;
+        color:rgba(51,51,51,1);
+        height: 36px;
+        line-height:36px;
+        cursor: pointer;
+      }
+    }
+}
+.f-r {
+  float: left;
+  margin-left: 0.5%;
+  width: 84%;
+}
+.liColor {
+  background:rgba(241,244,245,1);
+  box-shadow:0px 1px 0px 0px rgba(0,0,0,0.05);
+}
 </style>
