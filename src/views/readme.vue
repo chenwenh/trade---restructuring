@@ -74,9 +74,6 @@
                 if(item.index.indexOf('TRADEORDER')!=-1){
                     vm.subMenuList.push('TRADEORDER');
                 }
-                if(item.index==='/invoiceQuery'){
-                    vm.subMenuList.push('TRADEINVOICE');
-                }
                 if(item.index.indexOf('TRADEDLVRGOODS')!=-1){
                     vm.subMenuList.push('TRADEDLVRGOODS');
                 }
