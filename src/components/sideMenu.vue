@@ -41,8 +41,12 @@
             </template>
         </el-menu>
         <div id="fixedIcon">
-            <i class="el-icon-s-fold" v-show="!isCollapse" style="cursor:pointer;font-size:20px;" @click="foldClick"></i>
-            <i class="el-icon-s-unfold" v-show="isCollapse" style="cursor:pointer;font-size:20px;" @click="foldClick"></i>
+            <el-tooltip class="item" effect="dark" content="点击收起侧导航" placement="right">
+                <i class="el-icon-s-fold" v-show="!isCollapse" style="cursor:pointer;font-size:20px;" @click="foldClick"></i>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="点击展开侧导航" placement="right">
+                <i class="el-icon-s-unfold" v-show="isCollapse" style="cursor:pointer;font-size:20px;" @click="foldClick"></i>
+            </el-tooltip>
         </div>
     </div>
 </template>
