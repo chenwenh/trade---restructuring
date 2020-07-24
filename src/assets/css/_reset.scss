@@ -127,26 +127,26 @@ a, a:hover, a:focus {
     left: 1000px;
   }
 }
-.el-upload-list >li{
-  .el-upload-list__item-name .iconexcel{
-      font-size: 35px;
-      float: left;
-      position: relative;
-      top: -20px;
-      left: -0px;
-      color: green;
-  }
-  .el-progress-bar__inner{
-    background-color: #9DA5B2;
-  }
-}
-.el-upload-list__item .el-progress{
-  padding-left: 40px;
-  box-sizing: border-box;
-  .el-progress-bar__outer {
-    height: 7px!important;
-  }
-}
+// .el-upload-list >li{
+//   .el-upload-list__item-name .iconexcel{
+//       font-size: 35px;
+//       float: left;
+//       position: relative;
+//       top: -20px;
+//       left: -0px;
+//       color: green;
+//   }
+//   .el-progress-bar__inner{
+//     background-color: #9DA5B2;
+//   }
+// }
+// .el-upload-list__item .el-progress{
+//   padding-left: 40px;
+//   box-sizing: border-box;
+//   .el-progress-bar__outer {
+//     height: 7px!important;
+//   }
+// }
 .dialog-class{
   /deep/ .el-dialog__header{
     padding: 15px 20px;

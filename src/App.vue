@@ -10,7 +10,8 @@
       <el-progress
         type="circle"
         :percentage="percentage"
-        style="position:absolute;left:45%;top:30%;color:green;"
+        class="currentProgress"
+        style="position:absolute;left:45%;top:30%;"
       ></el-progress>
     </div>
   </div>
@@ -130,7 +131,7 @@ export default {
 </script>
 
 <style>
-.el-progress__text {
+.currentProgress .el-progress__text {
   color: green !important;
   font-size: 25px !important;
 }
