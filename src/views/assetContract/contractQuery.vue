@@ -242,6 +242,7 @@ export default {
       vm.secondShow = false;
       vm.settlementShow = false;
     });
+    vm.getPlatFormOptions();
   },
   methods: {
     close() {
@@ -322,13 +323,8 @@ export default {
         this.updateAsset();
       }
     },
-    // 添加合同
-    async handleAddAsset() {
+    async getPlatFormOptions(){
       var vm = this;
-      vm.operation = 'add';
-      vm.$refs.dialogCommonComponent3.show();
-      vm.$refs.uploadFileComponent.resetFileList();
-      vm.businessTypeVal = '';
       try{
         // 获取业务模式
         vm.platFormOptions = [];
@@ -340,10 +336,19 @@ export default {
                 value:item.graphUuid
               });
             });
+            vm.businessTypeVal = vm.platFormOptions[0].value;
         }
       }catch(error){
         vm.$message.error(error.data.message);
       }
+    },
+    // 添加合同
+    async handleAddAsset() {
+      var vm = this;
+      vm.operation = 'add';
+      vm.$refs.dialogCommonComponent3.show();
+      vm.$refs.uploadFileComponent.resetFileList();
+      // vm.businessTypeVal = '';
     },
     // 详情
     details(row) {
