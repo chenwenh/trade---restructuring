@@ -402,15 +402,6 @@ export default {
         sortDirection: 'DESC'
       };
       const params = Object.assign({},searchForm,origionParams);
-      if(params.TradeContract_signingDate){
-        params.timeInterval = {
-          "TradeContract_signingDate":{
-            startDate:params.TradeContract_signingDate[0],
-            endDate : params.TradeContract_signingDate[1]
-          }
-        }
-      }
-      delete params.TradeContract_signingDate;
       this.loading = true;
       const url = `${this.$apiUrl.queryContract}`;
       this.$http.post(url,params)

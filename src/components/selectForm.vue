@@ -69,6 +69,8 @@ export default {
             vm.newSelectTerms[type] = "";
             //如果参数值为空，则不传递。
             if(type=='TradeContract_amount'){
+                vm.selectTerms.minAmount = '';
+                vm.selectTerms.maxAmount = '';
                 delete vm.newSelectTerms.minAmount;
                 delete vm.newSelectTerms.maxAmount;
             }
