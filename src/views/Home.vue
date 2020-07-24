@@ -98,7 +98,7 @@
         // width: 220px;
         float:left;
         background:rgb(0, 78, 145);
-        // overflow: hidden;
+        overflow-x: hidden;
     }
     .el-main{
         width:calc(100% - 220px);
