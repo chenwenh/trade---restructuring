@@ -174,6 +174,7 @@ export default {
   name: '',
   data() {
     return {
+      dialogVisible:false,
       breadcrumbs: ['贸易管理', '合同管理'],
       queryTerms:{
         "orgName":" 买方或卖方企业名称",
@@ -294,13 +295,17 @@ export default {
       var vm = this;
       this.newForm["@class"]="com.evisible.trade.core.domain.entity.TradeContract";
       this.newForm.contractOrgId = this.user.orgId;
-      var response = await this.$http.post(`${this.$apiUrl.updateAsset}`,this.newForm);
-      if(response.data.status == this.$appConst.status){
-        vm.firstShow = true;
-        vm.secondShow = false;
-        vm.thirdShow = false;
-        vm.$refs.uploadFileComponent.resetFileList();
-        vm.search(this.searchForm);
+      try{
+        var response = await this.$http.post(`${this.$apiUrl.updateAsset}`,this.newForm);
+        if(response.data.status == this.$appConst.status){
+          vm.firstShow = true;
+          vm.secondShow = false;
+          vm.thirdShow = false;
+          vm.$refs.uploadFileComponent.resetFileList();
+          vm.search(this.searchForm);
+        }
+      }catch(error){
+        vm.$message.error(error.data.message);
       }
     },
     async sure() {
