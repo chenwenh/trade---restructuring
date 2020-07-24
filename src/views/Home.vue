@@ -1,7 +1,7 @@
 <template>
 <div style="width:100%;height:100%;">
         <div class="header">
-            <img src="static/images/logos.png" class="logoSrc"/>
+            <img src="static/images/logos2.png" class="logoSrc"/>
             <span class="orgName">{{orgName}}</span>,<label style="color: #2A2A2A;font-size:16px;margin-left:10px;">欢迎您进入贸易系统</label>
             <div style="float:right;margin-right:40px;">
                 <el-dropdown trigger="click" @command="handleCommand">
