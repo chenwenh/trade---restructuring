@@ -22,7 +22,7 @@
         width="55">
       </el-table-column>
       <el-table-column  v-if="key != 'goodsHead'" v-for="(item, key) in mainTable.tableHeader "
-                       :key="key + Math.random()"
+                       :key="currentKey(key)"
                        :prop="key"
                        show-overflow-tooltip
                        :label="item"
@@ -147,6 +147,10 @@ export default {
     },
   },
   methods: {
+    currentKey(key) {
+      // 给key加上Math.random()是为了解决操作一列固定错位的问题，但是又造成了【添加企业】模块弹出框输入的时候表格闪动的问题，所以先这样处理。
+      return window.location.href.lastIndexOf('orgRolesManage')!=-1 ? key :key + Math.random()
+    },
     getRowKey(row) {
       return row.id
     },

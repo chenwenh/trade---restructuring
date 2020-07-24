@@ -4,6 +4,7 @@
         <el-button style="margin-bottom:20px;"
                 type="primary"
                 icon="el-icon-plus"
+                 class="addButton"
                 @click="add()">
             添加
         </el-button>
