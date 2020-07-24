@@ -66,6 +66,9 @@
     }
 </script>
 <style lang="scss" scoped>
+    .el-aside{
+        position: relative;
+    }
     .logoSrc{
         border-right: 1px solid #EDEDED;
         position: relative;
@@ -95,7 +98,7 @@
         // width: 220px;
         float:left;
         background:rgb(0, 78, 145);
-        overflow: hidden;
+        // overflow: hidden;
     }
     .el-main{
         width:calc(100% - 220px);

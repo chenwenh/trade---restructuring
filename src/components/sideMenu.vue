@@ -9,7 +9,7 @@
             :background-color="backgroundColor"
             ref='sidebar'
             :default-openeds='openeds'
-            @open="handleOpen" @close="handleClose" :collapse="isCollapse"
+            :collapse="isCollapse"
         >
             <template v-for="item in menuList">
                 <template v-if="item.subs.length">
@@ -40,8 +40,10 @@
                 </template>
             </template>
         </el-menu>
-        <i class="el-icon-s-fold" v-show="!isCollapse" style="position:fixed;bottom:20px;left:20px;cursor:pointer;font-size:20px;" @click="foldClick"></i>
-        <i class="el-icon-s-unfold" v-show="isCollapse" style="position:fixed;bottom:20px;left:20px;cursor:pointer;font-size:20px;" @click="foldClick"></i>
+        <div id="fixedIcon">
+            <i class="el-icon-s-fold" v-show="!isCollapse" style="cursor:pointer;font-size:20px;" @click="foldClick"></i>
+            <i class="el-icon-s-unfold" v-show="isCollapse" style="cursor:pointer;font-size:20px;" @click="foldClick"></i>
+        </div>
     </div>
 </template>
 
@@ -54,7 +56,7 @@ import {mapMutations} from 'vuex'
     name: 'sideBar',
     data () {
         return {
-            isCollapse:true,
+            isCollapse:false,
             menuList:[],
             openeds: [],
             roleType: [], // 当前企业 角色  核心企业  供应商  第三方
@@ -103,17 +105,15 @@ import {mapMutations} from 'vuex'
         //         this.handleSetSideItem()
         //     }
         // },
-        handleOpen(key, keyPath) {
-            if(!this.isCollapse){
-                $('#aside').css({"width":"220px !important;"});
-            }
-        },
         foldClick() {
             this.isCollapse = !this.isCollapse;
-        },
-        handleClose(key, keyPath) {
             if(this.isCollapse){
-                $('#aside').css("width","51px !important;");
+                $('#aside').animate({"width":"51px !important;"},1000);
+                $('#fixedIcon').animate({"width":"50px"},100);
+            }else{
+                setTimeout(() => {
+                    $('#fixedIcon').animate({"width":"200px"},0);
+                },500);
             }
         },
         // 匹配菜单
@@ -178,7 +178,8 @@ import {mapMutations} from 'vuex'
         }
     },
     mounted () {
-        $('#aside').css({"width":"51px !important"});
+        $('#aside').css({"width":"220px !important"});
+        $('#fixedIcon').css({"width":"200px"});
     },
     created() {
         this.handleSetSideItem();  
@@ -204,5 +205,14 @@ import {mapMutations} from 'vuex'
 }
 .el-submenu .el-menu-item{
     padding-left:55px !important;
+}
+#fixedIcon{
+    position:fixed;
+    background:white;
+    height:40px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    bottom:0;
 }
 </style>
