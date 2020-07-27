@@ -18,6 +18,10 @@
         </div>
         <!-- 创建关联之后的tabs -->
         <div v-if="assetRelationTabsShow" class="f-r" style="margin-top: 20px; position: relative;">
+          <div v-show="selectAssetType==='TRADECONTRACT*up'|| isCreateOrCancelRelation === 'cancelRelation'" style="width: 100%;height: 40px;"></div>
+            <div class="querySelect">
+              <selectForm ref="selectForm" :queryTerms="queryTerms" @search="reSearch"></selectForm>
+            </div>
           <Table
                 v-if="selectAssetType==='TRADECONTRACT*up'|| isCreateOrCancelRelation === 'cancelRelation'"
                 ref="tableRef3"
@@ -30,7 +34,8 @@
                 :totalCount="totalCount"
                 @handleSizeChange="handleSizeChange3"
                 @handleCurrentChange="handleCurrentChange3"
-                :showPagination="true">
+                :showPagination="true"
+                :height2="height2()">
           </Table>
           <el-tabs v-model="activeName"
               v-else
@@ -86,11 +91,14 @@
 /* eslint-disable */
 import Table from '@/components/Table.vue';
 import { tabHeader } from './tabHeader.js';
+import selectForm from '@/components/selectForm.vue';
+import commonSetData from '@/assets/js/commonSetData.js';
 
 export default {
   name: '',
   data() {
     return {
+      queryTerms:{},
       totalAmount: 0,
       isCreateOrCancelRelation: '',
       nowSelectInvoice: [],
@@ -137,6 +145,7 @@ export default {
     };
   },
   components: {
+    selectForm,
     Table
   },
     watch: {
@@ -173,6 +182,11 @@ export default {
     })
   },
   methods: {
+    reSearch(searchForm) {
+      this.page = 1;
+      this.searchForm = searchForm;
+      this.handleCreateRelationGetData(this.nowRelationRow, searchForm);
+    },
     height2() {
       var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
       return height - 370;
@@ -203,6 +217,7 @@ export default {
       this.dialogVisible = true;
       this.assetRelationTabsShow = true;
       this.isCreateOrCancelRelation = isCreateRelation;
+      this.queryTerms = commonSetData.queryTerms[typeParam];
       this.nowSelectPatternNode.typename = typeParam;
       this.init(row);
     },
@@ -312,17 +327,19 @@ export default {
       // console.log(this.assetTypeOptions, '点击弹框里面确认第一层', this.selectAssetType, '隔开', this.nowRelationRow)
     },
     // 创建关联  获取上一节点资产数据
-    async handleCreateRelationGetData (row, nowNum) {
+    async handleCreateRelationGetData (row, searchForm) {
       this.nowRelationRow = row
       let assetGraphUuid = this.assetGraphUuid
       let patternNodeUuid = this.nowRelationRow.entityUuid
       let isConnect = false
       let assetType = this.selectAssetType.split('*')[0]
-      let params = {
+      let origionParams = {
         assetType: assetType,
         page: this.page,
         pageSize: this.pageSize
       }
+      let params = {};
+
       if (this.isCreateOrCancelRelation === 'cancelRelation') {
         isConnect = true
       }
@@ -335,11 +352,12 @@ export default {
       this.mainTable.tableData = [];
       this.loading = true;
       if (this.isCreateOrCancelRelation === 'cancelRelation') {
-        params = {
+        origionParams = {
           assetType: assetType,
           page: this.page3,
           pageSize: this.pageSize3
         }
+        params = Object.assign({},searchForm,origionParams);
         this.$http.post(url, params).then(res => {
           this.loading = false;
           if (res.data.status === this.$appConst.status) {
@@ -359,6 +377,7 @@ export default {
       }
 
       if (this.activeName === 'first') {
+        params = Object.assign({},searchForm,origionParams);
         this.$http.post(autoUrl, params).then(res => {
           this.loading = false;
           if (res.data.status === this.$appConst.status) {
@@ -373,11 +392,12 @@ export default {
           }
         })
       } else {
-        params = {
+        origionParams = {
           assetType: assetType,
           page: this.page2,
           pageSize: this.pageSize2
         }
+        params = Object.assign({},searchForm,origionParams);
         this.$http.post(url, params).then(res => {
           this.loading = false;
           if (res.data.status === this.$appConst.status) {
@@ -569,5 +589,22 @@ export default {
 .liColor {
   background:rgba(241,244,245,1);
   box-shadow:0px 1px 0px 0px rgba(0,0,0,0.05);
+}
+.querySelect {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  z-index: 999999999999;
+}
+
+.clearfix:after{
+  content: "";
+  display: block;
+  height: 0;
+  clear:both;
+  visibility: hidden;
+}
+.clearfix{
+  *zoom: 1;
 }
 </style>

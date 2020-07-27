@@ -109,7 +109,7 @@ export default {
                 },
                 handleSetSession(data) {
                     // let flag = 0;
-                    let currentEnterprise = this.$appConst.currentEnterprise;
+                    // let currentEnterprise = this.$appConst.currentEnterprise;
                     let roles = [];
                     roles.push(data.data.user.orgRole);
 
