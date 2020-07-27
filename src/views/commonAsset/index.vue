@@ -113,7 +113,7 @@
                                 type="text"
                                 style="margin-left:0px; "
                                 @click="handleSearchEaglecointransaction(scope.row)"
-                                v-if="assetType === 'TRADESETTLEMENT' && nowBusinessScenarios === 'rlhk'"
+                                v-if="assetType === 'TRADESETTLEMENT' && $appConst.nowBusinessScenarios === 'rlhk'"
                                >
                                 山鹰币查询
                             </el-button>

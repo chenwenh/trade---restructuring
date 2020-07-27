@@ -8,6 +8,7 @@
             router
             :background-color="backgroundColor"
             ref='sidebar'
+            @open="handleOpen"
             :default-openeds='openeds'
             :collapse="isCollapse"
         >
@@ -33,7 +34,7 @@
                     </el-submenu>
                 </template>
                 <template v-else>
-                    <el-menu-item :index="item.index" v-if="item.index !== 'assetSetting'" :key="item.index">
+                    <el-menu-item :index="item.index" v-if="item.index !== 'assetSetting'" :key="item.index" class="noSub">
                         <i class="sideBar"></i>
                         <i :class="['sideIcon', 'iconfont', item.icon]"></i>{{ item.title }}
                     </el-menu-item>
@@ -109,6 +110,16 @@ import {mapMutations} from 'vuex'
         //         this.handleSetSideItem()
         //     }
         // },
+        handleOpen(key) {
+          var vm = this;
+          this.menuList.forEach((item) =>{
+            if(item.index == key){
+              var isrouter = item.subs[0].index
+              vm.$refs['sidebar'].activeIndex = isrouter;
+              vm.$router.push({"path": isrouter});
+            }
+          })
+        },
         foldClick() {
             this.isCollapse = !this.isCollapse;
             if(this.isCollapse){

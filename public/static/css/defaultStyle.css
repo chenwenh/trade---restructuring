@@ -42,6 +42,10 @@
 .el-menu-item.is-active {
     color: #FF5701 !important;
 }
+.noSub.el-menu-item.is-active {
+    background: linear-gradient(107deg, #FF8C03 0%, #FF5801 86%, #FF5701 88%) !important;
+    color: white !important;
+}
 
 .el-button--primary.addButton {
     background: #FFFFFF;
